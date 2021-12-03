@@ -1,93 +1,80 @@
 #include <Arduino.h>
+#include <ros.h>
+#include <std_msgs/Int32.h>
+#include <std_msgs/Float32.h>
+#include <std_msgs/Bool.h>
 #include <ESC.h>
+#include <Encoder.h>
+#include <NewPing.h>
 
+#include "constants.h"
 
+#define USE_USBCON
 
-//PWM Out, Min, Max, Arming
-ESC myESC1 (8, 1000, 2000, 1500);
-ESC myESC2 (9, 1000, 2000, 1500);
+ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
+ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
+Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
 
-// Packet format:
-// /--------------------------------------------------\
-// | CODE (uint32) | LEN (uint32) | params (variable) |
-// \--------------------------------------------------/
+NewPing rf_front(TRIGGER_PIN_FRONT, ECHO_PIN_FRONT, RF_MAX_DIST);
+NewPing rf_back(TRIGGER_PIN_BACK, ECHO_PIN_BACK, RF_MAX_DIST);
 
-struct Packet {
-  uint32_t code;
-  uint32_t length;
-  char* params;
+ros::NodeHandle nh;
+std_msgs::Int32 enc_val, rf_front_val, rf_back_val;
+ros::Publisher pub_enc("/encoder", &enc_val);
+ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
+ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
+
+bool led_enabled = false;
+
+void cb_led(const std_msgs::Bool &msg) {
+    int state = msg.data ? HIGH : LOW;
+
+    digitalWrite(LED_PIN, state);
 };
 
-void setup() {
-  Serial1.begin(115200);
-  Serial.begin(9600);
+void cb_speaker(const std_msgs::Bool &msg) {
 
-  Serial.begin(115200);
-  Serial.setTimeout(10000);
-  Serial.print("Arming Motors");
-  myESC1.arm();
-  myESC2.arm();
-  delay(8000);
-  Serial.println(" - Done");
-
-  bool hardwareTest = true;
-  if (hardwareTest) {
-    Serial.print("Motor 1 @ 1400");
-    myESC1.speed(1400);
-    delay(1500);
-    Serial.println(" - Stopped");
-    myESC1.speed(1500);
-    delay(2500);
-    Serial.print("Motor 1 @ 1600");
-    myESC1.speed(1600);
-    delay(1500);
-    Serial.println(" - Stopped");
-    myESC1.speed(1500);
-    delay(2500);
-
-    Serial.print("Motor 2 @ 1400");
-    myESC2.speed(1400);
-    delay(1500);
-    Serial.println(" - Stopped");
-    myESC2.speed(1500);
-    delay(2500);
-    Serial.print("Motor 2 @ 1600");
-    myESC2.speed(1600);
-    delay(1500);
-    Serial.println(" - Stopped");
-    myESC2.speed(1500);
-
-    Serial.println("Motor Check Complete!");
-  }
 }
 
-void check_serial() {
-  if(Serial1.available()) {
-    Packet p;
-    Serial1.readBytes((char*)&p.code, sizeof(uint32_t));
-    Serial1.readBytes((char*)&p.length, sizeof(uint32_t));
-    char buf[p.length + 1];
-    buf[p.length] = '\0';
-    p.params = buf;
+void cb_motor(const std_msgs::Float32 &msg) {
+    int speed = map(msg.data, -1, 1, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
 
-    int n = 0;
-    while(n < p.length) {
-      n += Serial1.readBytes(p.params + n, p.length - n);
-    }
+    esc1.speed(speed);
+    esc2.speed(speed);
+}
 
-    Serial.print("Code: ");
-    Serial.println(p.code);
-    Serial.print("Message: ");
-    Serial.println(*((uint32_t*)p.params));
+ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
+ros::Subscriber<std_msgs::Bool> speaker_sub("/deterrents/speaker", &cb_speaker);
+ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
 
-    int ESCSpeed = p.params;
+void setup() {
+    pinMode(LED_PIN, OUTPUT);
 
-    myESC1.speed(ESCSpeed);                                   
-    myESC2.speed(ESCSpeed);
-  }
+    esc1.arm();
+    esc2.arm();
+
+    delay(500);
+
+    esc1.speed(MOTOR_STOP);
+    esc2.speed(MOTOR_STOP);
+
+    nh.initNode();
+    nh.advertise(pub_enc);
+    nh.advertise(pub_rf_back);
+    nh.advertise(pub_rf_front);
 }
 
 void loop() {
-  check_serial();
+    // Publish Encoder
+    enc_val.data = encoder.read();
+    pub_enc.publish(&enc_val);
+
+    // Publish Rangefinders
+    rf_front_val.data = rf_front.ping_cm();
+    pub_rf_front.publish(&rf_front_val);
+    rf_back_val.data = rf_back.ping_cm();
+    pub_rf_back.publish(&rf_back_val);
+
+    nh.spinOnce();
 }
