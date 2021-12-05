@@ -25,8 +25,6 @@ ros::Publisher pub_enc("/encoder", &enc_val);
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
 
-bool led_enabled = false;
-
 void cb_led(const std_msgs::Bool &msg) {
     int state = msg.data ? HIGH : LOW;
 

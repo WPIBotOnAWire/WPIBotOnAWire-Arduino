@@ -5,7 +5,7 @@
 #define MOTOR_FULLBACK       1000
 #define MOTOR_STOP           1500
 
-#define RF_MAX_DIST       200
+#define RF_MAX_DIST           200
 
 // Pins
 #define LED_PIN                12
