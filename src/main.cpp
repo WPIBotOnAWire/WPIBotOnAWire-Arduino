@@ -5,22 +5,22 @@
 #include <std_msgs/Bool.h>
 #include <ESC.h>
 #include <Encoder.h>
-#include <NewPing.h>
 
 #include "constants.h"
 
 #define USE_USBCON
+
+//For MaxSonar
+#define USPin1 A0  //front
+#define USPin2 A3    //back
 
 ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
 Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
 
-NewPing rf_front(TRIGGER_PIN_FRONT, ECHO_PIN_FRONT, RF_MAX_DIST);
-NewPing rf_back(TRIGGER_PIN_BACK, ECHO_PIN_BACK, RF_MAX_DIST);
-
 ros::NodeHandle nh;
-std_msgs::Int32 enc_val, rf_front_val, rf_back_val;
+std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
 ros::Publisher pub_enc("/encoder", &enc_val);
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
@@ -69,9 +69,9 @@ void loop() {
     pub_enc.publish(&enc_val);
 
     // Publish Rangefinders
-    rf_front_val.data = rf_front.ping_cm();
+    rf_front_val.data = (analogRead(USPin1) / 1024.0) * 512 * 2.54;
     pub_rf_front.publish(&rf_front_val);
-    rf_back_val.data = rf_back.ping_cm();
+    rf_back_val.data = (analogRead(USPin2) / 1024.0) * 512 * 2.54;
     pub_rf_back.publish(&rf_back_val);
 
     nh.spinOnce();
