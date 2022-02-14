@@ -19,3 +19,8 @@
 
 #define ESC1_PIN                8 
 #define ESC2_PIN                9
+
+// V These pins probably need to be changed
+
+#define BATTERY_SCL             16
+#define BATTERY_SDA             17

@@ -5,6 +5,9 @@
 #include <std_msgs/Bool.h>
 #include <ESC.h>
 #include <Encoder.h>
+#include <Wire.h>
+#include <Adafruit_INA260.h>
+#include <sensor_msgs/BatteryState.h>
 
 #include "constants.h"
 
@@ -14,6 +17,8 @@
 #define USPin1 A0  //front
 #define USPin2 A3    //back
 
+Adafruit_INA260 bat_monitor = Adafruit_INA260();
+
 ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
@@ -21,9 +26,11 @@ Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
 
 ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
+sensor_msgs::BatteryState bat_msg;
 ros::Publisher pub_enc("/encoder", &enc_val);
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
+ros::Publisher pub_bat_level("/battery", &bat_msg);
 
 void cb_led(const std_msgs::Bool &msg) {
     int state = msg.data ? HIGH : LOW;
@@ -61,6 +68,8 @@ void setup() {
     nh.advertise(pub_enc);
     nh.advertise(pub_rf_back);
     nh.advertise(pub_rf_front);
+
+    bat_monitor.begin();
 }
 
 void loop() {
@@ -73,6 +82,10 @@ void loop() {
     pub_rf_front.publish(&rf_front_val);
     rf_back_val.data = (analogRead(USPin2) / 1024.0) * 512 * 2.54;
     pub_rf_back.publish(&rf_back_val);
+
+    // Publish Battery Levels
+    bat_msg.voltage = bat_monitor.readBusVoltage();
+    bat_msg.current = bat_monitor.readCurrent();
 
     nh.spinOnce();
 }
