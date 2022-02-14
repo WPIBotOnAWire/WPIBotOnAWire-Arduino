@@ -72,6 +72,10 @@ void setup() {
     bat_monitor.begin();
 }
 
+bool check_radio_active() {
+    // Check if any values are nonzero on the radio.
+}
+
 void loop() {
     // Publish Encoder
     enc_val.data = encoder.read();
@@ -87,5 +91,11 @@ void loop() {
     bat_msg.voltage = bat_monitor.readBusVoltage();
     bat_msg.current = bat_monitor.readCurrent();
 
-    nh.spinOnce();
+    if(check_radio_active()) {
+        // Read radio values and use them
+
+        // Return before ros can do anything. 
+    } else {
+        nh.spinOnce();
+    }
 }
