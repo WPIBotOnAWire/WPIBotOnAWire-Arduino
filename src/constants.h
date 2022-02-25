@@ -24,3 +24,8 @@
 
 #define BATTERY_SCL             16
 #define BATTERY_SDA             17
+
+// RADIO CONSTANTS
+
+#define RADIO_OVERRIDE_VOLTAGE  4.0
+#define RADIO_OVERRIDE_PIN      0

@@ -70,10 +70,14 @@ void setup() {
     nh.advertise(pub_rf_front);
 
     bat_monitor.begin();
+
+    pinMode(RADIO_OVERRIDE_PIN, INPUT);
 }
 
 bool check_radio_active() {
     // Check if any values are nonzero on the radio.
+
+    return analogRead(RADIO_OVERRIDE_PIN) > RADIO_OVERRIDE_VOLTAGE;
 }
 
 void loop() {
