@@ -1,4 +1,5 @@
 #pragma once
+#include "pins_arduino.h"
 
 // Motor Constants
 #define MOTOR_FULLFORWARD    2000
@@ -28,4 +29,10 @@
 // RADIO CONSTANTS
 
 #define RADIO_OVERRIDE_VOLTAGE  4.0
-#define RADIO_OVERRIDE_PIN      0
+#define RADIO_OVERRIDE_PIN      PIN_A4
+#define RADIO_OVERRIDE_THROTTLE PIN_A5
+
+// SONAR CONSTANTS
+
+#define USPin1                 PIN_A0
+#define USPin2                 PIN_A1
