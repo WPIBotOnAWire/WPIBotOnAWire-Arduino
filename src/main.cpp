@@ -87,9 +87,17 @@ void loop() {
     pub_enc.publish(&enc_val);
 
     // Publish Rangefinders
-    rf_front_val.data = (analogRead(USPin1));
+
+    //Front is MB 1043 (mm model)
+    float rf_front_mVoltage = analogRead(USPin1)/1024.0*5.0*1000.0;
+    float rf_front_mm = rf_front_mVoltage * 5.0 / 4.88; //Front Datasheet
+    rf_front_val.data = (rf_front_mm * 0.0394); //mm to inch conversion factor
     pub_rf_front.publish(&rf_front_val);
-    rf_back_val.data = (analogRead(USPin2));
+
+    //Back is MB 1040 (in model)
+    float rf_back_mVoltage = analogRead(USPin2)/1024.0*5.0*1000.0;
+    float rf_back_in = rf_back_mVoltage / 9.8; //Front Datasheet
+    rf_back_val.data = (rf_back_in);
     pub_rf_back.publish(&rf_back_val);
 
     // Publish Battery Levels
