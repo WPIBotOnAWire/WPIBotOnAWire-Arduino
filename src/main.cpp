@@ -32,6 +32,11 @@ ros::Publisher pub_man_override("/manual_override", &man_override);
 
 bool override_was_active = false;
 
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 void cb_led(const std_msgs::Bool &msg) {
     int state = msg.data ? HIGH : LOW;
 
@@ -39,7 +44,7 @@ void cb_led(const std_msgs::Bool &msg) {
 };
 
 void cb_motor(const std_msgs::Float32 &msg) {
-    int speed = map(msg.data, -1, 1, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
+    int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
 
     esc1.speed(speed);
     esc2.speed(speed);
@@ -90,13 +95,13 @@ void loop() {
 
     //Front is MB 1043 (mm model)
     float rf_front_mVoltage = analogRead(USPin1)/1024.0*5.0*1000.0;
-    float rf_front_mm = rf_front_mVoltage * 5.0 / 4.88; //Front Datasheet
+    float rf_front_mm = rf_front_mVoltage * 5.0 / 4.88; //From Datasheet
     rf_front_val.data = (rf_front_mm * 0.0394); //mm to inch conversion factor
     pub_rf_front.publish(&rf_front_val);
 
     //Back is MB 1040 (in model)
     float rf_back_mVoltage = analogRead(USPin2)/1024.0*5.0*1000.0;
-    float rf_back_in = rf_back_mVoltage / 9.8; //Front Datasheet
+    float rf_back_in = rf_back_mVoltage / 9.8; //From Datasheet
     rf_back_val.data = (rf_back_in);
     pub_rf_back.publish(&rf_back_val);
 
@@ -122,6 +127,7 @@ void loop() {
             override_was_active = false;
         }
 
-        nh.spinOnce();
+        // nh.spinOnce();
     }
+    nh.spinOnce();
 }

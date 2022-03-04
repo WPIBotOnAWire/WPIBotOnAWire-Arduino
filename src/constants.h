@@ -2,9 +2,9 @@
 #include "pins_arduino.h"
 
 // Motor Constants
-#define MOTOR_FULLFORWARD    2000
+#define MOTOR_FULLFORWARD    2000.0
 #define MOTOR_FULLBACK       1000
-#define MOTOR_STOP           1500
+#define MOTOR_STOP           1500.0
 
 #define RF_MAX_DIST           200
 
