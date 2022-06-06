@@ -81,7 +81,7 @@ void setup() {
     bat_monitor.begin();
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    Serial.begin(9600);
+    // Serial.begin(9600); // when running robot.launch, comment this out
 }
 
 bool check_radio_active() {
@@ -125,11 +125,12 @@ void loop() {
         else digitalWrite(LED_PIN, HIGH);
 
         if (sounds > 1500) {
-            speaker_val.data = sounds;
+            speaker_val.data = 4000;
             pub_speakers.publish(&speaker_val);
+            delay(260);
         }
         
-        Serial.println(sounds);
+        // Serial.println(sounds);
 
         esc1.speed(throttle);
         esc2.speed(throttle);
