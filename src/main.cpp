@@ -121,7 +121,7 @@ void loop() {
         int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
         int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
-        if (lights < 1800) digitalWrite(LED_PIN, LOW);
+        if (lights > 1800) digitalWrite(LED_PIN, LOW);
         else digitalWrite(LED_PIN, HIGH);
 
         if (sounds > 1500) {
@@ -129,8 +129,23 @@ void loop() {
             pub_speakers.publish(&speaker_val);
             delay(1000);
         }
-        
-        // Serial.println(sounds);
+               
+        // Serial.println("rf_back_mm: " + (String)rf_front_mm);
+
+        // Detection Mode
+        int detect_pin = pulseIn(RADIO_OVERRIDE_DETECT, HIGH);
+        if (detect_pin > 1500){
+            // check for object
+            if((rf_back_in < STOP_DISTANCE) || ((rf_front_mm * 0.0394) < STOP_DISTANCE)){
+                // turn on lights 
+                digitalWrite(LED_PIN, HIGH);
+
+                // turn on sound
+                speaker_val.data = 4000;
+                pub_speakers.publish(&speaker_val);
+                delay(1000);
+            }   
+        }
 
         esc1.speed(throttle);
         esc2.speed(throttle);

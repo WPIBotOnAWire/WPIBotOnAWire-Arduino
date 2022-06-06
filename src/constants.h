@@ -33,8 +33,14 @@
 #define RADIO_OVERRIDE_THROTTLE PIN_A5
 #define RADIO_OVERRIDE_LIGHTS   PIN_A3
 #define RADIO_OVERRIDE_SOUND    PIN_A2
+#define RADIO_OVERRIDE_DETECT   PIN_A6
 
 // SONAR CONSTANTS
 
 #define USPin1                 PIN_A0
 #define USPin2                 PIN_A1
+
+// DISTANCE CONSTANCE
+
+#define APPROACH_DISTANCE       40 // inches
+#define STOP_DISTANCE           10 // inches
