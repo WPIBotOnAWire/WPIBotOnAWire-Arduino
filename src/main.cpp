@@ -23,12 +23,14 @@ Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
 ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
 std_msgs::Bool man_override;
+std_msgs::Int32 speaker_val;
 sensor_msgs::BatteryState bat_msg;
 ros::Publisher pub_enc("/encoder", &enc_val);
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
 ros::Publisher pub_bat_level("/battery", &bat_msg);
 ros::Publisher pub_man_override("/manual_override", &man_override);
+ros::Publisher pub_speakers("/play_sound", &speaker_val);
 
 bool override_was_active = false;
 
@@ -53,6 +55,7 @@ void cb_motor(const std_msgs::Float32 &msg) {
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
 ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
 
+
 void setup() {
     pinMode(LED_PIN, OUTPUT);
 
@@ -70,6 +73,7 @@ void setup() {
     nh.advertise(pub_rf_front);
     nh.advertise(pub_bat_level);
     nh.advertise(pub_man_override);
+    nh.advertise(pub_speakers);
 
     nh.subscribe(led_sub);
     nh.subscribe(motor_sub);
@@ -77,6 +81,7 @@ void setup() {
     bat_monitor.begin();
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
+    Serial.begin(9600);
 }
 
 bool check_radio_active() {
@@ -114,6 +119,17 @@ void loop() {
     if(check_radio_active()) {
         // Read radio values and use them
         int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
+        int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
+        int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
+        if (lights < 1800) digitalWrite(LED_PIN, LOW);
+        else digitalWrite(LED_PIN, HIGH);
+
+        if (sounds > 1500) {
+            speaker_val.data = sounds;
+            pub_speakers.publish(&speaker_val);
+        }
+        
+        Serial.println(sounds);
 
         esc1.speed(throttle);
         esc2.speed(throttle);
