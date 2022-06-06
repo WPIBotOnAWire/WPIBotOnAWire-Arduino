@@ -121,13 +121,15 @@ void loop() {
         int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
         int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
+        // check if light switch is up through values from pulseIn + turn lights on/off
         if (lights > 1800) digitalWrite(LED_PIN, LOW);
         else digitalWrite(LED_PIN, HIGH);
 
+        // makes a beep go off if the knob is turned to the right
         if (sounds > 1500) {
             speaker_val.data = 4000;
             pub_speakers.publish(&speaker_val);
-            delay(1000);
+            // delay(1000);
         }
                
         // Serial.println("rf_back_mm: " + (String)rf_front_mm);
@@ -143,7 +145,6 @@ void loop() {
                 // turn on sound
                 speaker_val.data = 4000;
                 pub_speakers.publish(&speaker_val);
-                delay(1000);
             }   
         }
 
