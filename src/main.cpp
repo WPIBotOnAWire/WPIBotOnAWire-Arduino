@@ -127,7 +127,7 @@ void loop() {
         if (sounds > 1500) {
             speaker_val.data = 4000;
             pub_speakers.publish(&speaker_val);
-            delay(260);
+            delay(1000);
         }
         
         // Serial.println(sounds);
