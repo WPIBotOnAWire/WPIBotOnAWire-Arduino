@@ -91,6 +91,20 @@ bool check_radio_active() {
     return active;
 }
 
+void lights_control(int light_switch){
+    // light_switch is the pulseIn reading, checks if flipped up or down; down is ~1800-1900, up is ~1000-1100
+    if (light_switch > 1800) digitalWrite(LED_PIN, LOW);
+    else digitalWrite(LED_PIN, HIGH);
+}
+
+void sounds_control(int sound_switch){
+    // sound_switch is a pulseIn reading, checks if knob is turned past midpoint ~1500 where under 1500 is off and over is on
+    if (sound_switch > 1500) {
+        speaker_val.data = 4000;
+        pub_speakers.publish(&speaker_val);
+    }
+}
+
 void loop() {
     // Publish Encoder
     enc_val.data = encoder.read();
@@ -121,31 +135,27 @@ void loop() {
         int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
         int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
+        int detect_pin = pulseIn(RADIO_OVERRIDE_DETECT, HIGH);
         // check if light switch is up through values from pulseIn + turn lights on/off
-        if (lights > 1800) digitalWrite(LED_PIN, LOW);
-        else digitalWrite(LED_PIN, HIGH);
+        lights_control(lights);
 
         // makes a beep go off if the knob is turned to the right
-        if (sounds > 1500) {
-            speaker_val.data = 4000;
-            pub_speakers.publish(&speaker_val);
-            // delay(1000);
-        }
+        sounds_control(sounds);
                
         // Serial.println("rf_back_mm: " + (String)rf_front_mm);
 
         // Detection Mode
-        int detect_pin = pulseIn(RADIO_OVERRIDE_DETECT, HIGH);
         if (detect_pin > 1500){
             // check for object
             if((rf_back_in < STOP_DISTANCE) || ((rf_front_mm * 0.0394) < STOP_DISTANCE)){
-                // turn on lights 
-                digitalWrite(LED_PIN, HIGH);
+                // need to make the robot slow to a stop and not hit the bird
+                
+                // turn on lights
+                lights_control(1000);
 
                 // turn on sound
-                speaker_val.data = 4000;
-                pub_speakers.publish(&speaker_val);
-            }   
+                sounds_control(1900);
+            }
         }
 
         esc1.speed(throttle);
