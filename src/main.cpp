@@ -82,7 +82,7 @@ void setup() {
     bat_monitor.begin();
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    // Serial.begin(9600); // when running robot.launch, comment this out
+    Serial.begin(9600); // when running robot.launch, comment this out
 }
 
 bool check_radio_active() {
@@ -116,16 +116,14 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Set up minimum speeds for either direction
     int front_max = MOTOR_FULLFORWARD;
     int back_max = MOTOR_FULLBACK;
-    
 
-
-// int front_error = APPROACH_DISTANCE - rf_front_in;
+    int f_error, b_error; 
 
     // Slows down robot as it moves closer to an object (starts slowing down at a safe distance, can't go further than stop distance)
     // Contstrain speed for objects in front, between 
     if(rf_front_in < APPROACH_DISTANCE){
         // Deterimine error
-        int f_error = APPROACH_DISTANCE - rf_front_in;
+        f_error = APPROACH_DISTANCE - rf_front_in;
 
         front_max -= f_error * DISTANCE_CONSTANT;
 
@@ -137,7 +135,7 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Constrain speed for objects behind
     if(rf_back_in < APPROACH_DISTANCE){
         // Deterimine error
-        int b_error = APPROACH_DISTANCE - rf_back_in;
+        b_error = APPROACH_DISTANCE - rf_back_in;
 
         back_max += b_error * DISTANCE_CONSTANT;
 
@@ -150,6 +148,13 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Set speed based on constraints
     if(throttle > front_max) throttle = front_max;
     else if(throttle < back_max) throttle = back_max;
+
+    Serial.println();
+    Serial.println();
+    Serial.println("front max:  " + (String)front_max + "   Back max:   " + (String)back_max);
+    Serial.println("rf_front_in:    " + (String)rf_front_in + "  rf_back_in:     " + (String)rf_back_in);
+    Serial.println("f_error:    " + (String)f_error + "  b_error:   " + (String)b_error);
+
 
     return throttle;
 }
