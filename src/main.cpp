@@ -32,6 +32,7 @@ ros::Publisher pub_bat_level("/battery", &bat_msg);
 ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
 
+
 bool override_was_active = false;
 
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
@@ -101,7 +102,8 @@ void loop() {
     //Front is MB 1043 (mm model)
     float rf_front_mVoltage = analogRead(USPin1)/1024.0*5.0*1000.0;
     float rf_front_mm = rf_front_mVoltage * 5.0 / 4.88; //From Datasheet
-    rf_front_val.data = (rf_front_mm * 0.0394); //mm to inch conversion factor
+    float rf_front_in = (rf_front_mm * 0.0394); //mm to inch conversion factor
+    rf_front_val.data = (rf_front_in);
     pub_rf_front.publish(&rf_front_val);
 
     //Back is MB 1040 (in model)
@@ -118,25 +120,21 @@ void loop() {
 
     if(check_radio_active()) {
         // Read radio values and use them
-        int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
         int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
-        // check if light switch is up through values from pulseIn + turn lights on/off
-        if (lights > 1800) digitalWrite(LED_PIN, LOW);
-        else digitalWrite(LED_PIN, HIGH);
+        int detect_pin = pulseIn(RADIO_OVERRIDE_DETECT, HIGH);
+        
 
-        // makes a beep go off if the knob is turned to the right
+        // makes a beep go off if the right knob is turned to the right
         if (sounds > 1500) {
             speaker_val.data = 4000;
             pub_speakers.publish(&speaker_val);
-            // delay(1000);
         }
-               
-        // Serial.println("rf_back_mm: " + (String)rf_front_mm);
-
+        
+        // check if light switch is up through values from pulseIn + turn lights on/off
+        if (lights < 1100) digitalWrite(LED_PIN, HIGH);
         // Detection Mode
-        int detect_pin = pulseIn(RADIO_OVERRIDE_DETECT, HIGH);
-        if (detect_pin > 1500){
+        else if (detect_pin > 1500){
             // check for object
             if((rf_back_in < STOP_DISTANCE) || ((rf_front_mm * 0.0394) < STOP_DISTANCE)){
                 // turn on lights 
@@ -147,9 +145,13 @@ void loop() {
                 pub_speakers.publish(&speaker_val);
             }   
         }
+        else digitalWrite(LED_PIN, LOW);
 
-        esc1.speed(throttle);
-        esc2.speed(throttle);
+        // Alter speed based on distance detected from an object
+        int ctrl_speed = keepDistance();
+
+        // Set speed
+        setSpeed(ctrl_speed);
 
         override_was_active = true;
     } else {
@@ -163,4 +165,48 @@ void loop() {
         // nh.spinOnce();
     }
     nh.spinOnce();
+}
+
+
+
+
+
+
+int keepDistance(float rf_front_in, float rf_back_in){
+    // Prevents robot from colliding with objects
+    // Returns speed for motor
+    
+    // Gather data
+    int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
+    
+    // Slows down robot as it moves closer to an object (starts slowing down at a safe distance, can't go further than stop distance)
+    // Contstrain speed for objects in front, between 
+    if(rf_front_in < APPROACH_DISTANCE){
+        // Deterimine error
+        int f_error = APPROACH_DISTANCE - rf_front_in;
+        
+        if (throttle <)
+
+    }
+    // Constrain speed for objects behind
+    if(rf_back_in < APPROACH_DISTANCE){
+        
+    }
+
+    // Set speed based on constraints
+
+
+
+    return throttle
+
+
+}
+
+
+
+
+void setSpeed(int throttle){
+    // Sets the speed of the motors with a given input
+    esc1.speed(throttle);
+    esc2.speed(throttle);
 }
