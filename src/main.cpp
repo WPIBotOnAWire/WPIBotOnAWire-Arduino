@@ -171,23 +171,12 @@ void loop() {
 
     pub_bat_level.publish(&bat_msg);
 
-    if(check_radio_active()) {
+    if (check_radio_active()) {
         // Read radio values and use them
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
         int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
         int detect_pin = pulseIn(RADIO_OVERRIDE_DETECT, HIGH);
-
-        // makes a beep go off if the right knob is turned to the right
-        if (sounds > 1500) {
-            speaker_val.data = 4000;
-            pub_speakers.publish(&speaker_val);
-        }
         
-        // check if light switch is up through values from pulseIn + turn lights on/off
-        if (lights < 1100) digitalWrite(LED_PIN, HIGH);
-        // Detection Mode
-        else if (detect_pin > 1500){
-
         // check if light switch is up through values from pulseIn + turn lights on/off
         lights_control(lights);
 
