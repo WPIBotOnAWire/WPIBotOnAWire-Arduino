@@ -114,8 +114,8 @@ int keepDistance(float rf_front_in, float rf_back_in){
     int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
     
     // Set up minimum speeds for either direction
-    int front_max = MOTOR_FULLFORWARD;
-    int back_max = MOTOR_FULLBACK;
+    int front_max = 1000;
+    int back_max = 2000;
 
     int f_error, b_error; 
 
@@ -125,7 +125,7 @@ int keepDistance(float rf_front_in, float rf_back_in){
         // Deterimine error
         f_error = APPROACH_DISTANCE - rf_front_in;
 
-        front_max -= f_error * DISTANCE_CONSTANT;
+        front_max += f_error * DISTANCE_CONSTANT;
 
         if(rf_front_in < STOP_DISTANCE){
             front_max = 1500;
@@ -137,7 +137,7 @@ int keepDistance(float rf_front_in, float rf_back_in){
         // Deterimine error
         b_error = APPROACH_DISTANCE - rf_back_in;
 
-        back_max += b_error * DISTANCE_CONSTANT;
+        back_max -= b_error * DISTANCE_CONSTANT;
 
         if(rf_back_in < STOP_DISTANCE){
             back_max = 1500;
@@ -146,14 +146,16 @@ int keepDistance(float rf_front_in, float rf_back_in){
     }
 
     // Set speed based on constraints
-    if(throttle > front_max) throttle = front_max;
-    else if(throttle < back_max) throttle = back_max;
+    if(throttle < front_max) throttle = front_max;
+    if(throttle > back_max) throttle = back_max;
 
     Serial.println();
     Serial.println();
     Serial.println("front max:  " + (String)front_max + "   Back max:   " + (String)back_max);
     Serial.println("rf_front_in:    " + (String)rf_front_in + "  rf_back_in:     " + (String)rf_back_in);
     Serial.println("f_error:    " + (String)f_error + "  b_error:   " + (String)b_error);
+    Serial.println("throttle:   " + (String)throttle);
+    // delay(750);
 
 
     return throttle;
