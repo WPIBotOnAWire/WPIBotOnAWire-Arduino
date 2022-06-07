@@ -106,8 +106,6 @@ void sounds_control(int sound_switch){
     }
 }
 
-
-
 int keepDistance(float rf_front_in, float rf_back_in){
     // Prevents robot from colliding with objects
     // Returns speed for motor
@@ -115,29 +113,46 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Gather data
     int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
     
+    // Set up minimum speeds for either direction
+    int front_max = MOTOR_FULLFORWARD;
+    int back_max = MOTOR_FULLBACK;
+    
+
+
+// int front_error = APPROACH_DISTANCE - rf_front_in;
+
     // Slows down robot as it moves closer to an object (starts slowing down at a safe distance, can't go further than stop distance)
     // Contstrain speed for objects in front, between 
     if(rf_front_in < APPROACH_DISTANCE){
         // Deterimine error
         int f_error = APPROACH_DISTANCE - rf_front_in;
-        
-        if (throttle <)
 
+        front_max -= f_error * DISTANCE_CONSTANT;
+
+        if(rf_front_in < STOP_DISTANCE){
+            front_max = 1500;
+        }
+        
     }
     // Constrain speed for objects behind
     if(rf_back_in < APPROACH_DISTANCE){
+        // Deterimine error
+        int b_error = APPROACH_DISTANCE - rf_back_in;
+
+        back_max += b_error * DISTANCE_CONSTANT;
+
+        if(rf_back_in < STOP_DISTANCE){
+            back_max = 1500;
+        }
         
     }
 
     // Set speed based on constraints
+    if(throttle > front_max) throttle = front_max;
+    else if(throttle < back_max) throttle = back_max;
 
-
-
-    return throttle
-
-
+    return throttle;
 }
-
 
 void setSpeed(int throttle){
     // Sets the speed of the motors with a given input
@@ -171,12 +186,12 @@ void loop() {
 
     pub_bat_level.publish(&bat_msg);
 
-    if (check_radio_active()) {
+    if(check_radio_active()) {
         // Read radio values and use them
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
         int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
         int detect_pin = pulseIn(RADIO_OVERRIDE_DETECT, HIGH);
-        
+
         // check if light switch is up through values from pulseIn + turn lights on/off
         lights_control(lights);
 

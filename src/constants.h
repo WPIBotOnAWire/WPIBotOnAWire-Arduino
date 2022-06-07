@@ -44,3 +44,4 @@
 
 #define APPROACH_DISTANCE       40 // inches
 #define STOP_DISTANCE           10 // inches
+#define DISTANCE_CONSTANT       10 // multiplying number
