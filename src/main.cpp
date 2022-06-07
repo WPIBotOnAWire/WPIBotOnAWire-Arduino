@@ -212,9 +212,8 @@ void loop() {
 
                 // turn on sound
                 sounds_control(1900);
-            }
+            } else digitalWrite(LED_PIN, LOW);
         }
-        else digitalWrite(LED_PIN, LOW);
 
         // Alter speed based on distance detected from an object
         int ctrl_speed = keepDistance(rf_front_in, rf_back_in);
