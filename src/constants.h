@@ -45,3 +45,7 @@
 #define APPROACH_DISTANCE       40 // inches
 #define STOP_DISTANCE           10 // inches
 #define DISTANCE_CONSTANT       500 / 30 // multiplying number
+
+// the number of times loop() runs in a second
+// might change if more things are added to loop()
+#define LOOP_CONSTANT           17

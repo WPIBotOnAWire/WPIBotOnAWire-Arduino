@@ -32,6 +32,7 @@ ros::Publisher pub_bat_level("/battery", &bat_msg);
 ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
 
+int sound_regulator = 0;
 
 bool override_was_active = false;
 
@@ -82,7 +83,7 @@ void setup() {
     bat_monitor.begin();
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    Serial.begin(9600); // when running robot.launch, comment this out
+    // Serial.begin(9600); // when running robot.launch, comment this out
 }
 
 bool check_radio_active() {
@@ -102,7 +103,11 @@ void sounds_control(int sound_switch){
     // sound_switch is a pulseIn reading, checks if knob is turned past midpoint ~1500 where under 1500 is off and over is on
     if (sound_switch > 1500) {
         speaker_val.data = 4000;
-        pub_speakers.publish(&speaker_val);
+        // sound_regulator will cause the tone to play once per second
+        if (sound_regulator >= LOOP_CONSTANT) {
+            pub_speakers.publish(&speaker_val);
+            sound_regulator = 0;
+        }
     }
 }
 
@@ -149,12 +154,12 @@ int keepDistance(float rf_front_in, float rf_back_in){
     if(throttle < front_max) throttle = front_max;
     if(throttle > back_max) throttle = back_max;
 
-    Serial.println();
-    Serial.println();
-    Serial.println("front max:  " + (String)front_max + "   Back max:   " + (String)back_max);
-    Serial.println("rf_front_in:    " + (String)rf_front_in + "  rf_back_in:     " + (String)rf_back_in);
-    Serial.println("f_error:    " + (String)f_error + "  b_error:   " + (String)b_error);
-    Serial.println("throttle:   " + (String)throttle);
+    // Serial.println();
+    // Serial.println();
+    // Serial.println("front max:  " + (String)front_max + "   Back max:   " + (String)back_max);
+    // Serial.println("rf_front_in:    " + (String)rf_front_in + "  rf_back_in:     " + (String)rf_back_in);
+    // Serial.println("f_error:    " + (String)f_error + "  b_error:   " + (String)b_error);
+    // Serial.println("throttle:   " + (String)throttle);
     // delay(750);
 
 
@@ -239,5 +244,6 @@ void loop() {
 
         // nh.spinOnce();
     }
+    sound_regulator++;
     nh.spinOnce();
 }
