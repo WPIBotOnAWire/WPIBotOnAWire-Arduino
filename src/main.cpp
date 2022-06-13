@@ -117,10 +117,11 @@ int keepDistance(float rf_front_in, float rf_back_in){
     
     // Gather data
     int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
+    // Serial.println(throttle);
     
     // Set up minimum speeds for either direction
-    int front_max = 1000;
-    int back_max = 2000;
+    int front_max = 1400;
+    int back_max = 1600;
 
     int f_error, b_error; 
 
@@ -130,7 +131,7 @@ int keepDistance(float rf_front_in, float rf_back_in){
         // Deterimine error
         f_error = APPROACH_DISTANCE - rf_front_in;
 
-        front_max += f_error * DISTANCE_CONSTANT;
+        front_max += f_error * ((MOTOR_STOP - front_max) / (APPROACH_DISTANCE-STOP_DISTANCE));
 
         if(rf_front_in < STOP_DISTANCE){
             front_max = 1500;
@@ -142,7 +143,7 @@ int keepDistance(float rf_front_in, float rf_back_in){
         // Deterimine error
         b_error = APPROACH_DISTANCE - rf_back_in;
 
-        back_max -= b_error * DISTANCE_CONSTANT;
+        back_max -= b_error * (abs(MOTOR_STOP - back_max) / (APPROACH_DISTANCE-STOP_DISTANCE));
 
         if(rf_back_in < STOP_DISTANCE){
             back_max = 1500;
@@ -151,17 +152,10 @@ int keepDistance(float rf_front_in, float rf_back_in){
     }
 
     // Set speed based on constraints
-    if(throttle < front_max) throttle = front_max;
-    if(throttle > back_max) throttle = back_max;
-
-    // Serial.println();
-    // Serial.println();
-    // Serial.println("front max:  " + (String)front_max + "   Back max:   " + (String)back_max);
-    // Serial.println("rf_front_in:    " + (String)rf_front_in + "  rf_back_in:     " + (String)rf_back_in);
-    // Serial.println("f_error:    " + (String)f_error + "  b_error:   " + (String)b_error);
-    // Serial.println("throttle:   " + (String)throttle);
-    // delay(750);
-
+    if (throttle >= 1450 && throttle <= 1550) throttle = 1500;
+    if (throttle < front_max) throttle = front_max;
+    if (throttle > back_max) throttle = back_max;
+    // else throttle = constrain(throttle, front_max, back_max);
 
     return throttle;
 }
@@ -228,10 +222,11 @@ void loop() {
         }
 
         // Alter speed based on distance detected from an object
-        int ctrl_speed = keepDistance(rf_front_in, rf_back_in);
+        int ctrl_speed = keepDistance(rf_front_in, rf_back_in); //1455, 1535
 
         // Set speed
         setSpeed(ctrl_speed);
+        // setSpeed(1400);
 
         override_was_active = true;
     } else {

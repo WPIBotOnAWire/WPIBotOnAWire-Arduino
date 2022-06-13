@@ -2,7 +2,8 @@
 #include "pins_arduino.h"
 
 // Motor Constants
-#define MOTOR_FULLFORWARD    2000.0
+// fullforward = 2000, fullback = 1000
+#define MOTOR_FULLFORWARD    2000
 #define MOTOR_FULLBACK       1000
 #define MOTOR_STOP           1500.0
 
@@ -42,9 +43,9 @@
 
 // DISTANCE CONSTANCE
 
-#define APPROACH_DISTANCE       40 // inches
-#define STOP_DISTANCE           10 // inches
-#define DISTANCE_CONSTANT       500 / 30 // multiplying number
+#define APPROACH_DISTANCE       40.0 // inches
+#define STOP_DISTANCE           10.0 // inches
+#define DISTANCE_CONSTANT       100 / 30 // multiplying number
 
 // the number of times loop() runs in a second
 // might change if more things are added to loop()
