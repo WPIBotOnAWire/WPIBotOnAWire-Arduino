@@ -120,8 +120,8 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Serial.println(throttle);
     
     // Set up minimum speeds for either direction
-    int front_max = 1400;
-    int back_max = 1600;
+    int front_max = 1420;
+    int back_max = 1580;
 
     int f_error, b_error; 
 
@@ -129,7 +129,9 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Contstrain speed for objects in front, between 
     if(rf_front_in < APPROACH_DISTANCE){
         // Deterimine error
-        f_error = APPROACH_DISTANCE - rf_front_in;
+        for (int help = 0; help < 5; help++){
+            f_error = APPROACH_DISTANCE - rf_front_in;
+        }
 
         front_max += f_error * ((MOTOR_STOP - front_max) / (APPROACH_DISTANCE-STOP_DISTANCE));
 
@@ -174,15 +176,25 @@ void loop() {
     // Publish Rangefinders
 
     //Front is MB 1043 (mm model)
-    float rf_front_mVoltage = analogRead(USPin1)/1024.0*5.0*1000.0;
-    float rf_front_mm = rf_front_mVoltage * 5.0 / 4.88; //From Datasheet
-    float rf_front_in = (rf_front_mm * 0.0394); //mm to inch conversion factor
+    float rf_front_mVoltage = 0, rf_front_mm = 0, rf_front_in = 0, front_avg = 0;
+    for (int j = 0; j < 5; j++){
+        rf_front_mVoltage = analogRead(USPin1)/1024.0*5.0*1000.0;
+        rf_front_mm = rf_front_mVoltage * 5.0 / 4.88; //From Datasheet
+        rf_front_in = (rf_front_mm * 0.0394); //mm to inch conversion factor
+        front_avg += rf_front_in;
+    }
+    front_avg /= 5;
     rf_front_val.data = (rf_front_in);
     pub_rf_front.publish(&rf_front_val);
 
     //Back is MB 1040 (in model)
-    float rf_back_mVoltage = analogRead(USPin2)/1024.0*5.0*1000.0;
-    float rf_back_in = rf_back_mVoltage / 9.8; //From Datasheet
+    float rf_back_mVoltage = 0, rf_back_in = 0, back_avg = 0;
+    for (int i = 0; i < 5; i++){
+        rf_back_mVoltage = analogRead(USPin2)/1024.0*5.0*1000.0;
+        rf_back_in = rf_back_mVoltage / 9.8; //From Datasheet
+        back_avg += rf_back_in;
+    }
+    back_avg /= 5;
     rf_back_val.data = (rf_back_in);
     pub_rf_back.publish(&rf_back_val);
 
@@ -203,14 +215,12 @@ void loop() {
 
         // makes a beep go off if the knob is turned to the right
         sounds_control(sounds);
-               
-        // Serial.println("rf_back_mm: " + (String)rf_front_mm);
 
         // Detection Mode
         if (detect_pin > 1500){
 
             // check for object
-            if((rf_back_in < STOP_DISTANCE) || ((rf_front_mm * 0.0394) < STOP_DISTANCE)){
+            if((back_avg < STOP_DISTANCE) || (front_avg < STOP_DISTANCE)){
                 // need to make the robot slow to a stop and not hit the bird
                 
                 // turn on lights
@@ -222,11 +232,10 @@ void loop() {
         }
 
         // Alter speed based on distance detected from an object
-        int ctrl_speed = keepDistance(rf_front_in, rf_back_in); //1455, 1535
+        int ctrl_speed = keepDistance(front_avg, back_avg);
 
         // Set speed
         setSpeed(ctrl_speed);
-        // setSpeed(1400);
 
         override_was_active = true;
     } else {
