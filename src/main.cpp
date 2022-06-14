@@ -36,27 +36,23 @@ int sound_regulator = 0;
 
 bool override_was_active = false;
 
-float mapfloat(float x, float in_min, float in_max, float out_min, float out_max)
-{
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 void cb_led(const std_msgs::Bool &msg) {
     int state = msg.data ? HIGH : LOW;
-
     digitalWrite(LED_PIN, state);
-};
+}
 
 void cb_motor(const std_msgs::Float32 &msg) {
     int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
-
     esc1.speed(speed);
     esc2.speed(speed);
 }
 
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
 ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
-
 
 void setup() {
     pinMode(LED_PIN, OUTPUT);
@@ -120,9 +116,7 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Serial.println(throttle);
     
     // Set up minimum speeds for either direction
-    int front_max = 1420;
-    int back_max = 1580;
-
+    int front_max = 1420, back_max = 1580;
     int f_error, b_error; 
 
     // Slows down robot as it moves closer to an object (starts slowing down at a safe distance, can't go further than stop distance)
@@ -155,7 +149,6 @@ int keepDistance(float rf_front_in, float rf_back_in){
     if (throttle >= 1450 && throttle <= 1550) throttle = 1500;
     if (throttle < front_max) throttle = front_max;
     if (throttle > back_max) throttle = back_max;
-    // else throttle = constrain(throttle, front_max, back_max);
 
     return throttle;
 }
@@ -166,13 +159,27 @@ void setSpeed(int throttle){
     esc2.speed(throttle);
 }
 
+void detectMode(int detect_pin, int front_avg, int back_avg){
+    if (detect_pin > 1500){
+        // check for object
+        if((back_avg < STOP_DISTANCE) || (front_avg < STOP_DISTANCE)){
+            // need to make the robot slow to a stop and not hit the bird
+            
+            // turn on lights
+            lights_control(1000);
+
+            // turn on sound
+            sounds_control(1900);
+        } else digitalWrite(LED_PIN, LOW);
+    }
+}
+
 void loop() {
     // Publish Encoder
     enc_val.data = encoder.read();
     pub_enc.publish(&enc_val);
 
     // Publish Rangefinders
-
     //Front is MB 1043 (mm model)
     float rf_front_mVoltage = 0, rf_front_mm = 0, rf_front_in = 0, front_avg = 0;
     for (int j = 0; j < 5; j++){
@@ -202,7 +209,7 @@ void loop() {
 
     pub_bat_level.publish(&bat_msg);
 
-    if(check_radio_active()) {
+    if (check_radio_active()) {
         // Read radio values and use them
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
         int sounds = pulseIn(RADIO_OVERRIDE_SOUND, HIGH);
@@ -215,19 +222,7 @@ void loop() {
         sounds_control(sounds);
 
         // Detection Mode
-        if (detect_pin > 1500){
-
-            // check for object
-            if((back_avg < STOP_DISTANCE) || (front_avg < STOP_DISTANCE)){
-                // need to make the robot slow to a stop and not hit the bird
-                
-                // turn on lights
-                lights_control(1000);
-
-                // turn on sound
-                sounds_control(1900);
-            } else digitalWrite(LED_PIN, LOW);
-        }
+        detectMode(detect_pin, front_avg, back_avg);
 
         // Alter speed based on distance detected from an object
         int ctrl_speed = keepDistance(front_avg, back_avg);
