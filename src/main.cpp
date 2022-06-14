@@ -95,8 +95,8 @@ bool check_radio_active() {
 
 void lights_control(int light_switch){
     // light_switch is the pulseIn reading, checks if flipped up or down; down is ~1800-1900, up is ~1000-1100
-    if (light_switch > 1800) digitalWrite(LED_PIN, LOW);
-    else digitalWrite(LED_PIN, HIGH);
+    if (light_switch < 1500) digitalWrite(LED_PIN, HIGH);
+    else digitalWrite(LED_PIN, LOW);
 }
 
 void sounds_control(int sound_switch){
@@ -129,9 +129,7 @@ int keepDistance(float rf_front_in, float rf_back_in){
     // Contstrain speed for objects in front, between 
     if(rf_front_in < APPROACH_DISTANCE){
         // Deterimine error
-        for (int help = 0; help < 5; help++){
-            f_error = APPROACH_DISTANCE - rf_front_in;
-        }
+        f_error = APPROACH_DISTANCE - rf_front_in;
 
         front_max += f_error * ((MOTOR_STOP - front_max) / (APPROACH_DISTANCE-STOP_DISTANCE));
 
