@@ -115,8 +115,8 @@ int keepDistance(float rf_front_in, float rf_back_in){
     int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
     // Serial.println(throttle);
     
-    // Set up minimum speeds for either direction
-    int front_max = 1420, back_max = 1580;
+    // Set up maximum speeds for either direction
+    int front_max = 1425, back_max = 1580;
     int f_error, b_error; 
 
     // Slows down robot as it moves closer to an object (starts slowing down at a safe distance, can't go further than stop distance)
