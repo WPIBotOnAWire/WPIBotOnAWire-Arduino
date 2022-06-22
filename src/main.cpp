@@ -8,6 +8,7 @@
 #include <Wire.h>
 #include <Adafruit_INA260.h>
 #include <sensor_msgs/BatteryState.h>
+#include <BlueMotor.h>
 
 #include "constants.h"
 
@@ -19,6 +20,8 @@ ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
 Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
+
+BlueMotor turntable = BlueMotor();
 
 ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
@@ -54,6 +57,31 @@ void cb_motor(const std_msgs::Float32 &msg) {
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
 ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
 
+
+
+// Blue Motor Encoder variables
+int newValue, oldValue = 0, errorCount = 0;
+long encoderCount = 0;
+const char X = 5;
+char encoderArray[4][4] = {
+  {0, -1, 1, X},
+  {1, 0, X, -1},
+  {-1, X, 0, 1},
+  {X, 1, -1, 0}};
+// Encoder Interupt Service Routine
+// Triggers every time the encoder wires signal a change
+void isr() {
+  newValue = (digitalRead(3) << 1) | digitalRead(2);
+  char value = encoderArray[oldValue][newValue];
+  if (value == X) {
+  errorCount++;
+  }
+  else {
+  encoderCount -= value;
+  }
+  oldValue = newValue;
+} 
+
 void setup() {
     pinMode(LED_PIN, OUTPUT);
 
@@ -80,6 +108,12 @@ void setup() {
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
     // Serial.begin(9600); // when running robot.launch, comment this out
+
+    // Blue Motor Encoder setup
+    pinMode(0, INPUT);
+    pinMode(1, INPUT);
+    attachInterrupt(digitalPinToInterrupt(2), isr, CHANGE); 
+    attachInterrupt(digitalPinToInterrupt(3), isr, CHANGE);
 }
 
 bool check_radio_active() {
@@ -241,6 +275,15 @@ void loop() {
 
         // nh.spinOnce();
     }
+
+
+    // TEST
+    for (int i = 90; i < 200; i++) {
+        turntable.setEffort(i);
+        Serial.println(encoderCount);
+        delay(20);
+    }
+
     sound_regulator++;
     nh.spinOnce();
 }
