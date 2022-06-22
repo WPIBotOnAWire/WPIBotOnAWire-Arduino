@@ -39,6 +39,16 @@ int sound_regulator = 0;
 
 bool override_was_active = false;
 
+// Blue Motor Encoder variables
+int newValue, oldValue = 0, errorCount = 0;
+long encoderCount = 0;
+const char X = 5;
+char encoderArray[4][4] = {
+  {0, -1, 1, X},
+  {1, 0, X, -1},
+  {-1, X, 0, 1},
+  {X, 1, -1, 0}};
+
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -59,15 +69,7 @@ ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
 
 
 
-// Blue Motor Encoder variables
-int newValue, oldValue = 0, errorCount = 0;
-long encoderCount = 0;
-const char X = 5;
-char encoderArray[4][4] = {
-  {0, -1, 1, X},
-  {1, 0, X, -1},
-  {-1, X, 0, 1},
-  {X, 1, -1, 0}};
+
 // Encoder Interupt Service Routine
 // Triggers every time the encoder wires signal a change
 void isr() {
@@ -107,13 +109,14 @@ void setup() {
     bat_monitor.begin();
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    // Serial.begin(9600); // when running robot.launch, comment this out
+    Serial.begin(9600); // when running robot.launch, comment this out
 
     // Blue Motor Encoder setup
     pinMode(0, INPUT);
     pinMode(1, INPUT);
     attachInterrupt(digitalPinToInterrupt(2), isr, CHANGE); 
     attachInterrupt(digitalPinToInterrupt(3), isr, CHANGE);
+    encoderCount = 0;
 }
 
 bool check_radio_active() {
@@ -208,6 +211,38 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
     }
 }
 
+//Aims turret turn table to degree and holds position there. Non-Blocking 
+// PID constants
+float ha_kp = 2; 
+float ha_ki = 0;
+float cur_ang, err_ang;
+int ha_int = 0;
+float effort;
+void holdAngle(int tar_ang){ 
+    // Read current angle 
+    // cur_ang = encoderCount * turntable.getAngConversion();
+    cur_ang = encoderCount / 5.2;
+
+
+    // Compare to desired angle 
+    err_ang = tar_ang - cur_ang; 
+
+    // Build up integral
+    ha_int += err_ang * ha_ki;
+
+    // Control Motor with PI
+    effort = err_ang * ha_kp + ha_int; 
+
+    turntable.setEffort(effort); 
+
+    // Serial.print("tar_ang:  " + (String)tar_ang);
+    // Serial.print("    cur_ang:  " + (String)cur_ang);
+    // Serial.print("    err_ang:  " + (String)err_ang);
+    // Serial.print("    ha_int:  " + (String)ha_int);
+    // Serial.print("    effort:  " + (String)effort);
+    // Serial.println();
+} 
+
 void loop() {
     // Publish Encoder
     enc_val.data = encoder.read();
@@ -278,11 +313,19 @@ void loop() {
 
 
     // TEST
-    for (int i = 90; i < 200; i++) {
-        turntable.setEffort(i);
-        Serial.println(encoderCount);
-        delay(20);
-    }
+    holdAngle(90);
+    // for (int i = 0; i < 65; i++) {
+    //     turntable.setEffort(150);
+    //     Serial.println(encoderCount);
+    //     delay(20);
+    // }
+
+    // while (true)
+    // {
+    //     turntable.setEffort(0);
+    // }
+    
+    
 
     sound_regulator++;
     nh.spinOnce();

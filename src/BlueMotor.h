@@ -19,7 +19,9 @@ public:
     }
   }
 
-  
+  int getAngConversion(){
+    return angConversion;
+  }
 
   void motor_setup()
   {
@@ -31,6 +33,9 @@ public:
     pinMode(ENCB, INPUT);
 
     setEffort(0); // set up motors and be sure they're stopped
+
+    // Calculate this once
+    angConversion = 360 * 52 / 10 / 1; // degrees * teeth / teeth / encoderTicks
   }
 
 private:
@@ -40,6 +45,8 @@ private:
   const int AIN1 = 13;
   const int ENCA = 0;
   const int ENCB = 1;
+  int angConversion;
+
   void setEffortHidden(int effort, bool clockwise)
   {
     if (clockwise) {
