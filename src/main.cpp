@@ -9,7 +9,7 @@
 #include <Adafruit_INA260.h>
 #include <sensor_msgs/BatteryState.h>
 #include <BlueMotor.h>
-
+#include <Wire.h>
 #include "constants.h"
 
 #define USE_USBCON
@@ -67,19 +67,15 @@ void cb_motor(const std_msgs::Float32 &msg) {
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
 ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
 
-
-
-
 // Encoder Interupt Service Routine
 // Triggers every time the encoder wires signal a change
 void isr() {
   newValue = (digitalRead(3) << 1) | digitalRead(2);
   char value = encoderArray[oldValue][newValue];
   if (value == X) {
-  errorCount++;
-  }
-  else {
-  encoderCount -= value;
+    errorCount++;
+  } else {
+    encoderCount -= value;
   }
   oldValue = newValue;
 } 
@@ -213,16 +209,12 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
 
 //Aims turret turn table to degree and holds position there. Non-Blocking 
 // PID constants
-float ha_kp = 2; 
-float ha_ki = 0;
-float cur_ang, err_ang;
-int ha_int = 0;
-float effort;
+float ha_kp = 2, ha_ki = .02, cur_ang, err_ang, ha_int = 0, effort;
 void holdAngle(int tar_ang){ 
     // Read current angle 
     // cur_ang = encoderCount * turntable.getAngConversion();
-    cur_ang = encoderCount / 5.2;
-
+    // cur_ang = encoderCount / 5.2;
+    cur_ang = encoderCount * 0.288461538;
 
     // Compare to desired angle 
     err_ang = tar_ang - cur_ang; 
@@ -231,7 +223,7 @@ void holdAngle(int tar_ang){
     ha_int += err_ang * ha_ki;
 
     // Control Motor with PI
-    effort = err_ang * ha_kp + ha_int; 
+    effort = (err_ang * ha_kp) + ha_int; 
 
     turntable.setEffort(effort); 
 
@@ -241,6 +233,7 @@ void holdAngle(int tar_ang){
     // Serial.print("    ha_int:  " + (String)ha_int);
     // Serial.print("    effort:  " + (String)effort);
     // Serial.println();
+    // Serial.println(encoderCount);
 } 
 
 void loop() {
@@ -307,26 +300,23 @@ void loop() {
 
             override_was_active = false;
         }
-
-        // nh.spinOnce();
+        nh.spinOnce();
     }
 
 
-    // TEST
-    holdAngle(90);
+    //TEST
+    int encoderTracker = 780;
+    while (encoderCount < encoderTracker){
+        turntable.setEffort(250);
+        Serial.println(encoderCount);
+    }
+    encoderCount=0;
+    turntable.setEffort(0);
     // for (int i = 0; i < 65; i++) {
     //     turntable.setEffort(150);
     //     Serial.println(encoderCount);
-    //     delay(20);
+        // delay(20);
     // }
-
-    // while (true)
-    // {
-    //     turntable.setEffort(0);
-    // }
-    
-    
-
     sound_regulator++;
     nh.spinOnce();
 }

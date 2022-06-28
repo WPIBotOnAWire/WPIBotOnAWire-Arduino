@@ -19,7 +19,7 @@ public:
     }
   }
 
-  int getAngConversion(){
+  float getAngConversion(){
     return angConversion;
   }
 
@@ -35,7 +35,7 @@ public:
     setEffort(0); // set up motors and be sure they're stopped
 
     // Calculate this once
-    angConversion = 360 * 52 / 10 / 1; // degrees * teeth / teeth / encoderTicks
+    angConversion = 540 / 52 / 360 * 10;//360 * 52 / 10 / 1; // degrees * teeth / teeth / encoderTicks 
   }
 
 private:
@@ -45,7 +45,7 @@ private:
   const int AIN1 = 13;
   const int ENCA = 0;
   const int ENCB = 1;
-  int angConversion;
+  float angConversion;
 
   void setEffortHidden(int effort, bool clockwise)
   {
