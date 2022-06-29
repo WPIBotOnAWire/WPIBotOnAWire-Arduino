@@ -49,7 +49,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_ipp_hist_process_data(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_ipp_hist_ambient_dmax(
   VL53L4CX_DEV                         Dev,
   uint16_t                           target_reflectance,
@@ -75,8 +75,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_ipp_hist_ambient_dmax(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_ipp_xtalk_calibration_process_data(
   VL53L4CX_DEV                          Dev,
   VL53L4CX_xtalk_range_results_t       *pxtalk_ranges,
@@ -98,3 +99,4 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_ipp_xtalk_calibration_process_data(
 
   return status;
 }
+*/

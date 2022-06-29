@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
 /******************************************************************************
  * Copyright (c) 2020, STMicroelectronics - All Rights Reserved
@@ -43,7 +42,7 @@ static int32_t BDTable[VL53L4CX_TUNING_MAX_TUNABLE_KEY] = {
   TUNING_ZERO_DISTANCE_OFFSET_NON_LINEAR_FACTOR_DEFAULT
 };
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetVersion(VL53L4CX_Version_t *pVersion)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -56,7 +55,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetVersion(VL53L4CX_Version_t *pVersion)
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetProductRevision(uint8_t *pProductRevisionMajor, uint8_t *pProductRevisionMinor)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -71,7 +72,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetProductRevision(uint8_t *pProductRevisionMa
   return Status;
 
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetDeviceInfo(VL53L4CX_DeviceInfo_t *pVL53L4CX_DeviceInfo)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -89,7 +92,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetDeviceInfo(VL53L4CX_DeviceInfo_t *pVL53L4CX
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetUID(uint64_t *pUid)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -103,8 +108,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetUID(uint64_t *pUid)
 
   return Status;
 }
-
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetDeviceAddress(uint8_t DeviceAddress)
 {
@@ -123,7 +127,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SetDeviceAddress(uint8_t DeviceAddress)
 
   return Status;
 }
-
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_DataInit()
 {
@@ -149,7 +152,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_DataInit()
                                VL53L4CX_DISTANCEMODE_MEDIUM,
                                1000);
 
-
   if (Status == VL53L4CX_ERROR_NONE) {
     Status = VL53L4CX_SetMeasurementTimingBudgetMicroSeconds(33333);
   }
@@ -165,7 +167,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_DataInit()
                                     VL53L4CX_DEVICEDMAXMODE__CUST_CAL_DATA);
   }
 
-
   if (Status == VL53L4CX_ERROR_NONE) {
     Status = VL53L4CX_SmudgeCorrectionEnable(VL53L4CX_SMUDGE_CORRECTION_NONE);
   }
@@ -179,7 +180,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_DataInit()
   return Status;
 }
 
-
 VL53L4CX_Error VL53L4CX::VL53L4CX_WaitDeviceBooted()
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -189,9 +189,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_WaitDeviceBooted()
 
   return Status;
 }
-
-
-
 
 VL53L4CX_Error VL53L4CX::ComputeDevicePresetMode(
   VL53L4CX_DistanceModes DistanceMode,
@@ -277,6 +274,7 @@ int VL53L4CX::IsL4(VL53L4CX_DEV Dev)
   return devL4;
 }
 
+/*
 VL53L4CX_Error VL53L4CX::CheckValidRectRoi(VL53L4CX_UserRoi_t ROI)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -292,7 +290,7 @@ VL53L4CX_Error VL53L4CX::CheckValidRectRoi(VL53L4CX_UserRoi_t ROI)
 
   return Status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetDistanceMode(VL53L4CX_DistanceModes DistanceMode)
 {
@@ -349,7 +347,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetDistanceMode(VL53L4CX_DistanceModes *pDista
 
   return Status;
 }
-
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetMeasurementTimingBudgetMicroSeconds(uint32_t MeasurementTimingBudgetMicroSeconds)
 {
@@ -412,7 +409,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SetMeasurementTimingBudgetMicroSeconds(uint32_
   return Status;
 }
 
-
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetMeasurementTimingBudgetMicroSeconds(uint32_t *pMeasurementTimingBudgetMicroSeconds)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -435,6 +431,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetMeasurementTimingBudgetMicroSeconds(uint32_
   return Status;
 }
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetUserROI(VL53L4CX_UserRoi_t *pRoi)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -464,7 +461,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SetUserROI(VL53L4CX_UserRoi_t *pRoi)
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetUserROI(VL53L4CX_UserRoi_t *pRoi)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -491,6 +490,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetUserROI(VL53L4CX_UserRoi_t *pRoi)
 
   return Status;
 }
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_StartMeasurement()
 {
@@ -530,7 +530,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_StopMeasurement()
   return Status;
 }
 
-
 VL53L4CX_Error VL53L4CX::VL53L4CX_ClearInterruptAndStartMeasurement()
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -543,7 +542,6 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_ClearInterruptAndStartMeasurement()
 
   return Status;
 }
-
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetMeasurementDataReady(uint8_t *pMeasurementDataReady)
 {
@@ -888,7 +886,6 @@ VL53L4CX_Error VL53L4CX::SetMeasurementData(VL53L4CX_DEV Dev,
   return Status;
 }
 
-
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetMultiRangingData(VL53L4CX_MultiRangingData_t *pMultiRangingData)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -913,6 +910,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetMultiRangingData(VL53L4CX_MultiRangingData_
   return Status;
 }
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetAdditionalData(VL53L4CX_AdditionalData_t *pAdditionalData)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -921,7 +919,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetAdditionalData(VL53L4CX_AdditionalData_t *p
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetTuningParameter(uint16_t TuningParameterId, int32_t TuningParameterValue)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -945,7 +945,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SetTuningParameter(uint16_t TuningParameterId,
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetTuningParameter(uint16_t TuningParameterId, int32_t *pTuningParameterValue)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -964,8 +966,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetTuningParameter(uint16_t TuningParameterId,
 
   return Status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_PerformRefSpadManagement()
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1029,7 +1032,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_PerformRefSpadManagement()
 
   return Status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_SmudgeCorrectionEnable(VL53L4CX_SmudgeCorrectionModes Mode)
 {
@@ -1077,7 +1080,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SmudgeCorrectionEnable(VL53L4CX_SmudgeCorrecti
   return Status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetXTalkCompensationEnable(uint8_t XTalkCompensationEnable)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1090,8 +1093,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SetXTalkCompensationEnable(uint8_t XTalkCompen
 
   return Status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetXTalkCompensationEnable(uint8_t *pXTalkCompensationEnable)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1102,7 +1106,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetXTalkCompensationEnable(uint8_t *pXTalkComp
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_PerformXTalkCalibration()
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1168,8 +1174,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_PerformXTalkCalibration()
 
   return Status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetOffsetCorrectionMode(VL53L4CX_OffsetCorrectionModes OffsetCorrectionMode)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1194,8 +1201,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SetOffsetCorrectionMode(VL53L4CX_OffsetCorrect
 
   return Status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_PerformOffsetSimpleCalibration(int32_t CalDistanceMilliMeter)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1294,7 +1302,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_PerformOffsetSimpleCalibration(int32_t CalDist
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_PerformOffsetZeroDistanceCalibration()
 {
 #define START_OFFSET 50
@@ -1385,7 +1395,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_PerformOffsetZeroDistanceCalibration()
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_SetCalibrationData(VL53L4CX_CalibrationData_t *pCalibrationData)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1498,7 +1510,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_SetCalibrationData(VL53L4CX_CalibrationData_t 
 ENDFUNC:
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetCalibrationData(VL53L4CX_CalibrationData_t  *pCalibrationData)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1604,9 +1618,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetCalibrationData(VL53L4CX_CalibrationData_t 
 ENDFUNC:
   return Status;
 }
+*/
 
-
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_PerformOffsetPerVcselCalibration(int32_t CalDistanceMilliMeter)
 {
   VL53L4CX_Error Status = VL53L4CX_ERROR_NONE;
@@ -1749,7 +1763,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_PerformOffsetPerVcselCalibration(int32_t CalDi
 
   return Status;
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_GetOpticalCenter(FixPoint1616_t *pOpticalCenterX,
                                                    FixPoint1616_t *pOpticalCenterY)
 {
@@ -1768,3 +1784,4 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_GetOpticalCenter(FixPoint1616_t *pOpticalCente
 
   return Status;
 }
+*/

@@ -59,6 +59,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_WrWord(VL53L4CX_DEV Dev, uint16_t index, uint1
   return status;
 }
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_WrDWord(VL53L4CX_DEV Dev, uint16_t index, uint32_t data)
 {
   int  status;
@@ -71,7 +72,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_WrDWord(VL53L4CX_DEV Dev, uint16_t index, uint
   status = VL53L4CX_I2CWrite(Dev->I2cDevAddr, index, (uint8_t *)buffer, 4);
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_RdByte(VL53L4CX_DEV Dev, uint16_t index, uint8_t *data)
 {
@@ -99,6 +100,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_RdWord(VL53L4CX_DEV Dev, uint16_t index, uint1
 
 }
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_RdDWord(VL53L4CX_DEV Dev, uint16_t index, uint32_t *data)
 {
   int status;
@@ -111,13 +113,15 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_RdDWord(VL53L4CX_DEV Dev, uint16_t index, uint
   return status;
 
 }
+*/
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_UpdateByte(VL53L4CX_DEV Dev, uint16_t index, uint8_t AndData, uint8_t OrData)
 {
   int  status;
   uint8_t buffer = 0;
 
-  /* read data direct onto buffer */
+  // read data direct onto buffer
   status = VL53L4CX_I2CRead(Dev->I2cDevAddr, index, &buffer, 1);
   if (!status) {
     buffer = (buffer & AndData) | OrData;
@@ -125,6 +129,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_UpdateByte(VL53L4CX_DEV Dev, uint16_t index, u
   }
   return status;
 }
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_I2CWrite(uint8_t DeviceAddr, uint16_t RegisterAddr, uint8_t *pBuffer, uint16_t NumByteToWrite)
 {

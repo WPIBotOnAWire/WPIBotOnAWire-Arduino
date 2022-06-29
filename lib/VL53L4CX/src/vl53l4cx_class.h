@@ -1,4 +1,3 @@
-
 // SPDX-License-Identifier: GPL-2.0+ OR BSD-3-Clause
 /******************************************************************************
  * Copyright (c) 2020, STMicroelectronics - All Rights Reserved
@@ -43,9 +42,7 @@
 #define VL53L4CX_NVM_POWER_UP_DELAY_US             50
 #define VL53L4CX_NVM_READ_TRIGGER_DELAY_US          5
 
-#define  VL53L4CX_D_002  0xFFFF
-
-
+#define VL53L4CX_D_002  0xFFFF
 #define VL53L4CX_D_008  0xFFFF
 #define VL53L4CX_D_003  0xFFFFFF
 #define VL53L4CX_D_007  0xFFFFFFFF
@@ -55,7 +52,6 @@
 #define VL53L4CX_D_004  0xFFFFFFFFFFFFFF
 #define VL53L4CX_D_006  0x7FFFFFFFFFFFFFFF
 #define VL53L4CX_D_011  0xFFFFFFFFFFFFFFFF
-
 
 /* Classes -------------------------------------------------------------------*/
 /** Class representing a VL53L4CX sensor component
@@ -202,7 +198,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE     Success
      * @return  "Other error code"    See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetVersion(VL53L4CX_Version_t *pVersion);
+    // VL53L4CX_Error VL53L4CX_GetVersion(VL53L4CX_Version_t *pVersion);
 
     /**
      * @brief Reads the Product Revision for a for given Device
@@ -215,7 +211,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE        Success
      * @return  "Other error code"    See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetProductRevision(uint8_t *pProductRevisionMajor, uint8_t *pProductRevisionMinor);
+    // VL53L4CX_Error VL53L4CX_GetProductRevision(uint8_t *pProductRevisionMajor, uint8_t *pProductRevisionMinor);
 
     /**
      * @brief Reads the Device information for given Device
@@ -227,7 +223,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE   Success
      * @return  "Other error code"  See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetDeviceInfo(VL53L4CX_DeviceInfo_t *pVL53L4CX_DeviceInfo);
+    // VL53L4CX_Error VL53L4CX_GetDeviceInfo(VL53L4CX_DeviceInfo_t *pVL53L4CX_DeviceInfo);
 
     /**
      * @brief Reads the Device unique identifier
@@ -238,7 +234,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE   Success
      * @return  "Other error code"  See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetUID(uint64_t *pUid);
+    // VL53L4CX_Error VL53L4CX_GetUID(uint64_t *pUid);
 
 
     /**
@@ -371,7 +367,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE            Success
      * @return  "Other error code"           See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_SetUserROI(VL53L4CX_UserRoi_t *pUserROi);
+    // VL53L4CX_Error VL53L4CX_SetUserROI(VL53L4CX_UserRoi_t *pUserROi);
 
     /**
      * @brief Get the ROI managed by the Device
@@ -383,7 +379,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE            Success
      * @return  "Other error code"           See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetUserROI(VL53L4CX_UserRoi_t *pUserROi);
+    // VL53L4CX_Error VL53L4CX_GetUserROI(VL53L4CX_UserRoi_t *pUserROi);
 
     /**
      * @brief Start device measurement
@@ -458,7 +454,6 @@ class VL53L4CX {
      */
     VL53L4CX_Error VL53L4CX_WaitMeasurementDataReady();
 
-
     /**
      * @brief Retrieve all measurements from device with the current setup
      *
@@ -494,7 +489,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE        Success
      * @return  "Other error code"       See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetAdditionalData(VL53L4CX_AdditionalData_t *pAdditionalData);
+    // VL53L4CX_Error VL53L4CX_GetAdditionalData(VL53L4CX_AdditionalData_t *pAdditionalData);
 
     /**
      * @brief Set Tuning Parameter value for a given parameter ID
@@ -512,7 +507,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE        Success
      * @return  "Other error code"       See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_SetTuningParameter(uint16_t TuningParameterId, int32_t TuningParameterValue);
+    // VL53L4CX_Error VL53L4CX_SetTuningParameter(uint16_t TuningParameterId, int32_t TuningParameterValue);
 
     /**
      * @brief Get Tuning Parameter value for a given parameter ID
@@ -529,7 +524,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE        Success
      * @return  "Other error code"       See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetTuningParameter(uint16_t TuningParameterId, int32_t *pTuningParameterValue);
+    // VL53L4CX_Error VL53L4CX_GetTuningParameter(uint16_t TuningParameterId, int32_t *pTuningParameterValue);
 
     /**
      * @brief Performs Reference Spad Management
@@ -544,7 +539,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE        Success
      * @return  "Other error code"       See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_PerformRefSpadManagement();
+    // VL53L4CX_Error VL53L4CX_PerformRefSpadManagement();
 
     /**
      * @brief Enable/Disable dynamic Xtalk compensation feature
@@ -558,7 +553,6 @@ class VL53L4CX {
      */
     VL53L4CX_Error VL53L4CX_SmudgeCorrectionEnable(VL53L4CX_SmudgeCorrectionModes Mode);
 
-
     /**
      * @brief Enable/Disable Cross talk compensation feature
      *
@@ -569,7 +563,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE        Success
      * @return  "Other error code"       See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_SetXTalkCompensationEnable(uint8_t XTalkCompensationEnable);
+    // VL53L4CX_Error VL53L4CX_SetXTalkCompensationEnable(uint8_t XTalkCompensationEnable);
 
     /**
      * @brief Get Cross talk compensation rate enable
@@ -583,7 +577,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE        Success
      * @return  "Other error code"       See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetXTalkCompensationEnable(uint8_t *pXTalkCompensationEnable);
+    // VL53L4CX_Error VL53L4CX_GetXTalkCompensationEnable(uint8_t *pXTalkCompensationEnable);
 
     /**
      * @brief Perform XTalk Calibration
@@ -608,8 +602,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE    Success
      * @return  "Other error code"   See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_PerformXTalkCalibration();
-
+    // VL53L4CX_Error VL53L4CX_PerformXTalkCalibration();
 
     /**
      * @brief Define the mode to be used for the offset correction
@@ -623,8 +616,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE         Success
      * @return  "Other error code"        See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_SetOffsetCorrectionMode(VL53L4CX_OffsetCorrectionModes OffsetCorrectionMode);
-
+    // VL53L4CX_Error VL53L4CX_SetOffsetCorrectionMode(VL53L4CX_OffsetCorrectionModes OffsetCorrectionMode);
 
     /**
      * @brief Perform Offset simple Calibration
@@ -649,7 +641,7 @@ class VL53L4CX {
      * an internal overflow. Try to reduce the distance of the target (140 mm)
      * @return  "Other error code"   See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_PerformOffsetSimpleCalibration(int32_t CalDistanceMilliMeter);
+    // VL53L4CX_Error VL53L4CX_PerformOffsetSimpleCalibration(int32_t CalDistanceMilliMeter);
 
     /**
      * @brief Perform Offset simple Calibration with a "zero distance" target
@@ -672,8 +664,7 @@ class VL53L4CX {
      * distance is too large, try to put the target closer to the device
      * @return  "Other error code"   See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_PerformOffsetZeroDistanceCalibration();
-
+    // VL53L4CX_Error VL53L4CX_PerformOffsetZeroDistanceCalibration();
 
     /**
      * @brief Perform Offset per Vcsel Calibration. i.e. per distance mode
@@ -699,7 +690,7 @@ class VL53L4CX {
      * an internal overflow. Try to reduce the distance of the target (140 mm)
      * @return  "Other error code"   See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_PerformOffsetPerVcselCalibration(int32_t CalDistanceMilliMeter);
+    // VL53L4CX_Error VL53L4CX_PerformOffsetPerVcselCalibration(int32_t CalDistanceMilliMeter);
 
 
     /**
@@ -718,7 +709,7 @@ class VL53L4CX {
      * version of the inner structure. Need for support to convert its content.
      * @return  "Other error code"           See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_SetCalibrationData(VL53L4CX_CalibrationData_t *pCalibrationData);
+    // VL53L4CX_Error VL53L4CX_SetCalibrationData(VL53L4CX_CalibrationData_t *pCalibrationData);
 
     /**
      * @brief Gets the Calibration Data.
@@ -735,7 +726,7 @@ class VL53L4CX {
      * @return  VL53L4CX_ERROR_NONE            Success
      * @return  "Other error code"           See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetCalibrationData(VL53L4CX_CalibrationData_t  *pCalibrationData);
+    // VL53L4CX_Error VL53L4CX_GetCalibrationData(VL53L4CX_CalibrationData_t  *pCalibrationData);
 
 
     /**
@@ -754,69 +745,43 @@ class VL53L4CX {
      * @return  VL53L1_ERROR_NONE            Success
      * @return  "Other error code"           See ::VL53L4CX_Error
      */
-    VL53L4CX_Error VL53L4CX_GetOpticalCenter(FixPoint1616_t *pOpticalCenterX,
-                                             FixPoint1616_t *pOpticalCenterY);
-
+    // VL53L4CX_Error VL53L4CX_GetOpticalCenter(FixPoint1616_t *pOpticalCenterX,
+                                            //  FixPoint1616_t *pOpticalCenterY);
 
   protected:
 
     /* vl53lx_api_core.h functions */
 
-    VL53L4CX_Error VL53L4CX_get_version(
-      VL53L4CX_DEV            Dev,
-      VL53L4CX_ll_version_t  *pversion);
-
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_version(
+    //   VL53L4CX_DEV            Dev,
+    //   VL53L4CX_ll_version_t  *pversion);
 
     VL53L4CX_Error VL53L4CX_data_init(
       VL53L4CX_DEV         Dev,
       uint8_t            read_p2p_data);
 
-
-
-
     VL53L4CX_Error VL53L4CX_read_p2p_data(
       VL53L4CX_DEV      Dev);
-
-
-
 
     VL53L4CX_Error VL53L4CX_set_part_to_part_data(
       VL53L4CX_DEV                            Dev,
       VL53L4CX_calibration_data_t            *pcal_data);
 
-
-
-
     VL53L4CX_Error VL53L4CX_get_part_to_part_data(
       VL53L4CX_DEV                            Dev,
       VL53L4CX_calibration_data_t            *pcal_data);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_get_tuning_debug_data(
-      VL53L4CX_DEV                            Dev,
-      VL53L4CX_tuning_parameters_t            *ptun_data);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_tuning_debug_data(
+    //   VL53L4CX_DEV                            Dev,
+    //   VL53L4CX_tuning_parameters_t            *ptun_data);
 
     VL53L4CX_Error VL53L4CX_set_inter_measurement_period_ms(
       VL53L4CX_DEV          Dev,
       uint32_t            inter_measurement_period_ms);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_get_inter_measurement_period_ms(
-      VL53L4CX_DEV          Dev,
-      uint32_t           *pinter_measurement_period_ms);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_inter_measurement_period_ms(
+    //   VL53L4CX_DEV          Dev,
+    //   uint32_t           *pinter_measurement_period_ms);
 
     VL53L4CX_Error VL53L4CX_set_timeouts_us(
       VL53L4CX_DEV          Dev,
@@ -824,31 +789,19 @@ class VL53L4CX {
       uint32_t            mm_config_timeout_us,
       uint32_t            range_config_timeout_us);
 
-
-
-
     VL53L4CX_Error VL53L4CX_get_timeouts_us(
       VL53L4CX_DEV          Dev,
       uint32_t           *pphasecal_config_timeout_us,
       uint32_t           *pmm_config_timeout_us,
       uint32_t           *prange_config_timeout_us);
 
-
-
-
     VL53L4CX_Error VL53L4CX_set_user_zone(
       VL53L4CX_DEV          Dev,
       VL53L4CX_user_zone_t *puser_zone);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_get_user_zone(
-      VL53L4CX_DEV          Dev,
-      VL53L4CX_user_zone_t *puser_zone);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_user_zone(
+    //   VL53L4CX_DEV          Dev,
+    //   VL53L4CX_user_zone_t *puser_zone);
 
     VL53L4CX_Error VL53L4CX_get_mode_mitigation_roi(
       VL53L4CX_DEV          Dev,
@@ -857,8 +810,6 @@ class VL53L4CX {
     VL53L4CX_Error VL53L4CX_init_zone_config_histogram_bins(VL53L4CX_zone_config_t *pdata);
     VL53L4CX_Error VL53L4CX_set_zone_config(VL53L4CX_DEV Dev, VL53L4CX_zone_config_t *pzone_cfg);
     VL53L4CX_Error VL53L4CX_get_zone_config(VL53L4CX_DEV Dev, VL53L4CX_zone_config_t *pzone_cfg);
-
-
 
     VL53L4CX_Error VL53L4CX_set_preset_mode(
       VL53L4CX_DEV                   Dev,
@@ -869,9 +820,6 @@ class VL53L4CX {
       uint32_t                     range_config_timeout_us,
       uint32_t                     inter_measurement_period_ms);
 
-
-
-
     VL53L4CX_Error VL53L4CX_get_preset_mode_timing_cfg(
       VL53L4CX_DEV                   Dev,
       VL53L4CX_DevicePresetModes     device_preset_mode,
@@ -880,67 +828,40 @@ class VL53L4CX {
       uint32_t                    *pmm_config_timeout_us,
       uint32_t                    *prange_config_timeout_us);
 
-
-
     VL53L4CX_Error VL53L4CX_enable_xtalk_compensation(
       VL53L4CX_DEV                 Dev);
-
-
 
     VL53L4CX_Error VL53L4CX_disable_xtalk_compensation(
       VL53L4CX_DEV                 Dev);
 
-
-
-
     void VL53L4CX_get_xtalk_compensation_enable(
       VL53L4CX_DEV    Dev,
       uint8_t       *pcrosstalk_compensation_enable);
-
-
 
     VL53L4CX_Error VL53L4CX_init_and_start_range(
       VL53L4CX_DEV                      Dev,
       uint8_t                         measurement_mode,
       VL53L4CX_DeviceConfigLevel        device_config_level);
 
-
-
-
     VL53L4CX_Error VL53L4CX_stop_range(
       VL53L4CX_DEV  Dev);
-
-
-
 
     VL53L4CX_Error VL53L4CX_get_measurement_results(
       VL53L4CX_DEV                  Dev,
       VL53L4CX_DeviceResultsLevel   device_result_level);
-
-
-
 
     VL53L4CX_Error VL53L4CX_get_device_results(
       VL53L4CX_DEV                 Dev,
       VL53L4CX_DeviceResultsLevel  device_result_level,
       VL53L4CX_range_results_t    *prange_results);
 
-
-
-
     VL53L4CX_Error VL53L4CX_clear_interrupt_and_enable_next_range(
       VL53L4CX_DEV       Dev,
       uint8_t          measurement_mode);
 
-
-
-
     VL53L4CX_Error VL53L4CX_get_histogram_bin_data(
       VL53L4CX_DEV                   Dev,
       VL53L4CX_histogram_bin_data_t *phist_data);
-
-
-
 
     void VL53L4CX_copy_sys_and_core_results_to_range_results(
       int32_t                           gain_factor,
@@ -948,107 +869,69 @@ class VL53L4CX {
       VL53L4CX_core_results_t            *pcore,
       VL53L4CX_range_results_t           *presults);
 
-
-
     VL53L4CX_Error VL53L4CX_set_zone_dss_config(
       VL53L4CX_DEV                      Dev,
       VL53L4CX_zone_private_dyn_cfg_t  *pzone_dyn_cfg);
-
-
-
 
     VL53L4CX_Error VL53L4CX_set_dmax_mode(
       VL53L4CX_DEV              Dev,
       VL53L4CX_DeviceDmaxMode   dmax_mode);
 
-
-
-    VL53L4CX_Error VL53L4CX_get_dmax_mode(
-      VL53L4CX_DEV               Dev,
-      VL53L4CX_DeviceDmaxMode   *pdmax_mode);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_dmax_mode(
+    //   VL53L4CX_DEV               Dev,
+    //   VL53L4CX_DeviceDmaxMode   *pdmax_mode);
 
     VL53L4CX_Error VL53L4CX_get_dmax_calibration_data(
       VL53L4CX_DEV                      Dev,
       VL53L4CX_DeviceDmaxMode           dmax_mode,
       VL53L4CX_dmax_calibration_data_t *pdmax_cal);
 
-
-
-
     VL53L4CX_Error VL53L4CX_set_offset_correction_mode(
       VL53L4CX_DEV                     Dev,
       VL53L4CX_OffsetCalibrationMode   offset_cor_mode);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_get_offset_correction_mode(
-      VL53L4CX_DEV                    Dev,
-      VL53L4CX_OffsetCorrectionMode  *poffset_cor_mode);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_offset_correction_mode(
+    //   VL53L4CX_DEV                    Dev,
+    //   VL53L4CX_OffsetCorrectionMode  *poffset_cor_mode);
 
     VL53L4CX_Error VL53L4CX_get_tuning_parm(
       VL53L4CX_DEV                     Dev,
       VL53L4CX_TuningParms             tuning_parm_key,
       int32_t                       *ptuning_parm_value);
 
-
-
     VL53L4CX_Error VL53L4CX_set_tuning_parm(
       VL53L4CX_DEV                     Dev,
       VL53L4CX_TuningParms             tuning_parm_key,
       int32_t                        tuning_parm_value);
 
-
-
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_enable(
       VL53L4CX_DEV                     Dev
     );
-
-
 
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_disable(
       VL53L4CX_DEV                     Dev
     );
 
-
-
-
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_apply_enable(
       VL53L4CX_DEV                          Dev
     );
-
-
 
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_apply_disable(
       VL53L4CX_DEV                          Dev
     );
 
-
-
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_single_apply_enable(
       VL53L4CX_DEV                          Dev
     );
-
-
 
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_single_apply_disable(
       VL53L4CX_DEV                          Dev
     );
 
-
-
     VL53L4CX_Error VL53L4CX_get_current_xtalk_settings(
       VL53L4CX_DEV                          Dev,
       VL53L4CX_xtalk_calibration_results_t *pxtalk
     );
-
-
 
     VL53L4CX_Error VL53L4CX_set_current_xtalk_settings(
       VL53L4CX_DEV                          Dev,
@@ -1059,55 +942,39 @@ class VL53L4CX {
 
     VL53L4CX_Error VL53L4CX_unload_patch(VL53L4CX_DEV Dev);
 
-
     /* vl53lx_api_calibration.h functions */
 
     VL53L4CX_Error VL53L4CX_run_ref_spad_char(VL53L4CX_DEV Dev,
                                               VL53L4CX_Error            *pcal_status);
 
-
-
-
     VL53L4CX_Error VL53L4CX_run_device_test(
       VL53L4CX_DEV                 Dev,
       VL53L4CX_DeviceTestMode      device_test_mode);
 
+    // VL53L4CX_Error VL53L4CX_get_and_avg_xtalk_samples(
+    //   VL53L4CX_DEV                    Dev,
+    //   uint8_t                       num_of_samples,
+    //   uint8_t                       measurement_mode,
+    //   int16_t                       xtalk_filter_thresh_max_mm,
+    //   int16_t                       xtalk_filter_thresh_min_mm,
+    //   uint16_t                      xtalk_max_valid_rate_kcps,
+    //   uint8_t                       xtalk_result_id,
+    //   uint8_t                       xtalk_histo_id,
+    //   VL53L4CX_xtalk_range_results_t *pxtalk_results,
+    //   VL53L4CX_histogram_bin_data_t  *psum_histo,
+    //   VL53L4CX_histogram_bin_data_t  *pavg_histo);
 
-
-
-    VL53L4CX_Error VL53L4CX_get_and_avg_xtalk_samples(
-      VL53L4CX_DEV                    Dev,
-      uint8_t                       num_of_samples,
-      uint8_t                       measurement_mode,
-      int16_t                       xtalk_filter_thresh_max_mm,
-      int16_t                       xtalk_filter_thresh_min_mm,
-      uint16_t                      xtalk_max_valid_rate_kcps,
-      uint8_t                       xtalk_result_id,
-      uint8_t                       xtalk_histo_id,
-      VL53L4CX_xtalk_range_results_t *pxtalk_results,
-      VL53L4CX_histogram_bin_data_t  *psum_histo,
-      VL53L4CX_histogram_bin_data_t  *pavg_histo);
-
-
-
-
-
-    VL53L4CX_Error   VL53L4CX_run_phasecal_average(
-      VL53L4CX_DEV              Dev,
-      uint8_t                 measurement_mode,
-      uint8_t                 phasecal_result__vcsel_start,
-      uint16_t                phasecal_num_of_samples,
-      VL53L4CX_range_results_t *prange_results,
-      uint16_t               *pphasecal_result__reference_phase,
-      uint16_t               *pzero_distance_phase);
-
-
-
+    // VL53L4CX_Error   VL53L4CX_run_phasecal_average(
+    //   VL53L4CX_DEV              Dev,
+    //   uint8_t                 measurement_mode,
+    //   uint8_t                 phasecal_result__vcsel_start,
+    //   uint16_t                phasecal_num_of_samples,
+    //   VL53L4CX_range_results_t *prange_results,
+    //   uint16_t               *pphasecal_result__reference_phase,
+    //   uint16_t               *pzero_distance_phase);
 
     void VL53L4CX_hist_xtalk_extract_data_init(
       VL53L4CX_hist_xtalk_extract_data_t   *pxtalk_data);
-
-
 
     VL53L4CX_Error VL53L4CX_hist_xtalk_extract_update(
       int16_t                             target_distance_mm,
@@ -1115,119 +982,77 @@ class VL53L4CX {
       VL53L4CX_histogram_bin_data_t        *phist_bins,
       VL53L4CX_hist_xtalk_extract_data_t   *pxtalk_data);
 
-
-
     VL53L4CX_Error VL53L4CX_hist_xtalk_extract_fini(
       VL53L4CX_histogram_bin_data_t        *phist_bins,
       VL53L4CX_hist_xtalk_extract_data_t   *pxtalk_data,
       VL53L4CX_xtalk_calibration_results_t *pxtalk_cal,
       VL53L4CX_xtalk_histogram_shape_t     *pxtalk_shape);
 
-
-
-
     VL53L4CX_Error   VL53L4CX_run_hist_xtalk_extraction(
       VL53L4CX_DEV                    Dev,
       int16_t                       cal_distance_mm,
       VL53L4CX_Error                 *pcal_status);
 
-
     /* vl53lx_api_debug.h functions */
 
-    VL53L4CX_Error VL53L4CX_decode_calibration_data_buffer(
-      uint16_t                   buf_size,
-      uint8_t                   *pbuffer,
-      VL53L4CX_calibration_data_t *pdata);
+    // VL53L4CX_Error VL53L4CX_decode_calibration_data_buffer(
+    //   uint16_t                   buf_size,
+    //   uint8_t                   *pbuffer,
+    //   VL53L4CX_calibration_data_t *pdata);
 
-
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_nvm_debug_data(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_decoded_nvm_data_t *pdata);
-
-
+    // VL53L4CX_Error VL53L4CX_get_nvm_debug_data(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_decoded_nvm_data_t *pdata);
 
     VL53L4CX_Error VL53L4CX_get_histogram_debug_data(
       VL53L4CX_DEV                   Dev,
       VL53L4CX_histogram_bin_data_t *pdata);
 
-
     VL53L4CX_Error VL53L4CX_get_additional_data(
       VL53L4CX_DEV                Dev,
       VL53L4CX_additional_data_t *pdata);
 
+    // VL53L4CX_Error VL53L4CX_get_xtalk_debug_data(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_xtalk_debug_data_t *pdata);
 
-    VL53L4CX_Error VL53L4CX_get_xtalk_debug_data(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_xtalk_debug_data_t *pdata);
-
-
-    VL53L4CX_Error VL53L4CX_get_offset_debug_data(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_offset_debug_data_t *pdata);
-
+    // VL53L4CX_Error VL53L4CX_get_offset_debug_data(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_offset_debug_data_t *pdata);
 
     /* vl53lx_api_preset_modes.h functions */
 
     VL53L4CX_Error VL53L4CX_init_refspadchar_config_struct(
       VL53L4CX_refspadchar_config_t     *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_init_ssc_config_struct(
       VL53L4CX_ssc_config_t     *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_init_xtalk_config_struct(
       VL53L4CX_customer_nvm_managed_t *pnvm,
       VL53L4CX_xtalk_config_t   *pdata);
 
-
-
     VL53L4CX_Error VL53L4CX_init_xtalk_extract_config_struct(
       VL53L4CX_xtalkextract_config_t   *pdata);
-
-
 
     VL53L4CX_Error VL53L4CX_init_offset_cal_config_struct(
       VL53L4CX_offsetcal_config_t   *pdata);
 
-
-
     VL53L4CX_Error VL53L4CX_init_zone_cal_config_struct(
       VL53L4CX_zonecal_config_t   *pdata);
-
-
 
     VL53L4CX_Error VL53L4CX_init_hist_post_process_config_struct(
       uint8_t                              xtalk_compensation_enable,
       VL53L4CX_hist_post_process_config_t   *pdata);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_init_dmax_calibration_data_struct(
-      VL53L4CX_dmax_calibration_data_t   *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_init_dmax_calibration_data_struct(
+    //   VL53L4CX_dmax_calibration_data_t   *pdata);
 
     VL53L4CX_Error VL53L4CX_init_tuning_parm_storage_struct(
       VL53L4CX_tuning_parm_storage_t   *pdata);
 
-
-
     VL53L4CX_Error VL53L4CX_init_hist_gen3_dmax_config_struct(
       VL53L4CX_hist_gen3_dmax_config_t   *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_preset_mode_standard_ranging(
       VL53L4CX_static_config_t     *pstatic,
@@ -1238,9 +1063,6 @@ class VL53L4CX {
       VL53L4CX_system_control_t    *psystem,
       VL53L4CX_tuning_parm_storage_t *ptuning_parms,
       VL53L4CX_zone_config_t       *pzone_cfg);
-
-
-
 
     VL53L4CX_Error VL53L4CX_preset_mode_histogram_ranging(
       VL53L4CX_hist_post_process_config_t *phistpostprocess,
@@ -1253,9 +1075,6 @@ class VL53L4CX {
       VL53L4CX_tuning_parm_storage_t      *ptuning_parms,
       VL53L4CX_zone_config_t              *pzone_cfg);
 
-
-
-
     VL53L4CX_Error VL53L4CX_preset_mode_histogram_long_range(
       VL53L4CX_hist_post_process_config_t *phistpostprocess,
       VL53L4CX_static_config_t            *pstatic,
@@ -1266,9 +1085,6 @@ class VL53L4CX {
       VL53L4CX_system_control_t           *psystem,
       VL53L4CX_tuning_parm_storage_t      *ptuning_parms,
       VL53L4CX_zone_config_t              *pzone_cfg);
-
-
-
 
     VL53L4CX_Error VL53L4CX_preset_mode_histogram_medium_range(
       VL53L4CX_hist_post_process_config_t *phistpostprocess,
@@ -1281,9 +1097,6 @@ class VL53L4CX {
       VL53L4CX_tuning_parm_storage_t      *ptuning_parms,
       VL53L4CX_zone_config_t              *pzone_cfg);
 
-
-
-
     VL53L4CX_Error VL53L4CX_preset_mode_histogram_short_range(
       VL53L4CX_hist_post_process_config_t *phistpostprocess,
       VL53L4CX_static_config_t            *pstatic,
@@ -1295,17 +1108,12 @@ class VL53L4CX {
       VL53L4CX_tuning_parm_storage_t      *ptuning_parms,
       VL53L4CX_zone_config_t              *pzone_cfg);
 
-
-
-
     void VL53L4CX_copy_hist_cfg_to_static_cfg(
       VL53L4CX_histogram_config_t  *phistogram,
       VL53L4CX_static_config_t     *pstatic,
       VL53L4CX_general_config_t    *pgeneral,
       VL53L4CX_timing_config_t     *ptiming,
       VL53L4CX_dynamic_config_t    *pdynamic);
-
-
 
     void VL53L4CX_copy_hist_bins_to_static_cfg(
       VL53L4CX_histogram_config_t *phistogram,
@@ -1317,59 +1125,32 @@ class VL53L4CX {
     void VL53L4CX_init_version(
       VL53L4CX_DEV         Dev);
 
-
-
-
     void VL53L4CX_init_ll_driver_state(
       VL53L4CX_DEV         Dev,
       VL53L4CX_DeviceState ll_state);
 
-
-
-
     VL53L4CX_Error VL53L4CX_update_ll_driver_rd_state(
       VL53L4CX_DEV         Dev);
-
-
-
 
     VL53L4CX_Error VL53L4CX_check_ll_driver_rd_state(
       VL53L4CX_DEV         Dev);
 
-
-
-
     VL53L4CX_Error VL53L4CX_update_ll_driver_cfg_state(
       VL53L4CX_DEV         Dev);
-
-
-
 
     void VL53L4CX_copy_rtn_good_spads_to_buffer(
       VL53L4CX_nvm_copy_data_t  *pdata,
       uint8_t                 *pbuffer);
 
-
-
-
     void VL53L4CX_init_system_results(
       VL53L4CX_system_results_t      *pdata);
-
-
-
 
     void V53L1_init_zone_results_structure(
       uint8_t                 active_zones,
       VL53L4CX_zone_results_t  *pdata);
 
-
-
-
     void V53L1_init_zone_dss_configs(
       VL53L4CX_DEV              Dev);
-
-
-
 
     void VL53L4CX_init_histogram_config_structure(
       uint8_t   even_bin0,
@@ -1386,8 +1167,6 @@ class VL53L4CX {
       uint8_t   odd_bin5,
       VL53L4CX_histogram_config_t  *pdata);
 
-
-
     void VL53L4CX_init_histogram_multizone_config_structure(
       uint8_t   even_bin0,
       uint8_t   even_bin1,
@@ -1403,61 +1182,37 @@ class VL53L4CX {
       uint8_t   odd_bin5,
       VL53L4CX_histogram_config_t  *pdata);
 
-
-
-
     void VL53L4CX_init_xtalk_bin_data_struct(
       uint32_t                        bin_value,
       uint16_t                        VL53L4CX_p_021,
       VL53L4CX_xtalk_histogram_shape_t *pdata);
-
-
-
 
     void VL53L4CX_i2c_encode_uint16_t(
       uint16_t    ip_value,
       uint16_t    count,
       uint8_t    *pbuffer);
 
-
-
-
     uint16_t VL53L4CX_i2c_decode_uint16_t(
       uint16_t    count,
       uint8_t    *pbuffer);
-
-
-
 
     void VL53L4CX_i2c_encode_int16_t(
       int16_t     ip_value,
       uint16_t    count,
       uint8_t    *pbuffer);
 
-
-
-
     int16_t VL53L4CX_i2c_decode_int16_t(
       uint16_t    count,
       uint8_t    *pbuffer);
-
-
-
 
     void VL53L4CX_i2c_encode_uint32_t(
       uint32_t    ip_value,
       uint16_t    count,
       uint8_t    *pbuffer);
 
-
-
-
     uint32_t VL53L4CX_i2c_decode_uint32_t(
       uint16_t    count,
       uint8_t    *pbuffer);
-
-
-
 
     uint32_t VL53L4CX_i2c_decode_with_mask(
       uint16_t    count,
@@ -1466,89 +1221,48 @@ class VL53L4CX {
       uint32_t    down_shift,
       uint32_t    offset);
 
-
-
-
     void VL53L4CX_i2c_encode_int32_t(
       int32_t     ip_value,
       uint16_t    count,
       uint8_t    *pbuffer);
 
-
-
-
     int32_t VL53L4CX_i2c_decode_int32_t(
       uint16_t    count,
       uint8_t    *pbuffer);
-
-
-
 
     VL53L4CX_Error VL53L4CX_start_test(
       VL53L4CX_DEV     Dev,
       uint8_t        test_mode__ctrl);
 
-
-
-
     VL53L4CX_Error VL53L4CX_set_firmware_enable_register(
       VL53L4CX_DEV         Dev,
       uint8_t            value);
 
-
-
-
     VL53L4CX_Error VL53L4CX_enable_firmware(
       VL53L4CX_DEV         Dev);
 
-
-
-
     VL53L4CX_Error VL53L4CX_disable_firmware(
       VL53L4CX_DEV         Dev);
-
-
-
 
     VL53L4CX_Error VL53L4CX_set_powerforce_register(
       VL53L4CX_DEV         Dev,
       uint8_t            value);
 
-
-
-
-
     VL53L4CX_Error VL53L4CX_enable_powerforce(
       VL53L4CX_DEV         Dev);
-
-
 
     VL53L4CX_Error VL53L4CX_disable_powerforce(
       VL53L4CX_DEV         Dev);
 
-
-
-
-
     VL53L4CX_Error VL53L4CX_clear_interrupt(
       VL53L4CX_DEV         Dev);
 
-
-
-
-
-    VL53L4CX_Error VL53L4CX_force_shadow_stream_count_to_zero(
-      VL53L4CX_DEV         Dev);
-
-
-
+    // VL53L4CX_Error VL53L4CX_force_shadow_stream_count_to_zero(
+    //   VL53L4CX_DEV         Dev);
 
     uint32_t VL53L4CX_calc_macro_period_us(
       uint16_t fast_osc_frequency,
       uint8_t  VL53L4CX_p_005);
-
-
-
 
     uint16_t VL53L4CX_calc_range_ignore_threshold(
       uint32_t central_rate,
@@ -1556,46 +1270,27 @@ class VL53L4CX {
       int16_t  y_gradient,
       uint8_t  rate_mult);
 
-
-
-
     uint32_t VL53L4CX_calc_timeout_mclks(
       uint32_t  timeout_us,
       uint32_t  macro_period_us);
-
-
 
     uint16_t VL53L4CX_calc_encoded_timeout(
       uint32_t  timeout_us,
       uint32_t  macro_period_us);
 
-
-
-
     uint32_t VL53L4CX_calc_timeout_us(
       uint32_t  timeout_mclks,
       uint32_t  macro_period_us);
-
-
 
     uint32_t VL53L4CX_calc_decoded_timeout_us(
       uint16_t  timeout_encoded,
       uint32_t  macro_period_us);
 
-
-
-
     uint16_t VL53L4CX_encode_timeout(
       uint32_t timeout_mclks);
 
-
-
-
     uint32_t VL53L4CX_decode_timeout(
       uint16_t encoded_timeout);
-
-
-
 
     VL53L4CX_Error  VL53L4CX_calc_timeout_register_values(
       uint32_t                 phasecal_config_timeout_us,
@@ -1605,55 +1300,31 @@ class VL53L4CX {
       VL53L4CX_general_config_t *pgeneral,
       VL53L4CX_timing_config_t  *ptiming);
 
-
-
-
-    uint8_t VL53L4CX_encode_vcsel_period(
-      uint8_t VL53L4CX_p_030);
-
-
-
+    // uint8_t VL53L4CX_encode_vcsel_period(
+    //   uint8_t VL53L4CX_p_030);
 
     uint32_t VL53L4CX_decode_unsigned_integer(
       uint8_t  *pbuffer,
       uint8_t   no_of_bytes);
 
-
-
-
-    void   VL53L4CX_encode_unsigned_integer(
-      uint32_t  ip_value,
-      uint8_t   no_of_bytes,
-      uint8_t  *pbuffer);
-
-
-
+    // void   VL53L4CX_encode_unsigned_integer(
+    //   uint32_t  ip_value,
+    //   uint8_t   no_of_bytes,
+    //   uint8_t  *pbuffer);
 
     VL53L4CX_Error VL53L4CX_hist_copy_and_scale_ambient_info(
       VL53L4CX_zone_hist_info_t        *pidata,
       VL53L4CX_histogram_bin_data_t    *podata);
 
-
-
-
     void  VL53L4CX_hist_get_bin_sequence_config(
       VL53L4CX_DEV                     Dev,
       VL53L4CX_histogram_bin_data_t   *pdata);
-
-
-
 
     VL53L4CX_Error  VL53L4CX_hist_phase_consistency_check(
       VL53L4CX_DEV                   Dev,
       VL53L4CX_zone_hist_info_t     *phist_prev,
       VL53L4CX_zone_objects_t       *prange_prev,
       VL53L4CX_range_results_t      *prange_curr);
-
-
-
-
-
-
 
     VL53L4CX_Error  VL53L4CX_hist_events_consistency_check(
       uint8_t                      event_sigma,
@@ -1665,21 +1336,10 @@ class VL53L4CX {
       int32_t                     *pevents_delta,
       VL53L4CX_DeviceError          *prange_status);
 
-
-
-
-
-
-
     VL53L4CX_Error  VL53L4CX_hist_merged_pulse_check(
       int16_t                      min_max_tolerance_mm,
       VL53L4CX_range_data_t         *pdata,
       VL53L4CX_DeviceError          *prange_status);
-
-
-
-
-
 
     VL53L4CX_Error  VL53L4CX_hist_xmonitor_consistency_check(
       VL53L4CX_DEV                   Dev,
@@ -1687,18 +1347,10 @@ class VL53L4CX {
       VL53L4CX_zone_objects_t       *prange_prev,
       VL53L4CX_range_data_t         *prange_curr);
 
-
-
-
-
-
     VL53L4CX_Error  VL53L4CX_hist_wrap_dmax(
       VL53L4CX_hist_post_process_config_t *phistpostprocess,
       VL53L4CX_histogram_bin_data_t       *pcurrent,
       int16_t                           *pwrap_dmax_mm);
-
-
-
 
     void VL53L4CX_hist_combine_mm1_mm2_offsets(
       int16_t                              mm1_offset_mm,
@@ -1712,51 +1364,32 @@ class VL53L4CX {
       uint16_t                             aperture_attenuation,
       int16_t                             *prange_offset_mm);
 
-
-
-
     VL53L4CX_Error VL53L4CX_hist_xtalk_extract_calc_window(
       int16_t                             target_distance_mm,
       uint16_t                            target_width_oversize,
       VL53L4CX_histogram_bin_data_t        *phist_bins,
       VL53L4CX_hist_xtalk_extract_data_t   *pxtalk_data);
 
-
-
-
     VL53L4CX_Error VL53L4CX_hist_xtalk_extract_calc_event_sums(
       VL53L4CX_histogram_bin_data_t        *phist_bins,
       VL53L4CX_hist_xtalk_extract_data_t   *pxtalk_data);
 
-
-
-
     VL53L4CX_Error VL53L4CX_hist_xtalk_extract_calc_rate_per_spad(
       VL53L4CX_hist_xtalk_extract_data_t   *pxtalk_data);
-
-
 
     VL53L4CX_Error VL53L4CX_hist_xtalk_extract_calc_shape(
       VL53L4CX_hist_xtalk_extract_data_t  *pxtalk_data,
       VL53L4CX_xtalk_histogram_shape_t    *pxtalk_shape);
 
-
-
-    VL53L4CX_Error VL53L4CX_hist_xtalk_shape_model(
-      uint16_t                         events_per_bin,
-      uint16_t                         pulse_centre,
-      uint16_t                         pulse_width,
-      VL53L4CX_xtalk_histogram_shape_t  *pxtalk_shape);
-
-
-
+    // VL53L4CX_Error VL53L4CX_hist_xtalk_shape_model(
+    //   uint16_t                         events_per_bin,
+    //   uint16_t                         pulse_centre,
+    //   uint16_t                         pulse_width,
+    //   VL53L4CX_xtalk_histogram_shape_t  *pxtalk_shape);
 
     uint16_t VL53L4CX_hist_xtalk_shape_model_interp(
       uint16_t      events_per_bin,
       uint32_t      phase_delta);
-
-
-
 
     void VL53L4CX_spad_number_to_byte_bit_index(
       uint8_t  spad_number,
@@ -1764,32 +1397,20 @@ class VL53L4CX {
       uint8_t *pbit_index,
       uint8_t *pbit_mask);
 
-
-
-
     void VL53L4CX_encode_row_col(
       uint8_t  row,
       uint8_t  col,
       uint8_t *pspad_number);
-
-
-
 
     void VL53L4CX_decode_zone_size(
       uint8_t   encoded_xy_size,
       uint8_t  *pwidth,
       uint8_t  *pheight);
 
-
-
-
     void VL53L4CX_encode_zone_size(
       uint8_t  width,
       uint8_t  height,
       uint8_t *pencoded_xy_size);
-
-
-
 
     void VL53L4CX_decode_zone_limits(
       uint8_t   encoded_xy_centre,
@@ -1799,15 +1420,9 @@ class VL53L4CX {
       int16_t  *px_ur,
       int16_t  *py_ur);
 
-
-
-
     uint8_t VL53L4CX_is_aperture_location(
       uint8_t   row,
       uint8_t   col);
-
-
-
 
     void VL53L4CX_calc_max_effective_spads(
       uint8_t     encoded_zone_centre,
@@ -1815,9 +1430,6 @@ class VL53L4CX {
       uint8_t    *pgood_spads,
       uint16_t    aperture_attenuation,
       uint16_t   *pmax_effective_spads);
-
-
-
 
     void VL53L4CX_calc_mm_effective_spads(
       uint8_t     encoded_mm_roi_centre,
@@ -1829,45 +1441,27 @@ class VL53L4CX {
       uint16_t   *pmm_inner_effective_spads,
       uint16_t   *pmm_outer_effective_spads);
 
-
-
-
     void VL53L4CX_hist_copy_results_to_sys_and_core(
       VL53L4CX_histogram_bin_data_t      *pbins,
       VL53L4CX_range_results_t           *phist,
       VL53L4CX_system_results_t          *psys,
       VL53L4CX_core_results_t            *pcore);
 
-
-
-
     VL53L4CX_Error VL53L4CX_sum_histogram_data(
       VL53L4CX_histogram_bin_data_t *phist_input,
       VL53L4CX_histogram_bin_data_t *phist_output);
-
-
-
 
     VL53L4CX_Error VL53L4CX_avg_histogram_data(
       uint8_t no_of_samples,
       VL53L4CX_histogram_bin_data_t *phist_sum,
       VL53L4CX_histogram_bin_data_t *phist_avg);
 
-
-
-
     VL53L4CX_Error VL53L4CX_save_cfg_data(
       VL53L4CX_DEV  Dev);
-
-
-
 
     VL53L4CX_Error VL53L4CX_dynamic_zone_update(
       VL53L4CX_DEV  Dev,
       VL53L4CX_range_results_t *presults);
-
-
-
 
     VL53L4CX_Error VL53L4CX_update_internal_stream_counters(
       VL53L4CX_DEV  Dev,
@@ -1876,52 +1470,34 @@ class VL53L4CX {
       uint8_t     *pinternal_stream_count_val
     );
 
-
-
     VL53L4CX_Error VL53L4CX_multizone_hist_bins_update(
       VL53L4CX_DEV  Dev);
 
+    // VL53L4CX_Error VL53L4CX_set_histogram_multizone_initial_bin_config(
+    //   VL53L4CX_zone_config_t           *pzone_cfg,
+    //   VL53L4CX_histogram_config_t      *phist_cfg,
+    //   VL53L4CX_histogram_config_t      *pmulti_hist
+    // );
 
+    // uint8_t VL53L4CX_encode_GPIO_interrupt_config(
+    //   VL53L4CX_GPIO_interrupt_config_t  *pintconf);
 
-    VL53L4CX_Error VL53L4CX_set_histogram_multizone_initial_bin_config(
-      VL53L4CX_zone_config_t           *pzone_cfg,
-      VL53L4CX_histogram_config_t      *phist_cfg,
-      VL53L4CX_histogram_config_t      *pmulti_hist
-    );
-
-
-
-    uint8_t VL53L4CX_encode_GPIO_interrupt_config(
-      VL53L4CX_GPIO_interrupt_config_t  *pintconf);
-
-
-
-    VL53L4CX_GPIO_interrupt_config_t VL53L4CX_decode_GPIO_interrupt_config(
-      uint8_t   system__interrupt_config);
-
-
+    // VL53L4CX_GPIO_interrupt_config_t VL53L4CX_decode_GPIO_interrupt_config(
+    //   uint8_t   system__interrupt_config);
 
     VL53L4CX_Error VL53L4CX_set_GPIO_distance_threshold(
       VL53L4CX_DEV                      Dev,
       uint16_t      threshold_high,
       uint16_t      threshold_low);
 
-
-
     VL53L4CX_Error VL53L4CX_set_GPIO_rate_threshold(
       VL53L4CX_DEV                      Dev,
       uint16_t      threshold_high,
       uint16_t      threshold_low);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_GPIO_thresholds_from_struct(
-      VL53L4CX_DEV                      Dev,
-      VL53L4CX_GPIO_interrupt_config_t *pintconf);
-
-
-
-
+    // VL53L4CX_Error VL53L4CX_set_GPIO_thresholds_from_struct(
+    //   VL53L4CX_DEV                      Dev,
+    //   VL53L4CX_GPIO_interrupt_config_t *pintconf);
 
     VL53L4CX_Error VL53L4CX_set_ref_spad_char_config(
       VL53L4CX_DEV    Dev,
@@ -1932,47 +1508,30 @@ class VL53L4CX {
       uint16_t      min_count_rate_rtn_limit_mcps,
       uint16_t      fast_osc_frequency);
 
+    // VL53L4CX_Error VL53L4CX_set_ssc_config(
+    //   VL53L4CX_DEV           Dev,
+    //   VL53L4CX_ssc_config_t *pssc_cfg,
+    //   uint16_t             fast_osc_frequency);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_ssc_config(
-      VL53L4CX_DEV           Dev,
-      VL53L4CX_ssc_config_t *pssc_cfg,
-      uint16_t             fast_osc_frequency);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_spad_rate_data(
-      VL53L4CX_DEV                Dev,
-      VL53L4CX_spad_rate_data_t  *pspad_rates);
-
-
+    // VL53L4CX_Error VL53L4CX_get_spad_rate_data(
+    //   VL53L4CX_DEV                Dev,
+    //   VL53L4CX_spad_rate_data_t  *pspad_rates);
 
     uint32_t VL53L4CX_calc_crosstalk_plane_offset_with_margin(
       uint32_t     plane_offset_kcps,
       int16_t      margin_offset_kcps);
 
-
-
     VL53L4CX_Error VL53L4CX_low_power_auto_data_init(
       VL53L4CX_DEV                     Dev
     );
-
-
 
     VL53L4CX_Error VL53L4CX_low_power_auto_data_stop_range(
       VL53L4CX_DEV                     Dev
     );
 
-
-
-
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_calc_required_samples(
       VL53L4CX_DEV                     Dev
     );
-
-
 
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_calc_new_xtalk(
       VL53L4CX_DEV        Dev,
@@ -1983,48 +1542,33 @@ class VL53L4CX {
       uint8_t         soft_update
     );
 
-
-
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_corrector(
       VL53L4CX_DEV                     Dev
     );
-
-
 
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_data_init(
       VL53L4CX_DEV                     Dev
     );
 
-
-
     VL53L4CX_Error VL53L4CX_dynamic_xtalk_correction_output_init(
       VL53L4CX_LLDriverResults_t *pres
     );
-
-
 
     VL53L4CX_Error VL53L4CX_xtalk_cal_data_init(
       VL53L4CX_DEV                          Dev
     );
 
-
-
-    VL53L4CX_Error VL53L4CX_config_low_power_auto_mode(
-      VL53L4CX_general_config_t   *pgeneral,
-      VL53L4CX_dynamic_config_t   *pdynamic,
-      VL53L4CX_low_power_auto_data_t *plpadata
-    );
-
-
+    // VL53L4CX_Error VL53L4CX_config_low_power_auto_mode(
+    //   VL53L4CX_general_config_t   *pgeneral,
+    //   VL53L4CX_dynamic_config_t   *pdynamic,
+    //   VL53L4CX_low_power_auto_data_t *plpadata
+    // );
 
     VL53L4CX_Error VL53L4CX_low_power_auto_setup_manual_calibration(
       VL53L4CX_DEV        Dev);
 
-
-
     VL53L4CX_Error VL53L4CX_low_power_auto_update_DSS(
       VL53L4CX_DEV        Dev);
-
 
     VL53L4CX_Error VL53L4CX_compute_histo_merge_nb(
       VL53L4CX_DEV        Dev,  uint8_t *histo_merge_nb);
@@ -2040,62 +1584,36 @@ class VL53L4CX {
       uint32_t  window_vclks,
       uint32_t  periods_elapsed_mclks);
 
-
-
     uint32_t VL53L4CX_events_per_spad_maths(
       int32_t   VL53L4CX_p_010,
       uint16_t  num_spads,
       uint32_t  duration);
 
-
-
-
     uint32_t VL53L4CX_isqrt(
       uint32_t  num);
 
-
-
-
     void VL53L4CX_hist_calc_zero_distance_phase(
       VL53L4CX_histogram_bin_data_t    *pdata);
-
-
-
 
     void VL53L4CX_hist_estimate_ambient_from_thresholded_bins(
       int32_t                      ambient_threshold_sigma,
       VL53L4CX_histogram_bin_data_t *pdata);
 
-
-
-
     void VL53L4CX_hist_remove_ambient_bins(
       VL53L4CX_histogram_bin_data_t    *pdata);
-
-
-
 
     uint32_t VL53L4CX_calc_pll_period_mm(
       uint16_t fast_osc_frequency);
 
-
-
-
     uint16_t VL53L4CX_rate_maths(
       int32_t   VL53L4CX_p_018,
       uint32_t  time_us);
-
-
-
 
     uint16_t VL53L4CX_rate_per_spad_maths(
       uint32_t  frac_bits,
       uint32_t  peak_count_rate,
       uint16_t  num_spads,
       uint32_t  max_output_value);
-
-
-
 
     int32_t VL53L4CX_range_maths(
       uint16_t  fast_osc_frequency,
@@ -2105,42 +1623,25 @@ class VL53L4CX {
       int32_t   gain_factor,
       int32_t   range_offset_mm);
 
-
-
-
     uint8_t VL53L4CX_decode_vcsel_period(
       uint8_t vcsel_period_reg);
-
-
 
     void VL53L4CX_copy_xtalk_bin_data_to_histogram_data_struct(
       VL53L4CX_xtalk_histogram_shape_t *pxtalk,
       VL53L4CX_histogram_bin_data_t    *phist);
-
-
-
 
     void VL53L4CX_init_histogram_bin_data_struct(
       int32_t                      bin_value,
       uint16_t                     VL53L4CX_p_021,
       VL53L4CX_histogram_bin_data_t *pdata);
 
-
-
-
     void VL53L4CX_decode_row_col(
       uint8_t   spad_number,
       uint8_t  *prow,
       uint8_t  *pcol);
 
-
-
-
     void VL53L4CX_hist_find_min_max_bin_values(
       VL53L4CX_histogram_bin_data_t   *pdata);
-
-
-
 
     void VL53L4CX_hist_estimate_ambient_from_ambient_bins(
       VL53L4CX_histogram_bin_data_t    *pdata);
@@ -2155,9 +1656,6 @@ class VL53L4CX {
       VL53L4CX_hist_gen3_dmax_private_data_t *pdata,
       int16_t                              *pambient_dmax_mm);
 
-
-
-
     uint32_t VL53L4CX_f_002(
       uint32_t     events_threshold,
       uint32_t     ref_signal_events,
@@ -2169,11 +1667,6 @@ class VL53L4CX {
     void VL53L4CX_f_003(
       VL53L4CX_hist_gen3_algo_private_data_t   *palgo);
 
-
-
-
-
-
     VL53L4CX_Error VL53L4CX_f_006(
       uint16_t                               ambient_threshold_events_scaler,
       int32_t                                ambient_threshold_sigma,
@@ -2183,51 +1676,29 @@ class VL53L4CX {
       VL53L4CX_histogram_bin_data_t           *pxtalk,
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
 
-
-
-
-
-
     VL53L4CX_Error VL53L4CX_f_007(
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_008(
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_009(
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_016(
       VL53L4CX_HistTargetOrder                target_order,
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_010(
       uint8_t                                pulse_no,
       VL53L4CX_histogram_bin_data_t           *pbins,
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
 
-
-
     VL53L4CX_Error VL53L4CX_f_015(
       uint8_t                                pulse_no,
       uint8_t                             clip_events,
       VL53L4CX_histogram_bin_data_t           *pbins,
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_020(
       int16_t                            VL53L4CX_p_019,
@@ -2237,18 +1708,12 @@ class VL53L4CX {
       VL53L4CX_histogram_bin_data_t       *pbins,
       uint32_t                          *pphase);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_011(
       uint8_t                                pulse_no,
       VL53L4CX_histogram_bin_data_t           *pbins,
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo,
       int32_t                                pad_value,
       VL53L4CX_histogram_bin_data_t           *ppulse);
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_014(
       uint8_t                       bin,
@@ -2261,9 +1726,6 @@ class VL53L4CX {
       VL53L4CX_histogram_bin_data_t  *pxtalk_hist,
       uint16_t                     *psigma_est);
 
-
-
-
     void VL53L4CX_f_017(
       uint8_t                      range_id,
       uint8_t                      valid_phase_low,
@@ -2272,7 +1734,6 @@ class VL53L4CX {
       VL53L4CX_histogram_bin_data_t *pbins,
       VL53L4CX_hist_pulse_data_t    *ppulse,
       VL53L4CX_range_data_t         *pdata);
-
 
     /* vl53lx_hist_algos_gen4.h functions */
 
@@ -2288,26 +1749,17 @@ class VL53L4CX {
       VL53L4CX_range_results_t                 *presults,
       uint8_t                                histo_merge_nb);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_026(
       uint8_t                                pulse_no,
       VL53L4CX_histogram_bin_data_t           *ppulse,
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo,
       VL53L4CX_hist_gen4_algo_filtered_data_t *pfiltered);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_027(
       uint8_t                                pulse_no,
       uint16_t                               noise_threshold,
       VL53L4CX_hist_gen4_algo_filtered_data_t *pfiltered,
       VL53L4CX_hist_gen3_algo_private_data_t  *palgo);
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_028(
       uint8_t   bin,
@@ -2332,18 +1784,12 @@ class VL53L4CX {
       uint8_t         calib_2__a0,
       uint8_t         spad_readout);
 
+    // VL53L4CX_Error VL53L4CX_set_hist_calib_pulse_delay(
+    //   VL53L4CX_DEV      Dev,
+    //   uint8_t         calib_delay);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_hist_calib_pulse_delay(
-      VL53L4CX_DEV      Dev,
-      uint8_t         calib_delay);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_disable_calib_pulse_delay(
-      VL53L4CX_DEV      Dev);
+    // VL53L4CX_Error VL53L4CX_disable_calib_pulse_delay(
+    //   VL53L4CX_DEV      Dev);
 
     /* vl53lx_hist_core.h functions */
 
@@ -2355,9 +1801,6 @@ class VL53L4CX {
       int32_t                        *pb,
       int32_t                        *pc);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_018(
       uint16_t                        vcsel_width,
       uint16_t                        fast_osc_frequency,
@@ -2366,36 +1809,23 @@ class VL53L4CX {
       VL53L4CX_range_data_t            *pdata,
       uint8_t histo_merge_nb);
 
-
-
-
     void VL53L4CX_f_019(
       uint16_t             gain_factor,
       int16_t              range_offset_mm,
       VL53L4CX_range_data_t *pdata);
 
-
-
-
     void  VL53L4CX_f_029(
       VL53L4CX_histogram_bin_data_t   *pdata,
       int32_t                        ambient_estimate_counts_per_bin);
-
-
-
 
     void  VL53L4CX_f_005(
       VL53L4CX_histogram_bin_data_t   *pxtalk,
       VL53L4CX_histogram_bin_data_t   *pbins,
       VL53L4CX_histogram_bin_data_t   *pxtalk_realigned);
 
-
-
     int8_t  VL53L4CX_f_030(
       VL53L4CX_histogram_bin_data_t   *pdata1,
       VL53L4CX_histogram_bin_data_t   *pdata2);
-
-
 
     VL53L4CX_Error  VL53L4CX_f_031(
       VL53L4CX_histogram_bin_data_t   *pidata,
@@ -2414,9 +1844,6 @@ class VL53L4CX {
       VL53L4CX_range_results_t            *presults,
       uint8_t                           *HistMergeNumber);
 
-
-
-
     VL53L4CX_Error VL53L4CX_hist_ambient_dmax(
       uint16_t                            target_reflectance,
       VL53L4CX_dmax_calibration_data_t     *pdmax_cal,
@@ -2431,86 +1858,53 @@ class VL53L4CX {
       uint16_t       nvm_ctrl_pulse_width,
       int32_t        nvm_power_up_delay_us);
 
-
-
-
     VL53L4CX_Error VL53L4CX_nvm_read(
       VL53L4CX_DEV     Dev,
       uint8_t        start_address,
       uint8_t        count,
       uint8_t       *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_nvm_disable(
       VL53L4CX_DEV     Dev);
-
-
-
 
     VL53L4CX_Error VL53L4CX_nvm_format_decode(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_decoded_nvm_data_t *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_nvm_decode_optical_centre(
       uint16_t                             buf_size,
       uint8_t                             *pbuffer,
       VL53L4CX_optical_centre_t             *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_nvm_decode_cal_peak_rate_map(
       uint16_t                             buf_size,
       uint8_t                             *pbuffer,
       VL53L4CX_cal_peak_rate_map_t          *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_nvm_decode_additional_offset_cal_data(
       uint16_t                             buf_size,
       uint8_t                             *pbuffer,
       VL53L4CX_additional_offset_cal_data_t *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_nvm_decode_fmt_range_results_data(
       uint16_t                             buf_size,
       uint8_t                             *pbuffer,
       VL53L4CX_decoded_nvm_fmt_range_data_t *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_nvm_decode_fmt_info(
       uint16_t                       buf_size,
       uint8_t                       *pbuffer,
       VL53L4CX_decoded_nvm_fmt_info_t *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_nvm_decode_ews_info(
       uint16_t                       buf_size,
       uint8_t                       *pbuffer,
       VL53L4CX_decoded_nvm_ews_info_t *pdata);
 
-
-
-
-    void VL53L4CX_nvm_format_encode(
-      VL53L4CX_decoded_nvm_data_t *pnvm_info,
-      uint8_t                   *pnvm_data);
-
-
-
+    // void VL53L4CX_nvm_format_encode(
+    //   VL53L4CX_decoded_nvm_data_t *pnvm_info,
+    //   uint8_t                   *pnvm_data);
 
     VL53L4CX_Error VL53L4CX_read_nvm_raw_data(
       VL53L4CX_DEV     Dev,
@@ -2518,37 +1912,22 @@ class VL53L4CX {
       uint8_t        count,
       uint8_t       *pnvm_raw_data);
 
-
-
-
     VL53L4CX_Error VL53L4CX_read_nvm(
       VL53L4CX_DEV                 Dev,
       uint8_t                    nvm_format,
       VL53L4CX_decoded_nvm_data_t *pnvm_info);
 
-
-
-
     VL53L4CX_Error VL53L4CX_read_nvm_optical_centre(
       VL53L4CX_DEV                           Dev,
       VL53L4CX_optical_centre_t             *pcentre);
-
-
-
 
     VL53L4CX_Error VL53L4CX_read_nvm_cal_peak_rate_map(
       VL53L4CX_DEV                           Dev,
       VL53L4CX_cal_peak_rate_map_t          *pcal_data);
 
-
-
-
     VL53L4CX_Error VL53L4CX_read_nvm_additional_offset_cal_data(
       VL53L4CX_DEV                           Dev,
       VL53L4CX_additional_offset_cal_data_t *pcal_data);
-
-
-
 
     VL53L4CX_Error VL53L4CX_read_nvm_fmt_range_results_data(
       VL53L4CX_DEV                           Dev,
@@ -2562,627 +1941,378 @@ class VL53L4CX {
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_static_nvm_managed(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_static_nvm_managed_t  *pdata);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_set_static_nvm_managed(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_static_nvm_managed_t  *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_set_static_nvm_managed(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_static_nvm_managed_t  *pdata);
 
     VL53L4CX_Error VL53L4CX_get_static_nvm_managed(
       VL53L4CX_DEV                 Dev,
       VL53L4CX_static_nvm_managed_t  *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_i2c_encode_customer_nvm_managed(
       VL53L4CX_customer_nvm_managed_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_customer_nvm_managed(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_customer_nvm_managed_t  *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_set_customer_nvm_managed(
       VL53L4CX_DEV                 Dev,
       VL53L4CX_customer_nvm_managed_t  *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_get_customer_nvm_managed(
       VL53L4CX_DEV                 Dev,
       VL53L4CX_customer_nvm_managed_t  *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_i2c_encode_static_config(
       VL53L4CX_static_config_t    *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_static_config(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_static_config_t    *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_static_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_static_config_t    *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_static_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_static_config_t    *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_static_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_static_config_t    *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_static_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_static_config_t    *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_general_config(
       VL53L4CX_general_config_t   *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_general_config(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_general_config_t   *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_general_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_general_config_t   *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_general_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_general_config_t   *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_general_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_general_config_t   *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_general_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_general_config_t   *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_timing_config(
       VL53L4CX_timing_config_t    *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_timing_config(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_timing_config_t    *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_timing_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_timing_config_t    *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_timing_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_timing_config_t    *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_timing_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_timing_config_t    *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_timing_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_timing_config_t    *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_dynamic_config(
       VL53L4CX_dynamic_config_t   *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_dynamic_config(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_dynamic_config_t   *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_dynamic_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_dynamic_config_t   *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_dynamic_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_dynamic_config_t   *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_dynamic_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_dynamic_config_t   *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_dynamic_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_dynamic_config_t   *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_system_control(
       VL53L4CX_system_control_t   *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_system_control(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_system_control_t   *pdata);
 
-
-
-
     VL53L4CX_Error VL53L4CX_set_system_control(
       VL53L4CX_DEV                 Dev,
       VL53L4CX_system_control_t   *pdata);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_get_system_control(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_system_control_t   *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_system_control(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_system_control_t   *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_system_results(
       VL53L4CX_system_results_t   *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_system_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_system_results_t   *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_system_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_system_results_t   *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_system_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_system_results_t   *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_system_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_system_results_t   *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_system_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_system_results_t   *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_core_results(
       VL53L4CX_core_results_t     *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_core_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_core_results_t     *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_core_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_core_results_t     *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_core_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_core_results_t     *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_core_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_core_results_t     *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_core_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_core_results_t     *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_debug_results(
       VL53L4CX_debug_results_t    *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_debug_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_debug_results_t    *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_debug_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_debug_results_t    *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_debug_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_debug_results_t    *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_debug_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_debug_results_t    *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_debug_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_debug_results_t    *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_nvm_copy_data(
       VL53L4CX_nvm_copy_data_t    *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_nvm_copy_data(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_nvm_copy_data_t    *pdata);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_set_nvm_copy_data(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_nvm_copy_data_t    *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_set_nvm_copy_data(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_nvm_copy_data_t    *pdata);
 
     VL53L4CX_Error VL53L4CX_get_nvm_copy_data(
       VL53L4CX_DEV                 Dev,
       VL53L4CX_nvm_copy_data_t    *pdata);
-
-
-
 
     VL53L4CX_Error VL53L4CX_i2c_encode_prev_shadow_system_results(
       VL53L4CX_prev_shadow_system_results_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_prev_shadow_system_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_prev_shadow_system_results_t  *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_prev_shadow_system_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_prev_shadow_system_results_t  *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_prev_shadow_system_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_prev_shadow_system_results_t  *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_prev_shadow_system_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_prev_shadow_system_results_t  *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_prev_shadow_system_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_prev_shadow_system_results_t  *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_prev_shadow_core_results(
       VL53L4CX_prev_shadow_core_results_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_prev_shadow_core_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_prev_shadow_core_results_t  *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_prev_shadow_core_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_prev_shadow_core_results_t  *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_prev_shadow_core_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_prev_shadow_core_results_t  *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_prev_shadow_core_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_prev_shadow_core_results_t  *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_prev_shadow_core_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_prev_shadow_core_results_t  *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_patch_debug(
       VL53L4CX_patch_debug_t      *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_patch_debug(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_patch_debug_t      *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_patch_debug(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_patch_debug_t      *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_patch_debug(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_patch_debug_t      *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_patch_debug(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_patch_debug_t      *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_patch_debug(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_patch_debug_t      *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_gph_general_config(
       VL53L4CX_gph_general_config_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_gph_general_config(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_gph_general_config_t  *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_gph_general_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_gph_general_config_t  *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_gph_general_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_gph_general_config_t  *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_gph_general_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_gph_general_config_t  *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_gph_general_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_gph_general_config_t  *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_gph_static_config(
       VL53L4CX_gph_static_config_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_gph_static_config(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_gph_static_config_t  *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_gph_static_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_gph_static_config_t  *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_gph_static_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_gph_static_config_t  *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_gph_static_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_gph_static_config_t  *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_gph_static_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_gph_static_config_t  *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_gph_timing_config(
       VL53L4CX_gph_timing_config_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_gph_timing_config(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_gph_timing_config_t  *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_gph_timing_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_gph_timing_config_t  *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_gph_timing_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_gph_timing_config_t  *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_gph_timing_config(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_gph_timing_config_t  *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_gph_timing_config(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_gph_timing_config_t  *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_fw_internal(
       VL53L4CX_fw_internal_t      *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_fw_internal(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_fw_internal_t      *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_fw_internal(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_fw_internal_t      *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_fw_internal(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_fw_internal_t      *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_fw_internal(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_fw_internal_t      *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_fw_internal(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_fw_internal_t      *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_patch_results(
       VL53L4CX_patch_results_t    *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_patch_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_patch_results_t    *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_patch_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_patch_results_t    *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_patch_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_patch_results_t    *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_patch_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_patch_results_t    *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_patch_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_patch_results_t    *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_shadow_system_results(
       VL53L4CX_shadow_system_results_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_shadow_system_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_shadow_system_results_t  *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_shadow_system_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_shadow_system_results_t  *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_shadow_system_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_shadow_system_results_t  *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_shadow_system_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_shadow_system_results_t  *pdata);
-
-
-
+    // VL53L4CX_Error VL53L4CX_get_shadow_system_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_shadow_system_results_t  *pdata);
 
     VL53L4CX_Error VL53L4CX_i2c_encode_shadow_core_results(
       VL53L4CX_shadow_core_results_t  *pdata,
       uint16_t                   buf_size,
       uint8_t                   *pbuffer);
 
-
-
-
     VL53L4CX_Error VL53L4CX_i2c_decode_shadow_core_results(
       uint16_t                   buf_size,
       uint8_t                   *pbuffer,
       VL53L4CX_shadow_core_results_t  *pdata);
 
+    // VL53L4CX_Error VL53L4CX_set_shadow_core_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_shadow_core_results_t  *pdata);
 
-
-
-    VL53L4CX_Error VL53L4CX_set_shadow_core_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_shadow_core_results_t  *pdata);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_get_shadow_core_results(
-      VL53L4CX_DEV                 Dev,
-      VL53L4CX_shadow_core_results_t  *pdata);
+    // VL53L4CX_Error VL53L4CX_get_shadow_core_results(
+    //   VL53L4CX_DEV                 Dev,
+    //   VL53L4CX_shadow_core_results_t  *pdata);
 
     /* vl53lx_sigma_estimate.h functions */
 
@@ -3208,62 +2338,34 @@ class VL53L4CX {
 
     /* vl53lx_wait.h functions */
 
-
-    VL53L4CX_Error VL53L4CX_wait_for_boot_completion(
-      VL53L4CX_DEV      Dev);
-
-
-
+    // VL53L4CX_Error VL53L4CX_wait_for_boot_completion(
+    //   VL53L4CX_DEV      Dev);
 
     VL53L4CX_Error VL53L4CX_wait_for_range_completion(
       VL53L4CX_DEV   Dev);
 
-
-
-
     VL53L4CX_Error VL53L4CX_wait_for_test_completion(
       VL53L4CX_DEV   Dev);
-
-
-
-
-
 
     VL53L4CX_Error VL53L4CX_is_boot_complete(
       VL53L4CX_DEV      Dev,
       uint8_t        *pready);
 
-
-
     VL53L4CX_Error VL53L4CX_is_firmware_ready(
       VL53L4CX_DEV      Dev,
       uint8_t        *pready);
-
-
-
 
     VL53L4CX_Error VL53L4CX_is_new_data_ready(
       VL53L4CX_DEV      Dev,
       uint8_t        *pready);
 
-
-
-
-
-
     VL53L4CX_Error VL53L4CX_poll_for_boot_completion(
       VL53L4CX_DEV      Dev,
       uint32_t        timeout_ms);
 
-
-
-
-    VL53L4CX_Error VL53L4CX_poll_for_firmware_ready(
-      VL53L4CX_DEV      Dev,
-      uint32_t        timeout_ms);
-
-
-
+    // VL53L4CX_Error VL53L4CX_poll_for_firmware_ready(
+    //   VL53L4CX_DEV      Dev,
+    //   uint32_t        timeout_ms);
 
     VL53L4CX_Error VL53L4CX_poll_for_range_completion(
       VL53L4CX_DEV   Dev,
@@ -3276,9 +2378,6 @@ class VL53L4CX {
       VL53L4CX_xtalk_histogram_data_t       *pxtalk_shape,
       VL53L4CX_xtalk_calibration_results_t  *pxtalk_cal);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_041(
       VL53L4CX_histogram_bin_data_t        *pavg_bins,
       VL53L4CX_xtalk_algo_data_t           *pdebug,
@@ -3287,34 +2386,22 @@ class VL53L4CX {
       uint8_t                             histogram__window_end,
       VL53L4CX_xtalk_histogram_shape_t     *pxtalk_shape);
 
-
-
     VL53L4CX_Error VL53L4CX_f_039(
       VL53L4CX_xtalk_range_results_t  *pxtalk_results,
       VL53L4CX_xtalk_algo_data_t      *pdebug,
       int16_t                       *xgradient,
       int16_t                       *ygradient);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_040(
       VL53L4CX_xtalk_range_data_t *pxtalk_data,
       VL53L4CX_xtalk_algo_data_t  *pdebug,
       uint32_t                  *xtalk_mean_offset_kcps);
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_045(
       VL53L4CX_histogram_bin_data_t    *phist_data,
       VL53L4CX_xtalk_range_data_t      *pxtalk_data,
       VL53L4CX_xtalk_algo_data_t       *pdebug,
       VL53L4CX_xtalk_histogram_shape_t *pxtalk_histo);
-
-
-
-
 
     VL53L4CX_Error VL53L4CX_f_032(
       uint32_t                       mean_offset,
@@ -3327,24 +2414,16 @@ class VL53L4CX {
       uint8_t                        roi_xy_size,
       uint32_t                      *xtalk_rate_kcps);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_033(
       VL53L4CX_histogram_bin_data_t    *phist_data,
       VL53L4CX_xtalk_histogram_shape_t *pxtalk_data,
       uint32_t                        xtalk_rate_kcps,
       VL53L4CX_histogram_bin_data_t    *pxtalkcount_data);
 
-
-
-
     VL53L4CX_Error VL53L4CX_f_047(
       VL53L4CX_histogram_bin_data_t   *phist_data,
       VL53L4CX_histogram_bin_data_t   *pxtalk_data,
       uint8_t                        xtalk_bin_offset);
-
-
 
     VL53L4CX_Error VL53L4CX_f_044(
       VL53L4CX_histogram_bin_data_t       *pxtalk_data,
@@ -3352,15 +2431,13 @@ class VL53L4CX {
       uint8_t                            VL53L4CX_p_019,
       uint8_t                            VL53L4CX_p_024);
 
-
-
-    VL53L4CX_Error VL53L4CX_f_046(
-      VL53L4CX_customer_nvm_managed_t *pcustomer,
-      VL53L4CX_dynamic_config_t       *pdyn_cfg,
-      VL53L4CX_xtalk_histogram_data_t *pxtalk_shape,
-      VL53L4CX_histogram_bin_data_t   *pip_hist_data,
-      VL53L4CX_histogram_bin_data_t   *pop_hist_data,
-      VL53L4CX_histogram_bin_data_t   *pxtalk_count_data);
+    // VL53L4CX_Error VL53L4CX_f_046(
+    //   VL53L4CX_customer_nvm_managed_t *pcustomer,
+    //   VL53L4CX_dynamic_config_t       *pdyn_cfg,
+    //   VL53L4CX_xtalk_histogram_data_t *pxtalk_shape,
+    //   VL53L4CX_histogram_bin_data_t   *pip_hist_data,
+    //   VL53L4CX_histogram_bin_data_t   *pop_hist_data,
+    //   VL53L4CX_histogram_bin_data_t   *pxtalk_count_data);
 
     /* vl53lx_platform_ipp.h  functions */
 
@@ -3376,25 +2453,19 @@ class VL53L4CX {
       uint8_t                           *phisto_merge_nb,
       VL53L4CX_range_results_t            *presults);
 
+    // VL53L4CX_Error VL53L4CX_ipp_hist_ambient_dmax(
+    //   VL53L4CX_DEV                         Dev,
+    //   uint16_t                           target_reflectance,
+    //   VL53L4CX_dmax_calibration_data_t    *pdmax_cal,
+    //   VL53L4CX_hist_gen3_dmax_config_t    *pdmax_cfg,
+    //   VL53L4CX_histogram_bin_data_t       *pbins,
+    //   int16_t                           *pambient_dmax_mm);
 
-
-
-    VL53L4CX_Error VL53L4CX_ipp_hist_ambient_dmax(
-      VL53L4CX_DEV                         Dev,
-      uint16_t                           target_reflectance,
-      VL53L4CX_dmax_calibration_data_t    *pdmax_cal,
-      VL53L4CX_hist_gen3_dmax_config_t    *pdmax_cfg,
-      VL53L4CX_histogram_bin_data_t       *pbins,
-      int16_t                           *pambient_dmax_mm);
-
-
-
-
-    VL53L4CX_Error VL53L4CX_ipp_xtalk_calibration_process_data(
-      VL53L4CX_DEV                          Dev,
-      VL53L4CX_xtalk_range_results_t       *pxtalk_ranges,
-      VL53L4CX_xtalk_histogram_data_t      *pxtalk_shape,
-      VL53L4CX_xtalk_calibration_results_t *pxtalk_cal);
+    // VL53L4CX_Error VL53L4CX_ipp_xtalk_calibration_process_data(
+    //   VL53L4CX_DEV                          Dev,
+    //   VL53L4CX_xtalk_range_results_t       *pxtalk_ranges,
+    //   VL53L4CX_xtalk_histogram_data_t      *pxtalk_shape,
+    //   VL53L4CX_xtalk_calibration_results_t *pxtalk_cal);
 
     /* Helper functions */
 
@@ -3413,7 +2484,7 @@ class VL53L4CX {
 
     int IsL4(VL53L4CX_DEV Dev);
 
-    VL53L4CX_Error CheckValidRectRoi(VL53L4CX_UserRoi_t ROI);
+    // VL53L4CX_Error CheckValidRectRoi(VL53L4CX_UserRoi_t ROI);
 
     uint8_t ConvertStatusHisto(uint8_t FilteredRangeStatus);
 
@@ -3440,11 +2511,11 @@ class VL53L4CX {
 
     VL53L4CX_Error VL53L4CX_WrByte(VL53L4CX_DEV Dev, uint16_t index, uint8_t data);
     VL53L4CX_Error VL53L4CX_WrWord(VL53L4CX_DEV Dev, uint16_t index, uint16_t data);
-    VL53L4CX_Error VL53L4CX_WrDWord(VL53L4CX_DEV Dev, uint16_t index, uint32_t data);
+    // VL53L4CX_Error VL53L4CX_WrDWord(VL53L4CX_DEV Dev, uint16_t index, uint32_t data);
     VL53L4CX_Error VL53L4CX_RdByte(VL53L4CX_DEV Dev, uint16_t index, uint8_t *data);
     VL53L4CX_Error VL53L4CX_RdWord(VL53L4CX_DEV Dev, uint16_t index, uint16_t *data);
-    VL53L4CX_Error VL53L4CX_RdDWord(VL53L4CX_DEV Dev, uint16_t index, uint32_t *data);
-    VL53L4CX_Error VL53L4CX_UpdateByte(VL53L4CX_DEV Dev, uint16_t index, uint8_t AndData, uint8_t OrData);
+    // VL53L4CX_Error VL53L4CX_RdDWord(VL53L4CX_DEV Dev, uint16_t index, uint32_t *data);
+    // VL53L4CX_Error VL53L4CX_UpdateByte(VL53L4CX_DEV Dev, uint16_t index, uint8_t AndData, uint8_t OrData);
 
     VL53L4CX_Error VL53L4CX_WriteMulti(VL53L4CX_DEV Dev, uint16_t index, uint8_t *pdata, uint32_t count);
     VL53L4CX_Error VL53L4CX_ReadMulti(VL53L4CX_DEV Dev, uint16_t index, uint8_t *pdata, uint32_t count);
@@ -3456,7 +2527,6 @@ class VL53L4CX {
     VL53L4CX_Error VL53L4CX_WaitMs(VL53L4CX_Dev_t *pdev, int32_t wait_ms);
 
     VL53L4CX_Error VL53L4CX_WaitValueMaskEx(VL53L4CX_Dev_t *pdev, uint32_t timeout_ms, uint16_t index, uint8_t value, uint8_t mask, uint32_t poll_delay_ms);
-
 
   protected:
 

@@ -14,7 +14,7 @@
 
 #include "vl53l4cx_class.h"
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_decode_calibration_data_buffer(
   uint16_t                   buf_size,
   uint8_t                   *pbuffer,
@@ -30,8 +30,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_decode_calibration_data_buffer(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_nvm_debug_data(
   VL53L4CX_DEV                          Dev,
   VL53L4CX_decoded_nvm_data_t          *pdata)
@@ -44,7 +45,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_nvm_debug_data(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_histogram_debug_data(
   VL53L4CX_DEV                          Dev,
@@ -101,9 +102,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_additional_data(
   return status;
 }
 
-
-
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_xtalk_debug_data(
   VL53L4CX_DEV                          Dev,
   VL53L4CX_xtalk_debug_data_t          *pdata)
@@ -141,8 +140,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_xtalk_debug_data(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_offset_debug_data(
   VL53L4CX_DEV                          Dev,
   VL53L4CX_offset_debug_data_t         *pdata)
@@ -180,3 +180,4 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_offset_debug_data(
 
   return status;
 }
+*/

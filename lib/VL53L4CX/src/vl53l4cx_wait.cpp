@@ -15,7 +15,7 @@
 
 #include "vl53l4cx_class.h"
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_wait_for_boot_completion(
   VL53L4CX_DEV     Dev)
 {
@@ -57,7 +57,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_wait_for_boot_completion(
   return status;
 
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_wait_for_range_completion(
   VL53L4CX_DEV     Dev)
@@ -270,7 +270,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_poll_for_boot_completion(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_poll_for_firmware_ready(
   VL53L4CX_DEV    Dev,
   uint32_t      timeout_ms)
@@ -320,7 +320,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_poll_for_firmware_ready(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_poll_for_range_completion(
   VL53L4CX_DEV     Dev,

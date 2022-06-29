@@ -164,7 +164,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_run_ref_spad_char(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_and_avg_xtalk_samples(
   VL53L4CX_DEV                    Dev,
   uint8_t                       num_of_samples,
@@ -408,8 +408,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_and_avg_xtalk_samples(
   return status;
 
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_run_phasecal_average(
   VL53L4CX_DEV              Dev,
   uint8_t                 measurement_mode,
@@ -539,7 +540,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_run_phasecal_average(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_run_device_test(
   VL53L4CX_DEV             Dev,

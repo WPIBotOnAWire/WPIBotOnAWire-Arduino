@@ -1256,7 +1256,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_nvm_decode_ews_info(
 
 }
 
-
+/*
 void VL53L4CX::VL53L4CX_nvm_format_encode(
   VL53L4CX_decoded_nvm_data_t *pnvm_info,
   uint8_t                   *pnvm_data)
@@ -1264,7 +1264,7 @@ void VL53L4CX::VL53L4CX_nvm_format_encode(
   SUPPRESS_UNUSED_WARNING(pnvm_info);
   SUPPRESS_UNUSED_WARNING(pnvm_data);
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_read_nvm_raw_data(
   VL53L4CX_DEV     Dev,

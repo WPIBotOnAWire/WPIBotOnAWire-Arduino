@@ -11,6 +11,7 @@
 #include <BlueMotor.h>
 #include <Wire.h>
 #include "constants.h"
+#include <vl53l4cx_class.h>
 
 #define USE_USBCON
 
@@ -22,6 +23,9 @@ ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
 
 BlueMotor turntable = BlueMotor();
+
+#define DEV_I2C Wire
+VL53L4CX sensor(&DEV_I2C, A1);
 
 ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;

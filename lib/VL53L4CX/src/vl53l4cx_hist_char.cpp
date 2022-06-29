@@ -92,8 +92,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_calib_config(
   return status;
 }
 
-
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_hist_calib_pulse_delay(
   VL53L4CX_DEV      Dev,
   uint8_t         calib_delay)
@@ -114,8 +113,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_hist_calib_pulse_delay(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_disable_calib_pulse_delay(
   VL53L4CX_DEV      Dev)
 {
@@ -135,3 +135,4 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_disable_calib_pulse_delay(
 
   return status;
 }
+*/

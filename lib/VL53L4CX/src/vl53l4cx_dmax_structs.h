@@ -9,12 +9,6 @@
  ******************************************************************************
  */
 
-
-
-
-
-
-
 #ifndef _VL53L4CX_DMAX_STRUCTS_H_
 #define _VL53L4CX_DMAX_STRUCTS_H_
 
@@ -25,16 +19,9 @@ extern "C"
 {
 #endif
 
-
 #define VL53L4CX_MAX_AMBIENT_DMAX_VALUES        5
 
-
-
-
-
 typedef struct {
-
-
 
   uint16_t  ref__actual_effective_spads;
 
@@ -44,20 +31,11 @@ typedef struct {
 
   uint16_t   ref_reflectance_pc;
 
-
-
-
   uint16_t   coverglass_transmission;
-
 
 } VL53L4CX_dmax_calibration_data_t;
 
-
-
-
 typedef struct {
-
-
 
   uint8_t   signal_thresh_sigma;
 
@@ -67,22 +45,16 @@ typedef struct {
 
   int32_t   signal_total_events_limit;
 
-
   uint16_t  target_reflectance_for_dmax_calc[
    VL53L4CX_MAX_AMBIENT_DMAX_VALUES];
 
   uint16_t  max_effective_spads;
 
-
-
-
   uint16_t  dss_config__target_total_rate_mcps;
 
   uint8_t   dss_config__aperture_attenuation;
 
-
 } VL53L4CX_hist_gen3_dmax_config_t;
-
 
 #ifdef __cplusplus
 }

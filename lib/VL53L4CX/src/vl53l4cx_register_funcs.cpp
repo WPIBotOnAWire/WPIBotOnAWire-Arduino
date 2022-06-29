@@ -92,7 +92,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_static_nvm_managed(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_static_nvm_managed(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_static_nvm_managed_t  *pdata)
@@ -117,7 +117,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_static_nvm_managed(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_static_nvm_managed(
   VL53L4CX_DEV                 Dev,
@@ -482,7 +482,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_static_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_static_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_static_config_t    *pdata)
@@ -507,8 +507,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_static_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_static_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_static_config_t    *pdata)
@@ -533,7 +534,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_static_config(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_general_config(
   VL53L4CX_general_config_t  *pdata,
@@ -646,7 +647,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_general_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_general_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_general_config_t   *pdata)
@@ -671,8 +672,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_general_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_general_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_general_config_t   *pdata)
@@ -697,7 +699,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_general_config(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_timing_config(
   VL53L4CX_timing_config_t   *pdata,
@@ -804,7 +806,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_timing_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_timing_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_timing_config_t    *pdata)
@@ -829,8 +831,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_timing_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_timing_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_timing_config_t    *pdata)
@@ -855,7 +858,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_timing_config(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_dynamic_config(
   VL53L4CX_dynamic_config_t  *pdata,
@@ -960,7 +963,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_dynamic_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_dynamic_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_dynamic_config_t   *pdata)
@@ -985,8 +988,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_dynamic_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_dynamic_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_dynamic_config_t   *pdata)
@@ -1011,7 +1015,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_dynamic_config(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_system_control(
   VL53L4CX_system_control_t  *pdata,
@@ -1094,7 +1098,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_system_control(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_system_control(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_system_control_t   *pdata)
@@ -1119,7 +1123,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_system_control(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_system_results(
   VL53L4CX_system_results_t  *pdata,
@@ -1294,7 +1298,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_system_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_system_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_system_results_t   *pdata)
@@ -1319,8 +1323,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_system_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_system_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_system_results_t   *pdata)
@@ -1345,7 +1350,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_system_results(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_core_results(
   VL53L4CX_core_results_t    *pdata,
@@ -1442,7 +1447,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_core_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_core_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_core_results_t     *pdata)
@@ -1479,8 +1484,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_core_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_core_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_core_results_t     *pdata)
@@ -1509,7 +1515,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_core_results(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_debug_results(
   VL53L4CX_debug_results_t   *pdata,
@@ -1740,7 +1746,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_debug_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_debug_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_debug_results_t    *pdata)
@@ -1777,8 +1783,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_debug_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_debug_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_debug_results_t    *pdata)
@@ -1807,7 +1814,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_debug_results(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_nvm_copy_data(
   VL53L4CX_nvm_copy_data_t   *pdata,
@@ -2046,7 +2053,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_nvm_copy_data(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_nvm_copy_data(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_nvm_copy_data_t    *pdata)
@@ -2083,7 +2090,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_nvm_copy_data(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_nvm_copy_data(
   VL53L4CX_DEV                 Dev,
@@ -2294,7 +2301,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_prev_shadow_system_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_prev_shadow_system_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_prev_shadow_system_results_t  *pdata)
@@ -2331,8 +2338,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_prev_shadow_system_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_prev_shadow_system_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_prev_shadow_system_results_t  *pdata)
@@ -2369,7 +2377,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_prev_shadow_system_results(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_prev_shadow_core_results(
   VL53L4CX_prev_shadow_core_results_t *pdata,
@@ -2466,7 +2474,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_prev_shadow_core_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_prev_shadow_core_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_prev_shadow_core_results_t  *pdata)
@@ -2503,8 +2511,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_prev_shadow_core_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_prev_shadow_core_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_prev_shadow_core_results_t  *pdata)
@@ -2541,7 +2550,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_prev_shadow_core_results(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_patch_debug(
   VL53L4CX_patch_debug_t     *pdata,
@@ -2594,7 +2603,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_patch_debug(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_patch_debug(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_patch_debug_t      *pdata)
@@ -2631,8 +2640,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_patch_debug(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_patch_debug(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_patch_debug_t      *pdata)
@@ -2669,7 +2679,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_patch_debug(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_gph_general_config(
   VL53L4CX_gph_general_config_t *pdata,
@@ -2730,7 +2740,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_gph_general_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_gph_general_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_gph_general_config_t  *pdata)
@@ -2767,8 +2777,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_gph_general_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_gph_general_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_gph_general_config_t  *pdata)
@@ -2805,7 +2816,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_gph_general_config(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_gph_static_config(
   VL53L4CX_gph_static_config_t *pdata,
@@ -2872,7 +2883,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_gph_static_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_gph_static_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_gph_static_config_t  *pdata)
@@ -2909,8 +2920,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_gph_static_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_gph_static_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_gph_static_config_t  *pdata)
@@ -2947,7 +2959,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_gph_static_config(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_gph_timing_config(
   VL53L4CX_gph_timing_config_t *pdata,
@@ -3052,7 +3064,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_gph_timing_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_gph_timing_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_gph_timing_config_t  *pdata)
@@ -3089,8 +3101,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_gph_timing_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_gph_timing_config(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_gph_timing_config_t  *pdata)
@@ -3127,7 +3140,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_gph_timing_config(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_fw_internal(
   VL53L4CX_fw_internal_t     *pdata,
@@ -3180,7 +3193,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_fw_internal(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_fw_internal(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_fw_internal_t      *pdata)
@@ -3217,8 +3230,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_fw_internal(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_fw_internal(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_fw_internal_t      *pdata)
@@ -3255,7 +3269,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_fw_internal(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_patch_results(
   VL53L4CX_patch_results_t   *pdata,
@@ -3568,7 +3582,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_patch_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_patch_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_patch_results_t    *pdata)
@@ -3605,8 +3619,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_patch_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_patch_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_patch_results_t    *pdata)
@@ -3643,7 +3658,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_patch_results(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_shadow_system_results(
   VL53L4CX_shadow_system_results_t *pdata,
@@ -3838,7 +3853,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_shadow_system_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_shadow_system_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_shadow_system_results_t  *pdata)
@@ -3875,8 +3890,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_shadow_system_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_shadow_system_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_shadow_system_results_t  *pdata)
@@ -3913,7 +3929,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_shadow_system_results(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_encode_shadow_core_results(
   VL53L4CX_shadow_core_results_t *pdata,
@@ -4010,7 +4026,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_i2c_decode_shadow_core_results(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_shadow_core_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_shadow_core_results_t  *pdata)
@@ -4047,8 +4063,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_shadow_core_results(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_shadow_core_results(
   VL53L4CX_DEV                 Dev,
   VL53L4CX_shadow_core_results_t  *pdata)
@@ -4085,3 +4102,4 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_shadow_core_results(
 
   return status;
 }
+*/

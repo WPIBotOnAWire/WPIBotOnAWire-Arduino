@@ -1030,7 +1030,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_clear_interrupt(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_force_shadow_stream_count_to_zero(
   VL53L4CX_DEV    Dev)
 {
@@ -1055,7 +1055,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_force_shadow_stream_count_to_zero(
 
   return status;
 }
-
+*/
 
 uint32_t VL53L4CX::VL53L4CX_calc_macro_period_us(
   uint16_t  fast_osc_frequency,
@@ -1371,7 +1371,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_calc_timeout_register_values(
   return status;
 }
 
-
+/*
 uint8_t VL53L4CX::VL53L4CX_encode_vcsel_period(uint8_t VL53L4CX_p_030)
 {
 
@@ -1382,7 +1382,7 @@ uint8_t VL53L4CX::VL53L4CX_encode_vcsel_period(uint8_t VL53L4CX_p_030)
 
   return vcsel_period_reg;
 }
-
+*/
 
 uint32_t VL53L4CX::VL53L4CX_decode_unsigned_integer(
   uint8_t  *pbuffer,
@@ -1400,7 +1400,7 @@ uint32_t VL53L4CX::VL53L4CX_decode_unsigned_integer(
   return decoded_value;
 }
 
-
+/*
 void VL53L4CX::VL53L4CX_encode_unsigned_integer(
   uint32_t  ip_value,
   uint8_t   no_of_bytes,
@@ -1417,7 +1417,7 @@ void VL53L4CX::VL53L4CX_encode_unsigned_integer(
     VL53L4CX_p_003 = VL53L4CX_p_003 >> 8;
   }
 }
-
+*/
 
 VL53L4CX_Error  VL53L4CX::VL53L4CX_hist_copy_and_scale_ambient_info(
   VL53L4CX_zone_hist_info_t       *pidata,
@@ -2409,7 +2409,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_hist_xtalk_extract_calc_shape(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_hist_xtalk_shape_model(
   uint16_t                         events_per_bin,
   uint16_t                         pulse_centre,
@@ -2492,7 +2492,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_hist_xtalk_shape_model(
 
   return status;
 }
-
+*/
 
 uint16_t VL53L4CX::VL53L4CX_hist_xtalk_shape_model_interp(
   uint16_t      events_per_bin,
@@ -3213,7 +3213,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_update_internal_stream_counters(
 }
 
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_histogram_multizone_initial_bin_config(
   VL53L4CX_zone_config_t    *pzone_cfg,
   VL53L4CX_histogram_config_t *phist_cfg,
@@ -3269,9 +3269,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_histogram_multizone_initial_bin_config(
 
   return status;
 }
+*/
 
-
-
+/*
 uint8_t VL53L4CX::VL53L4CX_encode_GPIO_interrupt_config(
   VL53L4CX_GPIO_interrupt_config_t  *pintconf)
 {
@@ -3285,9 +3285,9 @@ uint8_t VL53L4CX::VL53L4CX_encode_GPIO_interrupt_config(
 
   return system__interrupt_config;
 }
+*/
 
-
-
+/*
 VL53L4CX_GPIO_interrupt_config_t VL53L4CX::VL53L4CX_decode_GPIO_interrupt_config(
   uint8_t   system__interrupt_config)
 {
@@ -3307,8 +3307,7 @@ VL53L4CX_GPIO_interrupt_config_t VL53L4CX::VL53L4CX_decode_GPIO_interrupt_config
 
   return intconf;
 }
-
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_GPIO_distance_threshold(
   VL53L4CX_DEV                      Dev,
@@ -3342,8 +3341,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_GPIO_rate_threshold(
   return status;
 }
 
-
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_GPIO_thresholds_from_struct(
   VL53L4CX_DEV                      Dev,
   VL53L4CX_GPIO_interrupt_config_t *pintconf)
@@ -3365,7 +3363,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_GPIO_thresholds_from_struct(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_ref_spad_char_config(
   VL53L4CX_DEV    Dev,
@@ -3465,7 +3463,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_ref_spad_char_config(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_ssc_config(
   VL53L4CX_DEV            Dev,
   VL53L4CX_ssc_config_t  *pssc_cfg,
@@ -3545,8 +3543,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_ssc_config(
 
   return status;
 }
+*/
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_spad_rate_data(
   VL53L4CX_DEV                Dev,
   VL53L4CX_spad_rate_data_t  *pspad_rates)
@@ -3596,8 +3595,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_spad_rate_data(
 
   return status;
 }
-
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_dynamic_xtalk_correction_calc_required_samples(
   VL53L4CX_DEV                          Dev
@@ -4370,6 +4368,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_low_power_auto_data_stop_range(
   return status;
 }
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_config_low_power_auto_mode(
   VL53L4CX_general_config_t   *pgeneral,
   VL53L4CX_dynamic_config_t   *pdynamic,
@@ -4404,6 +4403,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_config_low_power_auto_mode(
 
   return status;
 }
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_low_power_auto_setup_manual_calibration(
   VL53L4CX_DEV        Dev)

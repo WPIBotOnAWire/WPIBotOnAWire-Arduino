@@ -352,7 +352,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_init_hist_post_process_config_struct(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_init_dmax_calibration_data_struct(
   VL53L4CX_dmax_calibration_data_t   *pdata)
 {
@@ -374,7 +374,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_init_dmax_calibration_data_struct(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_init_tuning_parm_storage_struct(
   VL53L4CX_tuning_parm_storage_t   *pdata)

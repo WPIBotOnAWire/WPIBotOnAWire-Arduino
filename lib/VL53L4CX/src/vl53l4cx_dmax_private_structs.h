@@ -19,12 +19,6 @@
  ******************************************************************************
  */
 
-
-
-
-
-
-
 #ifndef _VL53L4CX_DMAX_PRIVATE_STRUCTS_H_
 #define _VL53L4CX_DMAX_PRIVATE_STRUCTS_H_
 
@@ -34,9 +28,6 @@
 extern "C"
 {
 #endif
-
-
-
 
 typedef struct {
 

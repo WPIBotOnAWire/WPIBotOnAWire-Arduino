@@ -446,7 +446,7 @@ FAIL:
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_f_046(
   VL53L4CX_customer_nvm_managed_t *pcustomer,
   VL53L4CX_dynamic_config_t       *pdyn_cfg,
@@ -503,7 +503,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_f_046(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_f_032(
   uint32_t                       mean_offset,

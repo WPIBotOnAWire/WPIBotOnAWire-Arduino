@@ -277,6 +277,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_unload_patch(VL53L4CX_DEV Dev)
   return status;
 }
 
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_version(
   VL53L4CX_DEV           Dev,
   VL53L4CX_ll_version_t *pdata)
@@ -291,7 +292,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_version(
 
   return VL53L4CX_ERROR_NONE;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_data_init(
   VL53L4CX_DEV        Dev,
@@ -876,7 +877,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_inter_measurement_period_ms(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_inter_measurement_period_ms(
   VL53L4CX_DEV              Dev,
   uint32_t               *pinter_measurement_period_ms)
@@ -897,7 +898,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_inter_measurement_period_ms(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_set_timeouts_us(
   VL53L4CX_DEV          Dev,
@@ -1026,7 +1027,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_user_zone(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_user_zone(
   VL53L4CX_DEV              Dev,
   VL53L4CX_user_zone_t     *puser_zone)
@@ -1049,7 +1050,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_user_zone(
 
   return status;
 }
-
+*/
 
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_mode_mitigation_roi(
@@ -2816,7 +2817,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_dmax_mode(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_dmax_mode(
   VL53L4CX_DEV               Dev,
   VL53L4CX_DeviceDmaxMode   *pdmax_mode)
@@ -2831,7 +2832,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_dmax_mode(
 
   return status;
 }
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_dmax_calibration_data(
   VL53L4CX_DEV                      Dev,
@@ -2887,7 +2888,7 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_set_offset_correction_mode(
   return status;
 }
 
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_offset_correction_mode(
   VL53L4CX_DEV                     Dev,
   VL53L4CX_OffsetCorrectionMode   *poffset_cor_mode)
@@ -2903,10 +2904,9 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_offset_correction_mode(
 
   return status;
 }
+*/
 
-
-
-
+/*
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_tuning_debug_data(
   VL53L4CX_DEV                            Dev,
   VL53L4CX_tuning_parameters_t           *ptun_data)
@@ -3345,18 +3345,13 @@ VL53L4CX_Error VL53L4CX::VL53L4CX_get_tuning_debug_data(
 
   return status;
 }
-
-
-
-
+*/
 
 VL53L4CX_Error VL53L4CX::VL53L4CX_get_tuning_parm(
   VL53L4CX_DEV                     Dev,
   VL53L4CX_TuningParms             tuning_parm_key,
   int32_t                       *ptuning_parm_value)
 {
-
-
 
   VL53L4CX_Error  status = VL53L4CX_ERROR_NONE;
 
