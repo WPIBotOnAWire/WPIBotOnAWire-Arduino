@@ -20,7 +20,7 @@
 #define ECHO_PIN_BACK           2
 
 #define ESC1_PIN                8 
-#define ESC2_PIN                9
+#define ESC2_PIN                11
 
 // V These pins probably need to be changed
 

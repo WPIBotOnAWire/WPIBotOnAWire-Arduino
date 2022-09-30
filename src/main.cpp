@@ -8,10 +8,8 @@
 #include <Wire.h>
 #include <Adafruit_INA260.h>
 #include <sensor_msgs/BatteryState.h>
-#include <BlueMotor.h>
-#include <Wire.h>
+
 #include "constants.h"
-#include <vl53l4cx_class.h>
 
 #define USE_USBCON
 
@@ -21,11 +19,6 @@ ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
 Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
-
-BlueMotor turntable = BlueMotor();
-
-#define DEV_I2C Wire
-VL53L4CX sensor(&DEV_I2C, A1);
 
 ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
@@ -42,16 +35,6 @@ ros::Publisher pub_speakers("/play_sound", &speaker_val);
 int sound_regulator = 0;
 
 bool override_was_active = false;
-
-// Blue Motor Encoder variables
-int newValue, oldValue = 0, errorCount = 0;
-long encoderCount = 0;
-const char X = 5;
-char encoderArray[4][4] = {
-  {0, -1, 1, X},
-  {1, 0, X, -1},
-  {-1, X, 0, 1},
-  {X, 1, -1, 0}};
 
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -70,19 +53,6 @@ void cb_motor(const std_msgs::Float32 &msg) {
 
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
 ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
-
-// Encoder Interupt Service Routine
-// Triggers every time the encoder wires signal a change
-void isr() {
-  newValue = (digitalRead(3) << 1) | digitalRead(2);
-  char value = encoderArray[oldValue][newValue];
-  if (value == X) {
-    errorCount++;
-  } else {
-    encoderCount -= value;
-  }
-  oldValue = newValue;
-} 
 
 void setup() {
     pinMode(LED_PIN, OUTPUT);
@@ -109,14 +79,7 @@ void setup() {
     bat_monitor.begin();
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    Serial.begin(9600); // when running robot.launch, comment this out
-
-    // Blue Motor Encoder setup
-    pinMode(0, INPUT);
-    pinMode(1, INPUT);
-    attachInterrupt(digitalPinToInterrupt(2), isr, CHANGE); 
-    attachInterrupt(digitalPinToInterrupt(3), isr, CHANGE);
-    encoderCount = 0;
+    //Serial.begin(9600); // when running robot.launch, comment this out
 }
 
 bool check_radio_active() {
@@ -150,7 +113,6 @@ int keepDistance(float rf_front_in, float rf_back_in){
     
     // Gather data
     int throttle = pulseIn(RADIO_OVERRIDE_THROTTLE, HIGH);
-    // Serial.println(throttle);
     
     // Set up maximum speeds for either direction
     int front_max = 1425, back_max = 1580;
@@ -211,36 +173,10 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
     }
 }
 
-//Aims turret turn table to degree and holds position there. Non-Blocking 
-// PID constants
-float ha_kp = 2, ha_ki = .02, cur_ang, err_ang, ha_int = 0, effort;
-void holdAngle(int tar_ang){ 
-    // Read current angle 
-    // cur_ang = encoderCount * turntable.getAngConversion();
-    // cur_ang = encoderCount / 5.2;
-    cur_ang = encoderCount * 0.288461538;
-
-    // Compare to desired angle 
-    err_ang = tar_ang - cur_ang; 
-
-    // Build up integral
-    ha_int += err_ang * ha_ki;
-
-    // Control Motor with PI
-    effort = (err_ang * ha_kp) + ha_int; 
-
-    turntable.setEffort(effort); 
-
-    // Serial.print("tar_ang:  " + (String)tar_ang);
-    // Serial.print("    cur_ang:  " + (String)cur_ang);
-    // Serial.print("    err_ang:  " + (String)err_ang);
-    // Serial.print("    ha_int:  " + (String)ha_int);
-    // Serial.print("    effort:  " + (String)effort);
-    // Serial.println();
-    // Serial.println(encoderCount);
-} 
-
 void loop() {
+    int throttle = pulseIn(PIN_A6, HIGH);
+    //Serial.print("THROTTLE ");
+    //Serial.println(throttle);
     // Publish Encoder
     enc_val.data = encoder.read();
     pub_enc.publish(&enc_val);
@@ -274,7 +210,7 @@ void loop() {
     bat_msg.current = bat_monitor.readCurrent();
 
     pub_bat_level.publish(&bat_msg);
-
+    check_radio_active();
     if (check_radio_active()) {
         // Read radio values and use them
         int lights = pulseIn(RADIO_OVERRIDE_LIGHTS, HIGH);
@@ -294,33 +230,22 @@ void loop() {
         int ctrl_speed = keepDistance(front_avg, back_avg);
 
         // Set speed
-        setSpeed(ctrl_speed);
+        //Serial.print("DRIVING AT ");
+        //Serial.print(ctrl_speed);
+        //Serial.println("");
+        setSpeed(1550);
 
         override_was_active = true;
     } else {
         if(override_was_active) {
+            //Serial.println("Stopped");
             esc1.speed(MOTOR_STOP);
             esc2.speed(MOTOR_STOP);
 
             override_was_active = false;
         }
-        nh.spinOnce();
-    }
 
-
-    //TEST
-    int encoderTracker = 780;
-    while (encoderCount < encoderTracker){
-        turntable.setEffort(250);
-        Serial.println(encoderCount);
     }
-    encoderCount=0;
-    turntable.setEffort(0);
-    // for (int i = 0; i < 65; i++) {
-    //     turntable.setEffort(150);
-    //     Serial.println(encoderCount);
-        // delay(20);
-    // }
     sound_regulator++;
     nh.spinOnce();
 }
