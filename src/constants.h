@@ -3,8 +3,8 @@
 
 // Motor Constants
 // fullforward = 2000, fullback = 1000
-#define MOTOR_FULLFORWARD    2000
-#define MOTOR_FULLBACK       1000
+#define MOTOR_FULLFORWARD    1550.0
+#define MOTOR_FULLBACK       1450.0
 #define MOTOR_STOP           1500.0
 
 #define RF_MAX_DIST           200

@@ -233,7 +233,7 @@ void loop() {
         //Serial.print("DRIVING AT ");
         //Serial.print(ctrl_speed);
         //Serial.println("");
-        setSpeed(1550);
+        setSpeed(ctrl_speed);
 
         override_was_active = true;
     } else {
