@@ -181,6 +181,7 @@ double wheel_circ = 2*PI*wheel_rad;
 double dist_traveled = 0;
 double enc = 0;
 double rotations = 0;
+double RPM = 0;
 
 void drive_forward_inches(long inches){
     if(dist_traveled >= inches){
@@ -198,7 +199,7 @@ void encoder_counts(){
     double rot_end = rotations;
     double rot_elapsed = rot_end-rot_start;
     int time_elapsed = time_end-time_start;
-    double RPM = (rot_elapsed/time_elapsed)*1000*60;
+    RPM = (rot_elapsed/time_elapsed)*1000*60;
     //Serial.println("RPM: ");
     //Serial.print(RPM);
     //Serial.println("");
