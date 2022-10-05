@@ -173,10 +173,22 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
     }
 }
 
+int time_start = 0;
+double rot_start = 0;
 void encoder_counts(){
     int PPR = 1024; //PPR = pulses per revolution
     int enc = encoder.read();
-    Serial.println(enc);
+    double rotations = enc/PPR;
+    int time_end = millis();
+    double rot_end = rotations;
+    double rot_elapsed = rot_end-rot_start;
+    int time_elapsed = time_end-time_start;
+    double RPM = (rot_elapsed/time_elapsed)*1000*60;
+    Serial.println("RPM: ");
+    Serial.print(RPM);
+    Serial.println("");
+    time_start = time_end;
+    rot_start = rotations;
 }
 
 void loop() {
