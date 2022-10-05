@@ -217,6 +217,7 @@ void encoder_counts(){
 
 void loop() {
     encoder_counts();
+    drive_forward_inches(2.0);
     int throttle = pulseIn(PIN_A6, HIGH);
     //Serial.print("THROTTLE ");
     //Serial.println(throttle);
@@ -291,4 +292,4 @@ void loop() {
     }
     sound_regulator++;
     nh.spinOnce();
-}
+} 
