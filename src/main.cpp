@@ -79,7 +79,7 @@ void setup() {
     bat_monitor.begin();
 
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    //Serial.begin(9600); // when running robot.launch, comment this out
+    Serial.begin(9600); // when running robot.launch, comment this out
 }
 
 bool check_radio_active() {
@@ -173,7 +173,14 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
     }
 }
 
+void encoder_counts(){
+    int PPR = 1024; //PPR = pulses per revolution
+    int enc = encoder.read();
+    Serial.println(enc);
+}
+
 void loop() {
+    encoder_counts();
     int throttle = pulseIn(PIN_A6, HIGH);
     //Serial.print("THROTTLE ");
     //Serial.println(throttle);
