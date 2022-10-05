@@ -8,7 +8,7 @@
 #include <Wire.h>
 #include <Adafruit_INA260.h>
 #include <sensor_msgs/BatteryState.h>
-
+#include <Math.h>
 #include "constants.h"
 
 #define USE_USBCON
@@ -175,10 +175,18 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
 
 int time_start = 0;
 double rot_start = 0;
+double wheel_rad = 0.825;
+double wheel_circ = 2*PI*wheel_rad;
 void encoder_counts(){
-    int PPR = 1024; //PPR = pulses per revolution
-    int enc = encoder.read();
-    double rotations = enc/PPR;
+    float PPR = 1024.0; //PPR = pulses per revolution
+    float enc = encoder.read();
+    float rotations = enc/PPR;
+    Serial.println("ENC: ");
+    Serial.print(enc);
+    Serial.println("");
+    Serial.println("Rot ");
+    Serial.print(rotations);
+    Serial.println("");
     int time_end = millis();
     double rot_end = rotations;
     double rot_elapsed = rot_end-rot_start;
@@ -189,7 +197,12 @@ void encoder_counts(){
     Serial.println("");
     time_start = time_end;
     rot_start = rotations;
+    double dist_traveled = rotations * wheel_circ;
+    Serial.println("Dist traveled: ");
+    Serial.print(dist_traveled);
+    Serial.println("");
 }
+
 
 void loop() {
     encoder_counts();
