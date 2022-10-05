@@ -177,6 +177,17 @@ int time_start = 0;
 double rot_start = 0;
 double wheel_rad = 0.825;
 double wheel_circ = 2*PI*wheel_rad;
+
+double dist_traveled = 0;
+
+void drive_forward_inches(long inches){
+    if(dist_traveled >= inches){
+        setSpeed(1500);
+    }else{
+        setSpeed(1550);
+    }
+}
+
 void encoder_counts(){
     float PPR = 1024.0; //PPR = pulses per revolution
     float enc = encoder.read();
@@ -197,7 +208,7 @@ void encoder_counts(){
     Serial.println("");
     time_start = time_end;
     rot_start = rotations;
-    double dist_traveled = rotations * wheel_circ;
+    dist_traveled = rotations * wheel_circ;
     Serial.println("Dist traveled: ");
     Serial.print(dist_traveled);
     Serial.println("");
