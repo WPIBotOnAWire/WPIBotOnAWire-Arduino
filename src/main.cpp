@@ -156,6 +156,9 @@ void setSpeed(int throttle){
     // Sets the speed of the motors with a given input
     esc1.speed(throttle);
     esc2.speed(throttle);
+    Serial.println("Driving at ");
+    Serial.print(throttle);
+    Serial.println("");
 }
 
 void detectMode(int detect_pin, int front_avg, int back_avg){
@@ -179,6 +182,18 @@ double wheel_rad = 0.825;
 double wheel_circ = 2*PI*wheel_rad;
 
 double dist_traveled = 0;
+double RPM = 0;
+const float Kp = .3; 
+const float Ki = 0.1;
+
+void drive_rpm(double target_speed){
+    float diff_rpm = target_speed-RPM;
+    float adj_speed = Kp*diff_rpm + Ki*diff_rpm;
+    setSpeed(diff_rpm);
+    Serial.println("Driving at PID ");
+    Serial.print(diff_rpm);
+    Serial.println("");
+}
 
 void drive_forward_inches(long inches){
     if(dist_traveled >= inches){
@@ -187,6 +202,8 @@ void drive_forward_inches(long inches){
         setSpeed(1550);
     }
 }
+
+
 
 void encoder_counts(){
     float PPR = 1024.0; //PPR = pulses per revolution
@@ -202,7 +219,7 @@ void encoder_counts(){
     double rot_end = rotations;
     double rot_elapsed = rot_end-rot_start;
     int time_elapsed = time_end-time_start;
-    double RPM = (rot_elapsed/time_elapsed)*1000*60;
+    RPM = (rot_elapsed/time_elapsed)*1000*60;
     Serial.println("RPM: ");
     Serial.print(RPM);
     Serial.println("");
@@ -215,9 +232,12 @@ void encoder_counts(){
 }
 
 
+
+
 void loop() {
     encoder_counts();
-    drive_forward_inches(2.0);
+    drive_rpm(0);
+    //drive_forward_inches(2.0);
     int throttle = pulseIn(PIN_A6, HIGH);
     //Serial.print("THROTTLE ");
     //Serial.println(throttle);
