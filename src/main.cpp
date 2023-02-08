@@ -7,7 +7,6 @@
 #include <Wire.h>
 #include <Adafruit_INA260.h>
 #include <sensor_msgs/BatteryState.h>
-#include <Math.h>
 #include "encoderController.h"
 
 #define USE_USBCON
@@ -19,6 +18,7 @@ ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
 encoderController EC = encoderController();
+int encoder_counts=0;
 
 ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
@@ -177,13 +177,7 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
     }
 }
 
-int time_start = 0;
-double rot_start = 0;
 
-double dist_traveled = 0;
-double RPM = 0;
-const float Kp = .3; 
-const float Ki = 0.1;
 
 void drive_rpm(double target_speed){
     float pid_speed EC.pid_effort_rpm(target_speed);
@@ -194,36 +188,28 @@ void drive_rpm(double target_speed){
 }
 
 void drive_forward_inches(long inches){
-    if(dist_traveled >= inches){
-        setSpeed(1500);
-    }else{
-        setSpeed(1550);
-    }
+    // if(dist_traveled >= inches){
+    //     setSpeed(1500);
+    // }else{
+    //     setSpeed(1550);
+    // }
 }
 
-
-
-
-
-
-
-void pid(){
- 
-}
 
 void loop() {
     
-    restructure encoder count reads
-    // this.encoderCounts = encoder_counts();
+    // restructure encoder count reads
+    encoder_counts = EC.get_encoder_counts();
     drive_rpm(0);
     // this.previousEncoderCounts = encoderCounts;
     //drive_forward_inches(2.0);
     int throttle = pulseIn(PIN_A6, HIGH);
     //Serial.print("THROTTLE ");
     //Serial.println(throttle);
+    
     // Publish Encoder
-    // enc_val.data = this.encoderCounts;
-    // pub_enc.publish(&enc_val);
+    enc_val.data = encoder_counts;
+    pub_enc.publish(&enc_val);
 
     // Publish Rangefinders
     //Front is MB 1043 (mm model)

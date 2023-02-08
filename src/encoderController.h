@@ -5,11 +5,11 @@ public:
 
 encoderController(void);
 void init(void);
-void encoder_counts(void);
 float rotations(void);
 float rpm(float rotations);
 float dist_traveled(float rotations);
-void pid_effort_rpm(double target_speed);
+float pid_effort_rpm(double target_speed);
+int get_encoder_counts(void);
 
 
 private:
@@ -19,6 +19,7 @@ int time_start;
 double rot_start;
 const float Kp = .3; 
 const float Ki = 0.1;
+void encoder_counts(void);
 
 
 };
