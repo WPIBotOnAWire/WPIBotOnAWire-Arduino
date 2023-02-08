@@ -1,4 +1,5 @@
 #pragma once
+#include <math.h>
 #include "pins_arduino.h"
 
 // Motor Constants
@@ -54,3 +55,4 @@
 // ENCODER AND PID CONSTANTS
 #define WHEEL_RADIUS            0.825;
 #define WHEEL_CIRCUMFRANCE      2*PI*WHEEL_RADIUS;
+#define PPR                     1024.0; // pulses per revolution of the encoder
