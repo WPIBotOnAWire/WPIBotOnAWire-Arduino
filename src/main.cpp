@@ -4,21 +4,21 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 #include <ESC.h>
-#include <Encoder.h>
 #include <Wire.h>
 #include <Adafruit_INA260.h>
 #include <sensor_msgs/BatteryState.h>
 #include <Math.h>
-#include "constants.h"
+#include "encoderController.h"
 
 #define USE_USBCON
 
+// battery Monitor
 Adafruit_INA260 bat_monitor = Adafruit_INA260();
 
 ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
-Encoder encoder(ENCODER_PIN1, ENCODER_PIN2);
+encoderController EC = encoderController();
 
 ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
@@ -33,8 +33,9 @@ ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
 
 int sound_regulator = 0;
-
 bool override_was_active = false;
+
+
 
 float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -178,8 +179,6 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
 
 int time_start = 0;
 double rot_start = 0;
-double wheel_rad = 0.825;
-double wheel_circ = 2*PI*wheel_rad;
 
 double dist_traveled = 0;
 double RPM = 0;
@@ -187,11 +186,10 @@ const float Kp = .3;
 const float Ki = 0.1;
 
 void drive_rpm(double target_speed){
-    float diff_rpm = target_speed-RPM;
-    float adj_speed = Kp*diff_rpm + Ki*diff_rpm;
-    setSpeed(diff_rpm);
+    float pid_speed EC.pid_effort_rpm(target_speed);
+    setSpeed(pid_speed);
     Serial.println("Driving at PID ");
-    Serial.print(diff_rpm);
+    Serial.print(pid_speed);
     Serial.println("");
 }
 
@@ -205,45 +203,27 @@ void drive_forward_inches(long inches){
 
 
 
-void encoder_counts(){
-    float PPR = 1024.0; //PPR = pulses per revolution
-    float enc = encoder.read();
-    float rotations = enc/PPR;
-    Serial.println("ENC: ");
-    Serial.print(enc);
-    Serial.println("");
-    Serial.println("Rot ");
-    Serial.print(rotations);
-    Serial.println("");
-    int time_end = millis();
-    double rot_end = rotations;
-    double rot_elapsed = rot_end-rot_start;
-    int time_elapsed = time_end-time_start;
-    RPM = (rot_elapsed/time_elapsed)*1000*60;
-    Serial.println("RPM: ");
-    Serial.print(RPM);
-    Serial.println("");
-    time_start = time_end;
-    rot_start = rotations;
-    dist_traveled = rotations * wheel_circ;
-    Serial.println("Dist traveled: ");
-    Serial.print(dist_traveled);
-    Serial.println("");
+
+
+
+
+void pid(){
+ 
 }
 
-
-
-
 void loop() {
-    encoder_counts();
+    
+    restructure encoder count reads
+    // this.encoderCounts = encoder_counts();
     drive_rpm(0);
+    // this.previousEncoderCounts = encoderCounts;
     //drive_forward_inches(2.0);
     int throttle = pulseIn(PIN_A6, HIGH);
     //Serial.print("THROTTLE ");
     //Serial.println(throttle);
     // Publish Encoder
-    enc_val.data = encoder.read();
-    pub_enc.publish(&enc_val);
+    // enc_val.data = this.encoderCounts;
+    // pub_enc.publish(&enc_val);
 
     // Publish Rangefinders
     //Front is MB 1043 (mm model)

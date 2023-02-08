@@ -50,3 +50,7 @@
 // the number of times loop() runs in a second
 // might change if more things are added to loop()
 #define LOOP_CONSTANT           17
+
+// ENCODER AND PID CONSTANTS
+#define WHEEL_RADIUS            0.825;
+#define WHEEL_CIRCUMFRANCE      2*PI*WHEEL_RADIUS;
