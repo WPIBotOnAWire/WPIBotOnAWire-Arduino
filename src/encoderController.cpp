@@ -56,9 +56,18 @@ float encoderController::pid_effort_rpm(double target_speed){
     Serial.println("PID effort ");
     Serial.print(diff_rpm);
     Serial.println("");
+    return adj_speed;
 }
 
 int encoderController::get_encoder_counts(void){
     encoder_counts();
+    Serial.println("PID effort ");
+    Serial.print(encoderCounts);
+    Serial.println("");
     return encoderCounts;
 };
+
+// void loop(){
+//     encoderController EC  = encoderController();
+//     EC.get_encoder_counts();
+// };

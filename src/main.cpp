@@ -180,8 +180,8 @@ void detectMode(int detect_pin, int front_avg, int back_avg){
 
 
 void drive_rpm(double target_speed){
-    float pid_speed EC.pid_effort_rpm(target_speed);
-    setSpeed(pid_speed);
+    float pid_speed = EC.pid_effort_rpm(target_speed);
+    // setSpeed(pid_speed);
     Serial.println("Driving at PID ");
     Serial.print(pid_speed);
     Serial.println("");
