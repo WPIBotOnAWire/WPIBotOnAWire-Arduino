@@ -66,8 +66,3 @@ int encoderController::get_encoder_counts(void){
     Serial.println("");
     return encoderCounts;
 };
-
-// void loop(){
-//     encoderController EC  = encoderController();
-//     EC.get_encoder_counts();
-// };
