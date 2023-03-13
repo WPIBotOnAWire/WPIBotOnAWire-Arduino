@@ -76,4 +76,12 @@
         pub_rf_front.publish(&rf_front_val);
 
         rf_back_val.data = (rf_back);
+        pub_rf_front.publish(&rf_back_val);
     }
+
+    void rosHandler::publishBatLevels(float voltage,float current){
+                bat_msg.voltage = voltage;
+                bat_msg.current = current;
+
+                pub_bat_level.publish(&bat_msg);
+        }
