@@ -85,7 +85,8 @@ void cb_led(const std_msgs::Bool &msg) {
 }
 
 void cb_motor(const std_msgs::Float32 &msg) {
-    int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
+    //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
+    int speed = msg.data;
     esc1.speed(speed);
     esc2.speed(speed);
 }
