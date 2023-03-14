@@ -14,6 +14,13 @@ class rosHandler{
         void publishEncoderCounts(int encoderCounts);
         void publishRangeFinders(float rf_front, float rf_back);
         void publishBatLevels(float current, float voltage);
+        void publishFrontRF(float front_val);
+        void publishBackRF(float rf_back);
+        void logwarn(const char* msg);
+        void loginfo(const char* msg);
+        void rfSetup(void);
+        bool connected(void);
+        void cb_led(const std_msgs::Bool &msg);
         
     private:
 
