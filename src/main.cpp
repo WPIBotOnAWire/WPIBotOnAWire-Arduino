@@ -27,6 +27,8 @@ int sound_regulator = 0;
 bool override_was_active = false;
 
 void init_motors(){
+    //sets up the ESCs and battery info to allow them to spin
+    //ESCs need battery to spin. 2021-22 team was a bunch of drone bros and picked this garbage
     esc1.arm();
     esc2.arm();
 
@@ -41,18 +43,17 @@ void init_motors(){
 }
 
 void setSpeed(int throttle){
+    //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
     bat_msg.voltage = bat_monitor.readBusVoltage();
     bat_msg.current = bat_monitor.readCurrent();
     pub_bat_level.publish(&bat_msg);
-    //THESE ARE NEEDED TO MAKE MOTOR SPIN ^^^^
-    
+
     // Sets the speed of the motors with a given input
     esc1.speed(throttle);
     esc2.speed(throttle);
 }
 
 void setup() {
-
     init_motors();
     //Serial.begin(9600); // when running robot.launch, comment this out
 }
@@ -60,7 +61,6 @@ void setup() {
 
 void loop() {
     setSpeed(1400);
-
     override_was_active = true;
     sound_regulator++;
     nh.spinOnce();
