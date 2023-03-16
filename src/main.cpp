@@ -15,15 +15,13 @@
 
 // battery Monitor
 Adafruit_INA260 bat_monitor = Adafruit_INA260();
-sensor_msgs::BatteryState bat_msg;
-ros::Publisher pub_bat_level("/battery", &bat_msg);
 
 ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
 rangefinder rf;
 rosHandler rh = rf.rh;
-ros::NodeHandle NH = rh.nh;
+
 encoderController EC = encoderController();
 int encoder_counts = 0;
 int sound_regulator = 0;
@@ -40,7 +38,6 @@ void setup()
   esc1.speed(MOTOR_STOP);
   esc2.speed(MOTOR_STOP);
   rf.init();
-  NH.advertise(pub_bat_level);
   bat_monitor.begin();
   pinMode(RADIO_OVERRIDE_PIN, INPUT);
   // Serial.begin(9600); // when running robot.launch, comment this out
@@ -73,15 +70,6 @@ void drive_forward_inches(long inches)
   //     setSpeed(1550);
   // }
 }
-
-void publishBatLevels(float voltage, float current)
-{
-    bat_msg.voltage = voltage;
-    bat_msg.current = current;
-
-    pub_bat_level.publish(&bat_msg);
-}
-
 
 void loop()
 {
@@ -122,11 +110,10 @@ void loop()
   rh.publishRangeFinders(rf_front_in, rf_back_in);
 
   // Publish Battery Levels
-  publishBatLevels(bat_monitor.readBusVoltage(), bat_monitor.readCurrent());
+  rh.publishBatLevels(bat_monitor.readBusVoltage(), bat_monitor.readCurrent());
   // THESE ARE NEEDED TO MAKE MOTOR SPIN ^^^^ -- theyre now in one function
   rf.range();
   override_was_active = true;
   sound_regulator++;
   rh.spin();
 }
-

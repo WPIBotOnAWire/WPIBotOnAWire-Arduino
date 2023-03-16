@@ -6,6 +6,7 @@ ros::NodeHandle nh;
 std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
 std_msgs::Bool man_override;
 std_msgs::Int32 speaker_val;
+sensor_msgs::BatteryState bat_msg;
 
 // subscribers
 // ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
@@ -14,6 +15,7 @@ std_msgs::Int32 speaker_val;
 ros::Publisher pub_enc("/encoder", &enc_val);
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
+ros::Publisher pub_bat_level("/battery", &bat_msg);
 ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
 
@@ -41,6 +43,7 @@ void rosHandler::init(void)
     nh.advertise(pub_enc);
     nh.advertise(pub_rf_back);
     nh.advertise(pub_rf_front);
+    nh.advertise(pub_bat_level);
     nh.advertise(pub_man_override);
     nh.advertise(pub_speakers);
 
@@ -75,6 +78,14 @@ void rosHandler::publishRangeFinders(float rf_front, float rf_back)
 {
     publishFrontRF(rf_front);
     publishBackRF(rf_back);
+}
+
+void rosHandler::publishBatLevels(float voltage, float current)
+{
+    bat_msg.voltage = voltage;
+    bat_msg.current = current;
+
+    pub_bat_level.publish(&bat_msg);
 }
 
 void rosHandler::publishFrontRF(float rf_front)
