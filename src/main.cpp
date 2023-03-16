@@ -79,6 +79,10 @@ void rangefinder(){
   }
 }
 
+float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 void setup() {
 
     esc1.arm();
@@ -90,7 +94,7 @@ void setup() {
     esc2.speed(MOTOR_STOP);
     setup_rangefinder();
     bat_monitor.begin();
-    rh.init();
+
     pinMode(RADIO_OVERRIDE_PIN, INPUT);
     // Serial.begin(9600); // when running robot.launch, comment this out
 }
@@ -137,7 +141,8 @@ void loop() {
     //Serial.println(throttle);
     
     // Publish Encoder
-    rh.publishEncoderCounts(encoder_counts);
+    enc_val.data = encoder_counts;
+    pub_enc.publish(&enc_val);
 
     // Publish Rangefinders
     //Front is MB 1043 (mm model)
@@ -149,6 +154,8 @@ void loop() {
         front_avg += rf_front_in;
     }
     front_avg /= 5;
+    rf_front_val.data = (rf_front_in);
+    pub_rf_front.publish(&rf_front_val);
 
     //Back is MB 1040 (in model)
     float rf_back_mVoltage = 0, rf_back_in = 0, back_avg = 0;
@@ -158,14 +165,16 @@ void loop() {
         back_avg += rf_back_in;
     }
     back_avg /= 5;
-    rh.publishRangeFinders(rf_front_in, rf_back_in);
+    rf_back_val.data = (rf_back_in);
+    pub_rf_back.publish(&rf_back_val);
 
-    
     // Publish Battery Levels
-    rh.publishBatLevels(bat_monitor.readBusVoltage(), bat_monitor.readCurrent());
-    //THESE ARE NEEDED TO MAKE MOTOR SPIN ^^^^ -- theyre now in one function
+    bat_msg.voltage = bat_monitor.readBusVoltage();
+    bat_msg.current = bat_monitor.readCurrent();
+    pub_bat_level.publish(&bat_msg);
+    //THESE ARE NEEDED TO MAKE MOTOR SPIN ^^^^
     rangefinder();
     override_was_active = true;
     sound_regulator++;
-    rh.spin();
+    nh.spinOnce();
 } 
