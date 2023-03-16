@@ -12,8 +12,8 @@
 
 
         //subscribers
-        ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
-        ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
+        // ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
+        // ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
         // publishers
         ros::Publisher pub_enc("/encoder", &enc_val);
         ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
@@ -47,8 +47,8 @@
         nh.advertise(pub_man_override);
         nh.advertise(pub_speakers);
 
-        nh.subscribe(led_sub);
-        nh.subscribe(motor_sub);
+        // nh.subscribe(led_sub);
+        // nh.subscribe(motor_sub);
     }
 
     void rosHandler::spin(void){

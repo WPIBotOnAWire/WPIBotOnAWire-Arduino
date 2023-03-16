@@ -12,7 +12,6 @@
 #include "Adafruit_VL53L0X.h"
 #include "constants.h"
 #include "rosHandler.h"
-
 #define USE_USBCON
 
 // battery Monitor
@@ -21,7 +20,6 @@ Adafruit_INA260 bat_monitor = Adafruit_INA260();
 ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
-rosHandler rh;
 
 encoderController EC = encoderController();
 int encoder_counts=0;
