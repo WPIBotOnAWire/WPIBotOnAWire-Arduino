@@ -10,6 +10,7 @@
 #include <sensor_msgs/BatteryState.h>
 #include "encoderController.h"
 #include "Adafruit_VL53L0X.h"
+#include "constants.h"
 #include "rosHandler.h"
 
 #define USE_USBCON
