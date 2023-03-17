@@ -29,31 +29,40 @@ int encoder_counts = 0;
 int sound_regulator = 0;
 bool override_was_active = false;
 
+void init_motors(){
+    //sets up the ESCs and battery info to allow them to spin
+    //ESCs need battery to spin. 2021-22 team was a bunch of drone bros and picked this garbage
+    esc1.arm();
+    esc2.arm();
+
+    delay(500);
+
+    esc1.speed(MOTOR_STOP);
+    esc2.speed(MOTOR_STOP);
+
+    NH.initNode();
+    NH.advertise(pub_bat_level);
+    bat_monitor.begin();
+}
+
 void setup()
 {
-
-  esc1.arm();
-  esc2.arm();
-
-  delay(500);
-
-  esc1.speed(MOTOR_STOP);
-  esc2.speed(MOTOR_STOP);
-  rf.init();
+  init_motors();
   NH.advertise(pub_bat_level);
   bat_monitor.begin();
   pinMode(RADIO_OVERRIDE_PIN, INPUT);
   // Serial.begin(9600); // when running robot.launch, comment this out
 }
 
-void setSpeed(int throttle)
-{
-  // Sets the speed of the motors with a given input
-  esc1.speed(throttle);
-  esc2.speed(throttle);
-  Serial.println("Driving at ");
-  Serial.print(throttle);
-  Serial.println("");
+void setSpeed(int throttle){
+    //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
+    bat_msg.voltage = bat_monitor.readBusVoltage();
+    bat_msg.current = bat_monitor.readCurrent();
+    pub_bat_level.publish(&bat_msg);
+
+    // Sets the speed of the motors with a given input
+    esc1.speed(throttle);
+    esc2.speed(throttle);
 }
 
 void drive_rpm(double target_speed)
@@ -85,7 +94,8 @@ void publishBatLevels(float voltage, float current)
 
 void loop()
 {
-
+  setSpeed(1400);
+  /*
   // restructure encoder count reads
   encoder_counts = EC.get_encoder_counts();
   drive_rpm(0);
@@ -125,6 +135,7 @@ void loop()
   publishBatLevels(bat_monitor.readBusVoltage(), bat_monitor.readCurrent());
   // THESE ARE NEEDED TO MAKE MOTOR SPIN ^^^^ -- theyre now in one function
   rf.range();
+  */
   override_was_active = true;
   sound_regulator++;
   rh.spin();
