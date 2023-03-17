@@ -27,6 +27,16 @@ ros::NodeHandle nh;
 sensor_msgs::BatteryState bat_msg;
 ros::Publisher pub_bat_level("/battery", &bat_msg);
 
+std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
+std_msgs::Bool man_override;
+std_msgs::Int32 speaker_val;
+ros::Publisher pub_enc("/encoder", &enc_val);
+ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
+ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
+ros::Publisher pub_man_override("/manual_override", &man_override);
+ros::Publisher pub_speakers("/play_sound", &speaker_val);
+
+
 Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
 VL53L0X_RangingMeasurementData_t measure;
 unsigned long range_timer;
