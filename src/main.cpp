@@ -136,10 +136,11 @@ void drive_forward_inches(long inches){
 }
 
 void publishEncCounts(){
-    float ecounts = EC.get_encoder_counts;
+    int ecounts = EC.get_encoder_counts();
     char result[20];
+    enc_val.data = (float)ecounts;
     dtostrf(ecounts, 20, 5, result);
-    pub_enc.publish(ecounts);
+    pub_enc.publish(enc_val);
     nh.logwarn(result);
 }
 
