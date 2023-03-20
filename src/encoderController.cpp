@@ -14,7 +14,7 @@ void encoderController::init(){
 
 void encoderController::encoder_counts(void){
     encoderCounts = encoder.read();
-    Serial.println("ENC: ");
+    // Serial.println("ENC: ");
 }
 
 float encoderController::rotations(){
@@ -61,9 +61,9 @@ float encoderController::pid_effort_rpm(double target_speed){
 
 int encoderController::get_encoder_counts(void){
     encoder_counts();
-    Serial.println("PID effort ");
-    Serial.print(encoderCounts);
-    Serial.println("");
+    // Serial.println("PID effort ");
+    // Serial.print(encoderCounts);
+    // Serial.println("");
     return encoderCounts;
 };
 
