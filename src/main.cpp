@@ -140,7 +140,7 @@ void publishEncCounts(){
     char result[20];
     enc_val.data = ecounts;
     dtostrf(ecounts, 20, 5, result);
-    pub_enc.publish(enc_val);
+    pub_enc.publish(&enc_val);
     nh.logwarn(result);
 }
 
