@@ -102,7 +102,13 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-void setSpeed(int throttle){
+void setSpeed(int percent){
+  int value = percent*1;
+  setThrottle(1500+value);
+
+}
+
+void setThrottle(int throttle){
     //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
     bat_msg.voltage = bat_monitor.readBusVoltage();
     bat_msg.current = bat_monitor.readCurrent();
@@ -152,7 +158,7 @@ void setup() {
 
 
 void loop() {
-    setSpeed(1400);
+    setSpeed(-100);
     publishEncCounts();
     rangefinder();
     override_was_active = true;
