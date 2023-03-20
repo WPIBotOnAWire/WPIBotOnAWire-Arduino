@@ -135,60 +135,25 @@ void drive_forward_inches(long inches){
     // }
 }
 
+void publishEncCounts(){
+    float ecounts = EC.get_encoder_counts;
+    char result[20];
+    dtostrf(ecounts, 20, 5, result);
+    pub_enc.publish(ecounts);
+    nh.logwarn(result);
+}
+
 void setup() {
     init_motors();
+    EC.init();
     //Serial.begin(9600); // when running robot.launch, comment this out
 }
 
 
 void loop() {
     setSpeed(1400);
-    
-    // // restructure encoder count reads
-    // encoder_counts = EC.get_encoder_counts();
-    // drive_rpm(0);
-    // // this.previousEncoderCounts = encoderCounts;
-    // //drive_forward_inches(2.0);
-    // int throttle = pulseIn(PIN_A6, HIGH);
-    // //Serial.print("THROTTLE ");
-    // //Serial.println(throttle);
-    
-    // // Publish Encoder
-    // enc_val.data = encoder_counts;
-    // pub_enc.publish(&enc_val);
-
-    // // Publish Rangefinders
-    // //Front is MB 1043 (mm model)
-    // float rf_front_mVoltage = 0, rf_front_mm = 0, rf_front_in = 0, front_avg = 0;
-    // for (int j = 0; j < 5; j++){
-    //     rf_front_mVoltage = analogRead(USPin1)/1024.0*5.0*1000.0;
-    //     rf_front_mm = rf_front_mVoltage * 5.0 / 4.88; //From Datasheet
-    //     rf_front_in = (rf_front_mm * 0.0394); //mm to inch conversion factor
-    //     front_avg += rf_front_in;
-    // }
-    // front_avg /= 5;
-    // rf_front_val.data = (rf_front_in);
-    // pub_rf_front.publish(&rf_front_val);
-
-    // //Back is MB 1040 (in model)
-    // float rf_back_mVoltage = 0, rf_back_in = 0, back_avg = 0;
-    // for (int i = 0; i < 5; i++){
-    //     rf_back_mVoltage = analogRead(USPin2)/1024.0*5.0*1000.0;
-    //     rf_back_in = rf_back_mVoltage / 9.8; //From Datasheet
-    //     back_avg += rf_back_in;
-    // }
-    // back_avg /= 5;
-    // rf_back_val.data = (rf_back_in);
-    // pub_rf_back.publish(&rf_back_val);
-
-    // // Publish Battery Levels
-    // bat_msg.voltage = bat_monitor.readBusVoltage();
-    // bat_msg.current = bat_monitor.readCurrent();
-    // pub_bat_level.publish(&bat_msg);
-    // //THESE ARE NEEDED TO MAKE MOTOR SPIN ^^^^
-    // rangefinder();
-
-    
+    publishEncCounts();
+    rangefinder();
     override_was_active = true;
     sound_regulator++;
     nh.spinOnce();
