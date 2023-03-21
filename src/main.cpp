@@ -99,11 +99,7 @@ void rangefinder(){
 }
 
 
-void setSpeed(int percent){
-  int value = percent*1;
-  setThrottle(1500+value);
 
-}
 
 void setThrottle(int throttle){
     //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
@@ -119,7 +115,11 @@ void setThrottle(int throttle){
     Serial.println("");
 }
 
+void setSpeed(int percent){
+  int value = percent*1 + 1500;
+  setThrottle(value);
 
+}
 
 
 void drive_rpm(double target_speed){
