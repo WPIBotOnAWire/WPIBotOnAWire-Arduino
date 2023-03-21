@@ -98,9 +98,6 @@ void rangefinder(){
   }
 }
 
-float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
 
 void setSpeed(int percent){
   int value = percent*1;
@@ -143,11 +140,11 @@ void drive_forward_inches(long inches){
 
 void publishEncCounts(){
     int ecounts = EC.get_encoder_counts();
-    char result[20];
-    enc_val.data = ecounts;
-    dtostrf(ecounts, 20, 5, result);
-    pub_enc.publish(&enc_val);
-    nh.logwarn(result);
+    // char result[20];
+    // enc_val.data = ecounts;
+    // dtostrf(ecounts, 20, 5, result);
+    // pub_enc.publish(&enc_val);
+    // nh.logwarn(result);
 }
 
 void setup() {
@@ -159,7 +156,7 @@ void setup() {
 
 void loop() {
     setSpeed(-100);
-    publishEncCounts();
+    // publishEncCounts();
     rangefinder();
     override_was_active = true;
     sound_regulator++;
