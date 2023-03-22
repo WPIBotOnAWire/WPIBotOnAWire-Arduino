@@ -142,11 +142,8 @@ void drive_forward_inches(long inches){
 
 void publishEncCounts(){
     int ecounts = EC.get_encoder_counts();
-    // char result[20];
-    // enc_val.data = ecounts;
-    // dtostrf(ecounts, 20, 5, result);
-    // pub_enc.publish(&enc_val);
-    // nh.logwarn(result);
+    enc_val.data = ecounts;
+    pub_enc.publish(&enc_val);
 }
 
 void setup() {
@@ -159,6 +156,7 @@ void setup() {
 void loop() {
   //  this stiff should not be here we need to use the state machine
     updateBat();
+    publishEncCounts();
     // publishEncCounts();
     rangefinder();
     override_was_active = true;
