@@ -98,14 +98,16 @@ void rangefinder(){
   }
 }
 
-
-
-
-void setThrottle(int throttle){
+void updateBat(){
     //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
     bat_msg.voltage = bat_monitor.readBusVoltage();
     bat_msg.current = bat_monitor.readCurrent();
     pub_bat_level.publish(&bat_msg);
+}
+
+
+void setThrottle(int throttle){
+    updateBat();
 
     // Sets the speed of the motors with a given input
     esc1.speed(throttle);
@@ -156,7 +158,7 @@ void setup() {
 
 void loop() {
   //  this stiff should not be here we need to use the state machine
-    setSpeed(-100);
+    updateBat();
     // publishEncCounts();
     rangefinder();
     override_was_active = true;
