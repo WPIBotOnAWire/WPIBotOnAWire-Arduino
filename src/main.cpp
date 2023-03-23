@@ -171,7 +171,6 @@ void setup() {
 
 
 void loop() {
-  //  this stiff should not be here we need to use the state machine
     updateBat();
     publishEncCounts();
     // publishEncCounts();
