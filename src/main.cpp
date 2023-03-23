@@ -98,6 +98,23 @@ void rangefinder(){
   }
 }
 
+// function to control leds in state machine
+void cb_led(const std_msgs::Bool &msg) {
+    int state = msg.data ? HIGH : LOW;
+    digitalWrite(LED_PIN, state);
+}
+
+// function to control motors in state machine
+void cb_motor(const std_msgs::Float32 &msg) {
+    //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
+    int speed = msg.data;
+    esc1.speed(speed);
+    esc2.speed(speed);
+}
+
+ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
+ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
+
 void updateBat(){
     //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
     bat_msg.voltage = bat_monitor.readBusVoltage();
