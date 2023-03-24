@@ -134,7 +134,7 @@ void rangefinder(){
     if (measure.RangeStatus != 4) {  // phase failures have incorrect data
         rf_front_val.data = (float) measure.RangeMilliMeter/1000.0f; // convert mm to m
         pub_rf_front.publish(&rf_front_val);
-        float p = measure.RangeMilliMeter;
+        float p = measure.RangeMilliMeter/1000.0f;;
         char result[20];
         dtostrf(p, 20, 5, result);
         nh.logwarn(result);

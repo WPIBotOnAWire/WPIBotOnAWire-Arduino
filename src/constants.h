@@ -44,15 +44,15 @@
 
 // DISTANCE CONSTANCE
 
-#define APPROACH_DISTANCE       40.0 // inches
-#define STOP_DISTANCE           20.0 // inches
-#define DISTANCE_CONSTANT       100 / 30 // multiplying number
+#define APPROACH_DISTANCE       1.0 // meters
+#define STOP_DISTANCE           0.25 // meters
+#define DISTANCE_CONSTANT       100.0 / 30 .0// multiplying number
 
 // the number of times loop() runs in a second
 // might change if more things are added to loop()
 #define LOOP_CONSTANT           17
 
 // ENCODER AND PID CONSTANTS
-#define WHEEL_RADIUS            0.825;
-#define WHEEL_CIRCUMFRANCE      2*PI*WHEEL_RADIUS;
+#define WHEEL_RADIUS            0.825; // what unit??????
+#define WHEEL_CIRCUMFRANCE      2.0*PI*WHEEL_RADIUS;
 #define PPR                     1024.0; // pulses per revolution of the encoder
