@@ -107,7 +107,7 @@ void init_motors(){
 
     nh.initNode();
     nh.advertise(pub_bat_level);
-    nh.subscribe(motor_sub);
+    // nh.subscribe(motor_sub);
     bat_monitor.begin();
 
 }
@@ -181,8 +181,8 @@ void setup() {
 
 void loop() {
     updateBat();
-    publishEncCounts();
     rangefinder();
+    // publishEncCounts();
     override_was_active = true;
     sound_regulator++;
     nh.spinOnce();
