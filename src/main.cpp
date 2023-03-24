@@ -43,6 +43,41 @@ unsigned long range_timer;
 int sound_regulator = 0;
 bool override_was_active = false;
 
+void stopMotors(){
+    esc1.speed(MOTOR_STOP);
+    esc2.speed(MOTOR_STOP);
+}
+
+void updateBat(){
+    //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
+    bat_msg.voltage = bat_monitor.readBusVoltage();
+    bat_msg.current = bat_monitor.readCurrent();
+    pub_bat_level.publish(&bat_msg);
+}
+
+
+void setThrottle(int throttle){
+    updateBat();
+
+    // Sets the speed of the motors with a given input
+    esc1.speed(throttle);
+    esc2.speed(throttle);
+    Serial.println("Driving at ");
+    Serial.print(throttle);
+    Serial.println("");
+}
+
+void setSpeed(int percent){
+  int value = percent*1 + 1500;
+  if (percent == 0){
+    stopMotors();
+  } else{
+    setThrottle(value);
+  }
+  
+
+}
+
 void init_motors(){
     //sets up the ESCs and battery info to allow them to spin
     //ESCs need battery to spin. 2021-22 team was a bunch of drone bros and picked this garbage
@@ -51,16 +86,13 @@ void init_motors(){
 
     delay(500);
 
-    esc1.speed(MOTOR_STOP);
-    esc2.speed(MOTOR_STOP);
+    stopMotors();
 
     nh.initNode();
     nh.advertise(pub_bat_level);
+    nh.subscribe(motor_sub);
     bat_monitor.begin();
 
-    // setup_rangefinder();
-    // pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    // Serial.begin(9600); // when running robot.launch, comment this out
 }
 
 void setup_rangefinder(){
@@ -108,37 +140,14 @@ void cb_led(const std_msgs::Bool &msg) {
 void cb_motor(const std_msgs::Float32 &msg) {
     //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
     int speed = msg.data;
-    esc1.speed(speed);
-    esc2.speed(speed);
+    setSpeed(speed);
 }
 
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
 ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
 
-void updateBat(){
-    //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
-    bat_msg.voltage = bat_monitor.readBusVoltage();
-    bat_msg.current = bat_monitor.readCurrent();
-    pub_bat_level.publish(&bat_msg);
-}
 
 
-void setThrottle(int throttle){
-    updateBat();
-
-    // Sets the speed of the motors with a given input
-    esc1.speed(throttle);
-    esc2.speed(throttle);
-    Serial.println("Driving at ");
-    Serial.print(throttle);
-    Serial.println("");
-}
-
-void setSpeed(int percent){
-  int value = percent*1 + 1500;
-  setThrottle(value);
-
-}
 
 
 void drive_rpm(double target_speed){
@@ -165,7 +174,9 @@ void publishEncCounts(){
 
 void setup() {
     init_motors();
+    setup_rangefinder();
     EC.init();
+    // pinMode(RADIO_OVERRIDE_PIN, INPUT);
     //Serial.begin(9600); // when running robot.launch, comment this out
 }
 
