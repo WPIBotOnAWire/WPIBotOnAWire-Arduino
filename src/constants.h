@@ -53,6 +53,6 @@
 #define LOOP_CONSTANT           17
 
 // ENCODER AND PID CONSTANTS
-#define WHEEL_RADIUS            0.825; // what unit??????
+#define WHEEL_RADIUS            0.825/39.37; //inches to m
 #define WHEEL_CIRCUMFRANCE      2.0*PI*WHEEL_RADIUS;
 #define PPR                     1024.0; // pulses per revolution of the encoder
