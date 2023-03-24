@@ -78,6 +78,23 @@ void setSpeed(int percent){
 
 }
 
+
+// function to control leds in state machine
+void cb_led(const std_msgs::Bool &msg) {
+    int state = msg.data ? HIGH : LOW;
+    digitalWrite(LED_PIN, state);
+}
+
+// function to control motors in state machine
+void cb_motor(const std_msgs::Float32 &msg) {
+    //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
+    int speed = msg.data;
+    setSpeed(speed);
+}
+
+ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
+ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
+
 void init_motors(){
     //sets up the ESCs and battery info to allow them to spin
     //ESCs need battery to spin. 2021-22 team was a bunch of drone bros and picked this garbage
@@ -129,25 +146,6 @@ void rangefinder(){
     range_timer =  millis();    
   }
 }
-
-// function to control leds in state machine
-void cb_led(const std_msgs::Bool &msg) {
-    int state = msg.data ? HIGH : LOW;
-    digitalWrite(LED_PIN, state);
-}
-
-// function to control motors in state machine
-void cb_motor(const std_msgs::Float32 &msg) {
-    //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
-    int speed = msg.data;
-    setSpeed(speed);
-}
-
-ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
-ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
-
-
-
 
 
 void drive_rpm(double target_speed){
