@@ -156,7 +156,7 @@ void drive_rpm(double target_speed){
     Serial.println("");
 }
 
-void drive_forward_inches(long inches){
+void drive_forward_meters(long meters){
     // if(dist_traveled >= inches){
     //     setSpeed(1500);
     // }else{
@@ -182,7 +182,6 @@ void setup() {
 void loop() {
     updateBat();
     publishEncCounts();
-    // publishEncCounts();
     rangefinder();
     override_was_active = true;
     sound_regulator++;
