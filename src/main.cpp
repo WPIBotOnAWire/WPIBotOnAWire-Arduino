@@ -27,9 +27,9 @@ ros::NodeHandle nh;
 sensor_msgs::BatteryState bat_msg;
 ros::Publisher pub_bat_level("/battery", &bat_msg);
 
-std_msgs::Float32 rf_front_val, rf_back_val;
+std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
 std_msgs::Bool man_override;
-std_msgs::Int32 speaker_val, enc_val;
+std_msgs::Int32 speaker_val;
 ros::Publisher pub_enc("/encoder", &enc_val);
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
@@ -107,6 +107,7 @@ void init_motors(){
 
     nh.initNode();
     nh.advertise(pub_bat_level);
+    nh.advertise(pub_enc);
     // nh.subscribe(motor_sub);
     bat_monitor.begin();
 
@@ -115,6 +116,7 @@ void init_motors(){
 void setup_rangefinder(){
   nh.getHardware()->setBaud(57600);
   nh.advertise(pub_rf_front);
+  /*
   // wait controller to be connected
   while (!nh.connected()){
     nh.spinOnce();
@@ -126,6 +128,7 @@ void setup_rangefinder(){
   }
   nh.loginfo("VL53L0X API serial node started");
   // fill static range message fields
+  */
 }
 
 void rangefinder(){
@@ -167,9 +170,15 @@ void drive_forward_meters(long meters){
 void publishEncCounts(){
     //int ecounts = EC.get_encoder_counts();
     enc_val.data = 1000;
-    nh.loginfo("Enc val" + (int)enc_val.data);
+    nh.loginfo("Enc val");
     pub_enc.publish(&enc_val);
 }
+
+/*
+void initAllNodes(){
+  
+}
+*/
 
 void setup() {
     init_motors();
@@ -178,11 +187,11 @@ void setup() {
     // pinMode(RADIO_OVERRIDE_PIN, INPUT);
     //Serial.begin(9600); // when running robot.launch, comment this out
 }
-
+  
 
 void loop() {
-    updateBat();
-    rangefinder();
+    //updateBat();
+    //rangefinder();
     publishEncCounts();
     override_was_active = true;
     sound_regulator++;
