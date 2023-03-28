@@ -27,9 +27,9 @@ ros::NodeHandle nh;
 sensor_msgs::BatteryState bat_msg;
 ros::Publisher pub_bat_level("/battery", &bat_msg);
 
-std_msgs::Float32 enc_val, rf_front_val, rf_back_val;
+std_msgs::Float32 rf_front_val, rf_back_val;
 std_msgs::Bool man_override;
-std_msgs::Int32 speaker_val;
+std_msgs::Int32 speaker_val, enc_val;
 ros::Publisher pub_enc("/encoder", &enc_val);
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
@@ -108,7 +108,7 @@ void init_motors(){
     nh.initNode();
     nh.advertise(pub_bat_level);
     nh.advertise(pub_enc);
-    // nh.subscribe(motor_sub);
+    nh.subscribe(motor_sub);
     bat_monitor.begin();
 
 }
@@ -168,9 +168,11 @@ void drive_forward_meters(long meters){
 }
 
 void publishEncCounts(){
-    //int ecounts = EC.get_encoder_counts();
-    enc_val.data = 1000;
-    nh.loginfo("Enc val");
+    int ecounts = EC.get_encoder_counts();
+    enc_val.data = ecounts;
+    char result[20];
+    dtostrf(ecounts, 20, 5, result);
+    nh.logwarn(result);
     pub_enc.publish(&enc_val);
 }
 
@@ -182,8 +184,8 @@ void initAllNodes(){
 
 void setup() {
     init_motors();
-    setup_rangefinder();
-    EC.init();
+    //setup_rangefinder();
+    //EC.init();
     // pinMode(RADIO_OVERRIDE_PIN, INPUT);
     //Serial.begin(9600); // when running robot.launch, comment this out
 }
