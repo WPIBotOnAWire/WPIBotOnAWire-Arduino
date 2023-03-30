@@ -116,7 +116,7 @@ void init_motors(){
 void setup_rangefinder(){
   nh.getHardware()->setBaud(57600);
   nh.advertise(pub_rf_front);
-  /*
+  
   // wait controller to be connected
   while (!nh.connected()){
     nh.spinOnce();
@@ -128,7 +128,7 @@ void setup_rangefinder(){
   }
   nh.loginfo("VL53L0X API serial node started");
   // fill static range message fields
-  */
+  
 }
 
 void rangefinder(){
@@ -137,7 +137,7 @@ void rangefinder(){
     if (measure.RangeStatus != 4) {  // phase failures have incorrect data
         rf_front_val.data = (float) measure.RangeMilliMeter/1000.0f; // convert mm to m
         pub_rf_front.publish(&rf_front_val);
-        float p = measure.RangeMilliMeter/1000.0f; // m
+        float p = measure.RangeMilliMeter /1000.0f; // m
         char result[20];
         dtostrf(p, 20, 5, result);
         nh.logwarn(result);
@@ -184,7 +184,7 @@ void initAllNodes(){
 
 void setup() {
     init_motors();
-    //setup_rangefinder();
+    setup_rangefinder();
     //EC.init();
     // pinMode(RADIO_OVERRIDE_PIN, INPUT);
     //Serial.begin(9600); // when running robot.launch, comment this out
@@ -192,8 +192,8 @@ void setup() {
   
 
 void loop() {
-    //updateBat();
-    //rangefinder();
+    updateBat();
+    rangefinder();
     publishEncCounts();
     override_was_active = true;
     sound_regulator++;
