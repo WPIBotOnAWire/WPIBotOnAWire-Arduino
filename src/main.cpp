@@ -140,11 +140,11 @@ void rangefinder(){
         float p = measure.RangeMilliMeter /1000.0f; // m
         char result[20];
         dtostrf(p, 20, 5, result);
-        nh.logwarn(result);
+        // nh.logwarn(result);
     } else {
       rf_front_val.data = (float) -999999999;
       pub_rf_front.publish(&rf_front_val);
-      nh.logwarn("Out of range"); // if out of range, don't send message
+      // nh.logwarn("Out of range"); // if out of range, don't send message
     }
     range_timer =  millis();    
   }
@@ -170,10 +170,11 @@ void drive_forward_meters(long meters){
 void publishEncCounts(){
     int ecounts = EC.get_encoder_counts();
     enc_val.data = ecounts;
+    pub_enc.publish(&enc_val);
     char result[20];
     dtostrf(ecounts, 20, 5, result);
     nh.logwarn(result);
-    pub_enc.publish(&enc_val);
+    
 }
 
 /*

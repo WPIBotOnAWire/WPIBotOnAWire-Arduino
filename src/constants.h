@@ -12,8 +12,8 @@
 
 // Pins
 #define LED_PIN                12
-#define ENCODER_PIN1           18
-#define ENCODER_PIN2           19
+#define ENCODER_PIN1           45
+#define ENCODER_PIN2           47
      
 #define TRIGGER_PIN_FRONT      21
 #define ECHO_PIN_FRONT         20
