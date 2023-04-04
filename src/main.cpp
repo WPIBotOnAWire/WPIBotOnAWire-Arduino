@@ -8,9 +8,9 @@
 #include <Wire.h>
 #include <Adafruit_INA260.h>
 #include <sensor_msgs/BatteryState.h>
-#include "encoderController.h"
 #include "Adafruit_VL53L0X.h"
 #include "constants.h"
+#include <RotaryEncoder.h>
 #define USE_USBCON
 
 // battery Monitor
@@ -20,7 +20,10 @@ ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
 
-encoderController EC = encoderController();
+// Setup a RotaryEncoder with 4 steps per latch for the 2 signal input pins:
+// RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::FOUR3);
+// Setup a RotaryEncoder with 2 steps per latch for the 2 signal input pins:
+RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::TWO03);
 int encoder_counts=0;
 
 ros::NodeHandle nh;
@@ -150,13 +153,12 @@ void rangefinder(){
   }
 }
 
-
 void drive_rpm(double target_speed){
-    float pid_speed = EC.pid_effort_rpm(target_speed);
-    // setSpeed(pid_speed);
-    Serial.println("Driving at PID ");
-    Serial.print(pid_speed);
-    Serial.println("");
+    // float pid_speed = EC.pid_effort_rpm(target_speed);
+    // // setSpeed(pid_speed);
+    // Serial.println("Driving at PID ");
+    // Serial.print(pid_speed);
+    // Serial.println("");
 }
 
 void drive_forward_meters(long meters){
@@ -166,16 +168,38 @@ void drive_forward_meters(long meters){
     //     setSpeed(1550);
     // }
 }
-
-void publishEncCounts(){
-    int ecounts = EC.get_encoder_counts();
-    enc_val.data = ecounts;
-    pub_enc.publish(&enc_val);
-    char result[20];
-    dtostrf(ecounts, 20, 5, result);
-    nh.logwarn(result);
-    
+//  encoder stuff
+void setup_encoder(){
+  while (! Serial);
+  Serial.println("LimitedRotator example for the RotaryEncoder library.");
+  encoder.setPosition(10 / ROTARYSTEPS); // start with the value of 10.
 }
+
+void publishEncCounts(int ecounts){
+    enc_val.data = ecounts;
+    // Serial.print(enc_val.data);
+    // Serial.println();
+    pub_enc.publish(&enc_val);
+}
+
+int lastPos = -1;
+void encoderCounts(){
+    encoder.tick();
+  // get the current physical position and calc the logical position
+  int newPos = encoder.getPosition() * ROTARYSTEPS;
+  if (newPos < ROTARYMIN) {
+    encoder.setPosition(ROTARYMIN / ROTARYSTEPS);
+    newPos = ROTARYMIN;
+  } else if (newPos > ROTARYMAX) {
+    encoder.setPosition(ROTARYMAX / ROTARYSTEPS);
+    newPos = ROTARYMAX;
+  } // if
+  if (lastPos != newPos) {
+    lastPos = newPos;
+    publishEncCounts(newPos);
+  } // if
+}
+
 
 /*
 void initAllNodes(){
@@ -185,17 +209,17 @@ void initAllNodes(){
 
 void setup() {
     init_motors();
-    setup_rangefinder();
-    //EC.init();
+    // setup_rangefinder();
+    setup_encoder();
     // pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    //Serial.begin(9600); // when running robot.launch, comment this out
+    // Serial.begin(9600); // when running robot.launch, comment this out
 }
   
 
 void loop() {
     updateBat();
-    rangefinder();
-    publishEncCounts();
+    // rangefinder();
+    encoderCounts();
     override_was_active = true;
     sound_regulator++;
     nh.spinOnce();

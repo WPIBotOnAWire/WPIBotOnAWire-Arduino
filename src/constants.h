@@ -56,3 +56,8 @@
 #define WHEEL_RADIUS            0.825/39.37; //inches to m
 #define WHEEL_CIRCUMFRANCE      2.0*PI*WHEEL_RADIUS;
 #define PPR                     1024.0; // pulses per revolution of the encoder
+#define ROTARYSTEPS 1
+#define ROTARYMIN -16000
+#define ROTARYMAX 16000
+#define PIN_IN1 ENCODER_PIN1
+#define PIN_IN2 ENCODER_PIN2
