@@ -170,6 +170,9 @@ void drive_forward_meters(long meters){
 }
 //  encoder stuff
 void setup_encoder(){
+    while (!nh.connected()){
+    nh.spinOnce();
+  }
   while (! Serial);
   Serial.println("LimitedRotator example for the RotaryEncoder library.");
   encoder.setPosition(10 / ROTARYSTEPS); // start with the value of 10.
@@ -180,9 +183,11 @@ void publishEncCounts(int ecounts){
     // Serial.print(enc_val.data);
     // Serial.println();
     pub_enc.publish(&enc_val);
+    nh.spinOnce();
 }
 
 int lastPos = -1;
+int encodercount = 0;
 void encoderCounts(){
     encoder.tick();
   // get the current physical position and calc the logical position
@@ -196,8 +201,10 @@ void encoderCounts(){
   } // if
   if (lastPos != newPos) {
     lastPos = newPos;
-    publishEncCounts(newPos);
+    encodercount = newPos;
+    
   } // if
+  publishEncCounts(encodercount);
 }
 
 
@@ -215,12 +222,15 @@ void setup() {
     // Serial.begin(9600); // when running robot.launch, comment this out
 }
   
-
+long timer;
 void loop() {
-    updateBat();
-    // rangefinder();
-    encoderCounts();
-    override_was_active = true;
-    sound_regulator++;
-    nh.spinOnce();
+    if(millis()-timer> 1000){
+      updateBat();
+      // rangefinder();
+      // encoderCounts();
+      override_was_active = true;
+      sound_regulator++;
+      timer = millis();
+    }
+  nh.spinOnce();
 } 
