@@ -117,7 +117,7 @@ void init_motors(){
 }
 
 void setup_rangefinder(){
-  nh.getHardware()->setBaud(57600);
+  nh.getHardware()->setBaud(9600);
   nh.advertise(pub_rf_front);
   
   // wait controller to be connected
