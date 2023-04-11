@@ -39,6 +39,7 @@ ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
 ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
 
+
 Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
 VL53L0X_RangingMeasurementData_t measure;
 unsigned long range_timer;
@@ -64,9 +65,9 @@ void setThrottle(int throttle){
     // Sets the speed of the motors with a given input
     esc1.speed(throttle);
     esc2.speed(throttle);
-    // Serial.println("Driving at ");
-    // Serial.print(throttle);
-    // Serial.println("");
+    Serial.println("Driving at ");
+    Serial.print(throttle);
+    Serial.println("");
 }
 
 void setSpeed(int percent){
@@ -125,7 +126,7 @@ void setup_rangefinder(){
   }
   // if initialization failed - write message and freeze
   if (!sensor.begin()) {
-    // nh.logwarn("Failed to setup VL53L0X sensor");
+    nh.logwarn("Failed to setup VL53L0X sensor");
     while(1);
   }
   nh.loginfo("VL53L0X API serial node started");
@@ -169,8 +170,11 @@ void drive_forward_meters(long meters){
 }
 //  encoder stuff
 void setup_encoder(){
-  // while (! Serial);
-  // Serial.println("LimitedRotator example for the RotaryEncoder library.");
+    while (!nh.connected()){
+    nh.spinOnce();
+  }
+  while (! Serial);
+  Serial.println("LimitedRotator example for the RotaryEncoder library.");
   encoder.setPosition(10 / ROTARYSTEPS); // start with the value of 10.
 }
 
@@ -221,7 +225,7 @@ void setup() {
 long timer;
 void loop() {
     if(millis()-timer> 1000){
-      // updateBat();
+      updateBat();
       // rangefinder();
       // encoderCounts();
       override_was_active = true;
