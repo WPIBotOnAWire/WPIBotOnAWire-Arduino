@@ -1,18 +1,19 @@
 #pragma once
+#include <math.h>
 #include "pins_arduino.h"
 
 // Motor Constants
 // fullforward = 2000, fullback = 1000
-#define MOTOR_FULLFORWARD    1550.0
-#define MOTOR_FULLBACK       1450.0
+#define MOTOR_FULLFORWARD    1600.0
+#define MOTOR_FULLBACK       1400.0
 #define MOTOR_STOP           1500.0
 
 #define RF_MAX_DIST           200
 
 // Pins
 #define LED_PIN                12
-#define ENCODER_PIN1           18
-#define ENCODER_PIN2           19
+#define ENCODER_PIN1           45
+#define ENCODER_PIN2           47
      
 #define TRIGGER_PIN_FRONT      21
 #define ECHO_PIN_FRONT         20
@@ -43,10 +44,20 @@
 
 // DISTANCE CONSTANCE
 
-#define APPROACH_DISTANCE       40.0 // inches
-#define STOP_DISTANCE           20.0 // inches
-#define DISTANCE_CONSTANT       100 / 30 // multiplying number
+#define APPROACH_DISTANCE       1.0 // meters
+#define STOP_DISTANCE           0.25 // meters
+#define DISTANCE_CONSTANT       100.0 / 30 .0// multiplying number
 
 // the number of times loop() runs in a second
 // might change if more things are added to loop()
 #define LOOP_CONSTANT           17
+
+// ENCODER AND PID CONSTANTS
+#define WHEEL_RADIUS            0.825/39.37; //inches to m
+#define WHEEL_CIRCUMFRANCE      2.0*PI*WHEEL_RADIUS;
+#define PPR                     1024.0; // pulses per revolution of the encoder
+#define ROTARYSTEPS 1
+#define ROTARYMIN -16000
+#define ROTARYMAX 16000
+#define PIN_IN1 ENCODER_PIN1
+#define PIN_IN2 ENCODER_PIN2
