@@ -193,12 +193,6 @@ void encoderCounts(){
 }
 
 
-/*
-void initAllNodes(){
-  
-}
-*/
-
 void setup() {
     init_motors();
     // setup_rangefinder();
