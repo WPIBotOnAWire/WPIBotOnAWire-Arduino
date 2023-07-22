@@ -153,13 +153,6 @@ void rangefinder(){
   }
 }
 
-void drive_forward_meters(long meters){
-    // if(dist_traveled >= inches){
-    //     setSpeed(1500);
-    // }else{
-    //     setSpeed(1550);
-    // }
-}
 //  encoder stuff
 void setup_encoder(){
     while (!nh.connected()){
