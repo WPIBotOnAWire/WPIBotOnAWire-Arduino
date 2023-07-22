@@ -153,14 +153,6 @@ void rangefinder(){
   }
 }
 
-void drive_rpm(double target_speed){
-    // float pid_speed = EC.pid_effort_rpm(target_speed);
-    // // setSpeed(pid_speed);
-    // Serial.println("Driving at PID ");
-    // Serial.print(pid_speed);
-    // Serial.println("");
-}
-
 void drive_forward_meters(long meters){
     // if(dist_traveled >= inches){
     //     setSpeed(1500);
