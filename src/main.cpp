@@ -14,7 +14,7 @@
 #include "constants.h"
 #include <RotaryEncoder.h>
 
-#include "rangefinder.h"
+#include "rangefinder-ROS.h"
 
 /** 
  * By defining USE_USBCON, ROS will use the USB interface and debugging will be set up on Serial1.

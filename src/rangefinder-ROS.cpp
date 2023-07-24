@@ -1,4 +1,5 @@
-#include "rangefinder.h"
+#include "rangefinder-ROS.h"
+#include <HC-SR04.h>
 
 std_msgs::Int16 mbFrontMM; //in mm; use negative for errors?
 ros::Publisher pubMBfront("/rangefinder/front/MB", &mbFrontMM);
@@ -7,6 +8,8 @@ void setup_rangefinder(ros::NodeHandle& nh)
 {
   //nh.getHardware()->setBaud(9600); //struggling to understand this one...
   nh.advertise(pubMBfront);
+
+
   
   // // wait controller to be connected
   // while (!nh.connected()){
