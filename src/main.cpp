@@ -141,8 +141,8 @@ void rangefinder(){
         rf_front_val.data = (float) measure.RangeMilliMeter/1000.0f; // convert mm to m
         pub_rf_front.publish(&rf_front_val);
         float p = measure.RangeMilliMeter /1000.0f; // m
-        char result[20];
-        dtostrf(p, 20, 5, result);
+        //char result[20];
+        //dtostrf(p, 20, 5, result);
         // nh.logwarn(result);
     } else {
       rf_front_val.data = (float) -999999999;
