@@ -3,6 +3,7 @@
 #include <ros/time.h>
 #include <std_msgs/Int16.h>
 #include <std_msgs/Int32.h>
+//#include <std_msgs/UInt16.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
 #include <ESC.h>
@@ -51,6 +52,9 @@ ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
 ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
+
+std_msgs::Int16 mbFrontMM; //in mm; use negative for errors?
+ros::Publisher pubMBfront("/rangefinder/front/MB", &mbFrontMM);
 
 
 Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
