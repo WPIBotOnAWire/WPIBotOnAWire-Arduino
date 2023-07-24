@@ -125,25 +125,24 @@ void init_motors(){
     nh.advertise(pub_enc);
     nh.subscribe(motor_sub);
     bat_monitor.begin();
-
 }
 
 void setup_rangefinder()
 {
-  nh.getHardware()->setBaud(9600);
-  nh.advertise(pub_rf_front);
+  //nh.getHardware()->setBaud(9600); //struggling to understand this one...
+  nh.advertise(pubMBfront);
   
-  // wait controller to be connected
-  while (!nh.connected()){
-    nh.spinOnce();
-  }
-  // if initialization failed - write message and freeze
-  if (!sensor.begin()) {
-    nh.logwarn("Failed to setup VL53L0X sensor");
-    while(1);
-  }
-  nh.loginfo("VL53L0X API serial node started");
-  // fill static range message fields
+  // // wait controller to be connected
+  // while (!nh.connected()){
+  //   nh.spinOnce();
+  // }
+  // // if initialization failed - write message and freeze
+  // if (!sensor.begin()) {
+  //   nh.logwarn("Failed to setup VL53L0X sensor");
+  //   while(1);
+  // }
+  // nh.loginfo("VL53L0X API serial node started");
+  // // fill static range message fields
   
 }
 
@@ -166,21 +165,7 @@ void rangefinder(){
   }
 }
 
-void drive_rpm(double target_speed){
-    // float pid_speed = EC.pid_effort_rpm(target_speed);
-    // // setSpeed(pid_speed);
-    // Serial.println("Driving at PID ");
-    // Serial.print(pid_speed);
-    // Serial.println("");
-}
 
-void drive_forward_meters(long meters){
-    // if(dist_traveled >= inches){
-    //     setSpeed(1500);
-    // }else{
-    //     setSpeed(1550);
-    // }
-}
 //  encoder stuff
 void setup_encoder(){
     while (!nh.connected()){
