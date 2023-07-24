@@ -11,7 +11,17 @@
 #include "Adafruit_VL53L0X.h"
 #include "constants.h"
 #include <RotaryEncoder.h>
-#define USE_USBCON
+
+/** 
+ * By defining USE_USBCON, ROS will use the USB interface and debugging will be set up on Serial1.
+*/
+#define USE_USBCON 
+
+#ifdef USE_USBCON
+  #define DEBUG_SERIAL Serial1
+#else
+  #define DEBUG_SERIAL SerialUSB
+#endif
 
 // battery Monitor
 Adafruit_INA260 bat_monitor = Adafruit_INA260();
