@@ -101,11 +101,11 @@ void cb_led(const std_msgs::Bool &msg) {
     digitalWrite(LED_PIN, state);
 }
 
-// function to control motors in state machine
+// callback function for receiving speed commands
 void cb_motor(const std_msgs::Int16& msg) {
     //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
-    int speed = msg.data;
-    setSpeed(speed);
+    //int speed = msg.data;
+    setSpeed(msg.data);
 }
 
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", cb_led);
