@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <ros.h>
 #include <ros/time.h>
+#include <std_msgs/Int16.h>
 #include <std_msgs/Int32.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
@@ -11,6 +12,8 @@
 #include "Adafruit_VL53L0X.h"
 #include "constants.h"
 #include <RotaryEncoder.h>
+
+#include "rangefinder.h"
 
 /** 
  * By defining USE_USBCON, ROS will use the USB interface and debugging will be set up on Serial1.
@@ -99,14 +102,14 @@ void cb_led(const std_msgs::Bool &msg) {
 }
 
 // function to control motors in state machine
-void cb_motor(const std_msgs::Float32 &msg) {
+void cb_motor(const std_msgs::Int16& msg) {
     //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
     int speed = msg.data;
     setSpeed(speed);
 }
 
-ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", &cb_led);
-ros::Subscriber<std_msgs::Float32> motor_sub("/motor_speed", &cb_motor);
+ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", cb_led);
+ros::Subscriber<std_msgs::Int16> motor_sub("/motor_speed", cb_motor);
 
 void init_motors(){
     //sets up the ESCs and battery info to allow them to spin
@@ -118,7 +121,6 @@ void init_motors(){
 
     stopMotors();
 
-    nh.initNode();
     nh.advertise(pub_bat_level);
     nh.advertise(pub_enc);
     nh.subscribe(motor_sub);
@@ -234,6 +236,8 @@ void setup()
   }
   
   DEBUG_SERIAL.println("setup");
+
+  nh.initNode();
 
     init_motors();
     // setup_rangefinder();
