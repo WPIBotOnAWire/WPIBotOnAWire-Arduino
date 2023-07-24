@@ -131,7 +131,7 @@ void init_motors(){
     bat_monitor.begin();
 }
 
-void setup_rangefinder()
+void setup_rangefinder(ros::NodeHandle& nh)
 {
   //nh.getHardware()->setBaud(9600); //struggling to understand this one...
   nh.advertise(pubMBfront);
@@ -227,6 +227,8 @@ void setup()
   DEBUG_SERIAL.println("setup");
 
   nh.initNode();
+
+  setup_rangefinder(nh);
 
     init_motors();
     // setup_rangefinder();
