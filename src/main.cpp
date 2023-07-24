@@ -18,7 +18,7 @@
 #define USE_USBCON 
 
 #ifdef USE_USBCON
-  #define DEBUG_SERIAL Serial1
+  #define DEBUG_SERIAL Serial1 //pins 0/1 on the SAMD21 mini breakout
 #else
   #define DEBUG_SERIAL SerialUSB
 #endif
@@ -126,7 +126,8 @@ void init_motors(){
 
 }
 
-void setup_rangefinder(){
+void setup_rangefinder()
+{
   nh.getHardware()->setBaud(9600);
   nh.advertise(pub_rf_front);
   
@@ -224,12 +225,22 @@ void initAllNodes(){
 }
 */
 
-void setup() {
+void setup()
+{
+  DEBUG_SERIAL.begin(115200);
+  while(!DEBUG_SERIAL)
+  {
+    delay(100);
+  }
+  
+  DEBUG_SERIAL.println("setup");
+
     init_motors();
     // setup_rangefinder();
     setup_encoder();
     // pinMode(RADIO_OVERRIDE_PIN, INPUT);
-    // Serial.begin(9600); // when running robot.launch, comment this out
+ 
+  DEBUG_SERIAL.println("/setup");
 }
   
 long timer;
