@@ -6,6 +6,9 @@
 #include <std_msgs/Int16.h>
 #include <std_msgs/Int32.h>
 
+#include "esc-samd21.h"
+
+
 #define Serial SerialUSB
 
 // Motor Constants
@@ -35,6 +38,8 @@ ros::Publisher pub_enc("/encoder", &enc_val);
 ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
+ESCDirect esc13;
+
 void stopMotors()
 {
     esc1.speed(MOTOR_STOP);
@@ -48,6 +53,7 @@ void setThrottle(int throttle)
     // Sets the speed of the motors with a given input
     esc1.speed(throttle);
     esc2.speed(throttle);
+
     Serial.println("Driving at ");
     Serial.print(throttle);
     Serial.println("");
@@ -78,6 +84,7 @@ ros::Subscriber<std_msgs::Int16> motor_sub("/motor_speed", cb_motor);
 void init_motors(ros::NodeHandle& nh)
 {
     //sets up the ESCs and battery info to allow them to spin
+    esc13.Init();
 
     esc1.arm();
     esc2.arm();
