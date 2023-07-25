@@ -8,3 +8,4 @@
 */
 
 void setup_rangefinder(ros::NodeHandle& nh);
+void processRangefinders(void);

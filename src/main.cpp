@@ -1,25 +1,28 @@
+/** 
+ * By defining USE_USBCON, ROS will use the USB interface and debugging will be set up on Serial1.
+ * USE_USBCON needs to be defined before including ros.h.
+ * 
+ * If you comment it out, it's reversed: ROS will use Serial1 and debugging happens on the USB.
+*/
+//#define USE_USBCON 
+
 #include <Arduino.h>
 #include <ros.h>
 #include <ros/time.h>
 #include <std_msgs/Int16.h>
 #include <std_msgs/Int32.h>
-//#include <std_msgs/UInt16.h>
+#include <std_msgs/String.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Bool.h>
-#include <ESC.h>
-#include <Wire.h>
-#include <Adafruit_INA260.h>
-#include <sensor_msgs/BatteryState.h>
-#include "Adafruit_VL53L0X.h"
-#include "constants.h"
-#include <RotaryEncoder.h>
+// #include <ESC.h>
+// #include <Wire.h>
+// #include <Adafruit_INA260.h>
+// #include <sensor_msgs/BatteryState.h>
+// #include "Adafruit_VL53L0X.h"
+// #include "constants.h"
+// #include <RotaryEncoder.h>
 
 #include "rangefinder-ROS.h"
-
-/** 
- * By defining USE_USBCON, ROS will use the USB interface and debugging will be set up on Serial1.
-*/
-#define USE_USBCON 
 
 #ifdef USE_USBCON
   #define DEBUG_SERIAL Serial1 //pins 0/1 on the SAMD21 mini breakout
@@ -27,6 +30,11 @@
   #define DEBUG_SERIAL SerialUSB
 #endif
 
+ros::NodeHandle nh;
+
+std_msgs::String str_msg;
+ros::Publisher chatter("chatter", &str_msg);
+/*
 // battery Monitor
 Adafruit_INA260 bat_monitor = Adafruit_INA260();
 
@@ -40,7 +48,6 @@ ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::TWO03);
 int encoder_counts=0;
 
-ros::NodeHandle nh;
 sensor_msgs::BatteryState bat_msg;
 ros::Publisher pub_bat_level("/battery", &bat_msg);
 
@@ -55,8 +62,8 @@ ros::Publisher pub_speakers("/play_sound", &speaker_val);
 
 
 
-Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
-VL53L0X_RangingMeasurementData_t measure;
+// Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
+// VL53L0X_RangingMeasurementData_t measure;
 unsigned long range_timer;
 int sound_regulator = 0;
 bool override_was_active = false;
@@ -92,8 +99,6 @@ void setSpeed(int percent){
   } else{
     setThrottle(value);
   }
-  
-
 }
 
 
@@ -189,25 +194,46 @@ void setup()
 
   nh.initNode();
 
+  nh.advertise(chatter);
+
   setup_rangefinder(nh);
 
-    init_motors();
-    // setup_rangefinder();
-    setup_encoder();
-    // pinMode(RADIO_OVERRIDE_PIN, INPUT);
+    // init_motors();
+    // // setup_rangefinder();
+    // setup_encoder();
+    // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
   DEBUG_SERIAL.println("/setup");
 }
   
-long timer;
-void loop() {
-    if(millis()-timer> 1000){
-      updateBat();
-      // rangefinder();
-      // encoderCounts();
-      override_was_active = true;
-      sound_regulator++;
-      timer = millis();
-    }
+// long timer;
+char hello[13] = "hello world!";
+
+
+void loop(void) 
+{
+  static uint32_t lastPing = 0;
+  uint32_t currTime = millis();
+  if(currTime - lastPing >= 1000)
+  {
+    lastPing = currTime;
+
+    str_msg.data = hello;
+    chatter.publish( &str_msg );
+
+    DEBUG_SERIAL.println("Just one ping.");
+  }
+  
+  processRangefinders();
+  
+    // if(millis()-timer> 1000){
+    //   updateBat();
+    //   // rangefinder();
+    //   // encoderCounts();
+    //   override_was_active = true;
+    //   sound_regulator++;
+    //   timer = millis();
+    // }
+
   nh.spinOnce();
-} 
+}
