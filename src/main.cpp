@@ -185,10 +185,14 @@ void initAllNodes(){
 void setup()
 {
   DEBUG_SERIAL.begin(115200);
-  while(!DEBUG_SERIAL)
-  {
-    delay(100);
-  }
+  /**
+   * Be careful when uncommenting the following, as you _must_ connect to the Serial Monitor if
+   * you leave them uncommented!
+  */
+  // while(!DEBUG_SERIAL)
+  // {
+  //   delay(100);
+  // }
   
   DEBUG_SERIAL.println("setup");
 
@@ -225,7 +229,7 @@ void loop(void)
   }
   
   processRangefinders();
-  
+
     // if(millis()-timer> 1000){
     //   updateBat();
     //   // rangefinder();

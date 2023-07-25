@@ -1,18 +1,19 @@
 #include "rangefinder-ROS.h"
-#include <HC-SR04.h>
+#include <MaxBotix.h>
+#include <std_msgs/UInt16.h>
 
-std_msgs::Int16 mbFrontCM; //in cm; use negative for errors?
+std_msgs::UInt16 mbFrontCM; //in cm
 ros::Publisher pubMBfront("/rangefinder/front/MB", &mbFrontCM);
 
-HC_SR04 hcFront(8, 9);
-void ISR_HC_FRONT(void) {hcFront.ISR_echo();}
+MaxBotixPulse mbFront(8);
+void ISR_MB_FRONT(void) {mbFront.mbISR();}
 
 void setup_rangefinder(ros::NodeHandle& nh)
 {
   //nh.getHardware()->setBaud(9600); //struggling to understand this one...
   nh.advertise(pubMBfront);
 
-  hcFront.init(ISR_HC_FRONT);
+  mbFront.init(ISR_MB_FRONT);
   
   // // wait controller to be connected
   // while (!nh.connected()){
@@ -32,7 +33,7 @@ void setup_rangefinder(ros::NodeHandle& nh)
 void processRangefinders(void)
 {
   float frontDist = 0;
-  if(hcFront.getDistance(frontDist))
+  if(mbFront.getDistance(frontDist))
   {
     mbFrontCM.data = frontDist;
     pubMBfront.publish(&mbFrontCM);
