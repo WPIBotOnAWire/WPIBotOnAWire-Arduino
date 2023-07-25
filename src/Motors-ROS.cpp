@@ -27,10 +27,6 @@
 #define METERS_PER_TICK         0.0001286 // meters/tick
 #define CM_PER_TICK             0.01286 // cm/tick // maybe use this?
 
-// Setup a RotaryEncoder with 4 steps per latch for the 2 signal input pins:
-// RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::FOUR3);
-// Setup a RotaryEncoder with 2 steps per latch for the 2 signal input pins:
-
 QuadEncoder<ENCODER_PIN1,ENCODER_PIN2> encoder; 
 
 std_msgs::Int32 enc_val;
