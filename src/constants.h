@@ -7,9 +7,7 @@
 
 // Pins
 #define LED_PIN                12
-#define ENCODER_PIN1           45
-#define ENCODER_PIN2           47
-     
+
 #define TRIGGER_PIN_FRONT      21
 #define ECHO_PIN_FRONT         20
 #define TRIGGER_PIN_BACK        3
@@ -44,12 +42,3 @@
 // might change if more things are added to loop()
 #define LOOP_CONSTANT           17
 
-// ENCODER AND PID CONSTANTS
-#define WHEEL_RADIUS            0.825/39.37; //inches to m
-#define WHEEL_CIRCUMFRANCE      2.0*PI*WHEEL_RADIUS;
-#define PPR                     1024.0; // pulses per revolution of the encoder
-#define ROTARYSTEPS 1
-#define ROTARYMIN -16000
-#define ROTARYMAX 16000
-#define PIN_IN1 ENCODER_PIN1
-#define PIN_IN2 ENCODER_PIN2

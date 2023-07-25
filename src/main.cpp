@@ -19,8 +19,7 @@
 // #include <Adafruit_INA260.h>
 // #include <sensor_msgs/BatteryState.h>
 // #include "Adafruit_VL53L0X.h"
-#include "constants.h"
-// #include <RotaryEncoder.h>
+//#include "constants.h"
 
 #include "rangefinder-ROS.h"
 
@@ -38,19 +37,13 @@ ros::Publisher chatter("chatter", &str_msg);
 // battery Monitor
 Adafruit_INA260 bat_monitor = Adafruit_INA260();
 
-// Setup a RotaryEncoder with 4 steps per latch for the 2 signal input pins:
-// RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::FOUR3);
-// Setup a RotaryEncoder with 2 steps per latch for the 2 signal input pins:
-RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::TWO03);
-int encoder_counts=0;
 
 sensor_msgs::BatteryState bat_msg;
 ros::Publisher pub_bat_level("/battery", &bat_msg);
 
 std_msgs::Float32 rf_front_val, rf_back_val;
 std_msgs::Bool man_override;
-std_msgs::Int32 speaker_val, enc_val;
-ros::Publisher pub_enc("/encoder", &enc_val);
+std_msgs::Int32 speaker_val;
 ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
 ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
 ros::Publisher pub_man_override("/manual_override", &man_override);
@@ -82,44 +75,6 @@ void cb_led(const std_msgs::Bool &msg) {
 
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", cb_led);
 
-//  encoder stuff
-void setup_encoder(){
-    while (!nh.connected()){
-    nh.spinOnce();
-  }
-  while (! Serial);
-  Serial.println("LimitedRotator example for the RotaryEncoder library.");
-  encoder.setPosition(10 / ROTARYSTEPS); // start with the value of 10.
-}
-
-void publishEncCounts(int ecounts){
-    enc_val.data = ecounts;
-    // Serial.print(enc_val.data);
-    // Serial.println();
-    pub_enc.publish(&enc_val);
-    nh.spinOnce();
-}
-
-int lastPos = -1;
-int encodercount = 0;
-void encoderCounts(){
-    encoder.tick();
-  // get the current physical position and calc the logical position
-  int newPos = encoder.getPosition() * ROTARYSTEPS;
-  if (newPos < ROTARYMIN) {
-    encoder.setPosition(ROTARYMIN / ROTARYSTEPS);
-    newPos = ROTARYMIN;
-  } else if (newPos > ROTARYMAX) {
-    encoder.setPosition(ROTARYMAX / ROTARYSTEPS);
-    newPos = ROTARYMAX;
-  } // if
-  if (lastPos != newPos) {
-    lastPos = newPos;
-    encodercount = newPos;
-    
-  } // if
-  publishEncCounts(encodercount);
-}
 
 */
 
@@ -142,9 +97,9 @@ void setup()
   nh.advertise(chatter);
 
   setup_rangefinder(nh);
-
-    // init_motors();
-    // // setup_rangefinder();
+  init_motors(nh);
+  setup_encoder(nh);
+  
     // setup_encoder();
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
@@ -170,6 +125,7 @@ void loop(void)
   }
   
   processRangefinders();
+  processEncoders();
 
     // if(millis()-timer> 1000){
     //   updateBat();
