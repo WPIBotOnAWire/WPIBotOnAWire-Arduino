@@ -8,18 +8,18 @@
 
 #include <Arduino.h>
 #include <ros.h>
-#include <ros/time.h>
-#include <std_msgs/Int16.h>
-#include <std_msgs/Int32.h>
+// #include <ros/time.h>
+// #include <std_msgs/Int16.h>
+// #include <std_msgs/Int32.h>
 #include <std_msgs/String.h>
-#include <std_msgs/Float32.h>
-#include <std_msgs/Bool.h>
-// #include <ESC.h>
+// #include <std_msgs/Float32.h>
+// #include <std_msgs/Bool.h>
+#include "Motors-ROS.h"
 // #include <Wire.h>
 // #include <Adafruit_INA260.h>
 // #include <sensor_msgs/BatteryState.h>
 // #include "Adafruit_VL53L0X.h"
-// #include "constants.h"
+#include "constants.h"
 // #include <RotaryEncoder.h>
 
 #include "rangefinder-ROS.h"
@@ -37,10 +37,6 @@ ros::Publisher chatter("chatter", &str_msg);
 /*
 // battery Monitor
 Adafruit_INA260 bat_monitor = Adafruit_INA260();
-
-ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
-ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
-
 
 // Setup a RotaryEncoder with 4 steps per latch for the 2 signal input pins:
 // RotaryEncoder encoder(PIN_IN1, PIN_IN2, RotaryEncoder::LatchMode::FOUR3);
@@ -68,10 +64,6 @@ unsigned long range_timer;
 int sound_regulator = 0;
 bool override_was_active = false;
 
-void stopMotors(){
-    esc1.speed(MOTOR_STOP);
-    esc2.speed(MOTOR_STOP);
-}
 
 void updateBat(){
     //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
@@ -81,60 +73,14 @@ void updateBat(){
 }
 
 
-void setThrottle(int throttle){
-    updateBat();
-
-    // Sets the speed of the motors with a given input
-    esc1.speed(throttle);
-    esc2.speed(throttle);
-    Serial.println("Driving at ");
-    Serial.print(throttle);
-    Serial.println("");
-}
-
-void setSpeed(int percent){
-  int value = percent*1 + 1500;
-  if (percent == 0){
-    stopMotors();
-  } else{
-    setThrottle(value);
-  }
-}
-
-
 // function to control leds in state machine
 void cb_led(const std_msgs::Bool &msg) {
     int state = msg.data ? HIGH : LOW;
     digitalWrite(LED_PIN, state);
 }
 
-// callback function for receiving speed commands
-void cb_motor(const std_msgs::Int16& msg) {
-    //int speed = mapfloat(msg.data, -1.0, 1.0, MOTOR_FULLBACK, MOTOR_FULLFORWARD);
-    //int speed = msg.data;
-    setSpeed(msg.data);
-}
 
 ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", cb_led);
-ros::Subscriber<std_msgs::Int16> motor_sub("/motor_speed", cb_motor);
-
-void init_motors(){
-    //sets up the ESCs and battery info to allow them to spin
-    //ESCs need battery to spin. 2021-22 team was a bunch of drone bros and picked this garbage
-    esc1.arm();
-    esc2.arm();
-
-    delay(500);
-
-    stopMotors();
-
-    nh.advertise(pub_bat_level);
-    nh.advertise(pub_enc);
-    nh.subscribe(motor_sub);
-    bat_monitor.begin();
-}
-
-
 
 //  encoder stuff
 void setup_encoder(){
@@ -175,11 +121,6 @@ void encoderCounts(){
   publishEncCounts(encodercount);
 }
 
-
-/*
-void initAllNodes(){
-  
-}
 */
 
 void setup()
