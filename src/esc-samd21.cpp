@@ -62,3 +62,33 @@ void ESCDirect::Init(void)
                     TCC_CTRLA_ENABLE;             // Enable the TCC0 output
   while (TCC0->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
 }
+
+/*
+ * Sent a signal to Arm the ESC
+ * depends on the Arming value from the constructor
+ */
+void ESCDirect::Arm(void)
+{
+	WriteMicroseconds(oArm);
+}
+
+void ESCDirect::WriteMicroseconds(uint16_t uSec)
+{
+    // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+    REG_TCC0_CCB3 = uSec;       // TCC0 CCB3 - center the servo on D13
+    while(TCC0->SYNCBUSY.bit.CCB3);
+
+    // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+    REG_TCC0_CCB2 = uSec;       // TCC0 CCB0 - center the servo on D12
+    while(TCC0->SYNCBUSY.bit.CCB2);
+}
+
+/*
+ * Sent a signal to set the ESC speed
+ * depends on the calibration minimum and maximum values
+ */
+void ESCDirect::SetSpeed(uint16_t speed)
+{
+	uint16_t pulseUS = constrain(speed, oMin, oMax);
+	WriteMicroseconds(pulseUS);
+}

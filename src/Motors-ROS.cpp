@@ -38,7 +38,7 @@ ros::Publisher pub_enc("/encoder", &enc_val);
 ESC esc1(ESC1_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
-ESCDirect esc13;
+ESCDirect escPair;
 
 void stopMotors()
 {
@@ -84,7 +84,8 @@ ros::Subscriber<std_msgs::Int16> motor_sub("/motor_speed", cb_motor);
 void init_motors(ros::NodeHandle& nh)
 {
     //sets up the ESCs and battery info to allow them to spin
-    esc13.Init();
+    escPair.Init();
+    escPair.Arm();
 
     esc1.arm();
     esc2.arm();
@@ -92,6 +93,7 @@ void init_motors(ros::NodeHandle& nh)
     delay(500); //???
 
     stopMotors();
+    escPair.Stop();
 
     //nh.advertise(pub_bat_level);
 
