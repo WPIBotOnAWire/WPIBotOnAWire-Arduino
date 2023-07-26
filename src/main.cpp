@@ -33,14 +33,8 @@ ros::NodeHandle nh;
 
 std_msgs::String str_msg;
 ros::Publisher chatter("chatter", &str_msg);
+
 /*
-// battery Monitor
-Adafruit_INA260 bat_monitor = Adafruit_INA260();
-
-
-sensor_msgs::BatteryState bat_msg;
-ros::Publisher pub_bat_level("/battery", &bat_msg);
-
 std_msgs::Float32 rf_front_val, rf_back_val;
 std_msgs::Bool man_override;
 std_msgs::Int32 speaker_val;
@@ -99,8 +93,7 @@ void setup()
   setup_rangefinder(nh);
   init_motors(nh);
   setup_encoder(nh);
-  
-    // setup_encoder();
+
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
   DEBUG_SERIAL.println("/setup");
