@@ -8,18 +8,10 @@
 
 #include <Arduino.h>
 #include <ros.h>
-// #include <ros/time.h>
-// #include <std_msgs/Int16.h>
-// #include <std_msgs/Int32.h>
 #include <std_msgs/String.h>
-// #include <std_msgs/Float32.h>
-// #include <std_msgs/Bool.h>
 #include "Motors-ROS.h"
-// #include <Wire.h>
-// #include <Adafruit_INA260.h>
-// #include <sensor_msgs/BatteryState.h>
 // #include "Adafruit_VL53L0X.h"
-//#include "constants.h"
+#include "battery-ROS.h"
 
 #include "rangefinder-ROS.h"
 
@@ -93,6 +85,7 @@ void setup()
   setup_rangefinder(nh);
   init_motors(nh);
   setup_encoder(nh);
+  initBatteryMonitor(nh);
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
@@ -118,6 +111,7 @@ void loop(void)
   
   processRangefinders();
   processEncoders();
+  processBatteryMonitor();
 
     // if(millis()-timer> 1000){
     //   updateBat();
