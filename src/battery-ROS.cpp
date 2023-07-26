@@ -1,7 +1,6 @@
 #include "battery-ROS.h"
 
 #include <Adafruit_INA260.h>
-
 #include <sensor_msgs/BatteryState.h>
 
 // battery Monitor
