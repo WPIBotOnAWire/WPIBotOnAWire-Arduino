@@ -50,11 +50,11 @@ void ESCDirect::Init(void)
   while(TCC0->SYNCBUSY.bit.PER);
 
   // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-  REG_TCC0_CCB3 = 1800;       // TCC0 CCB3 - center the servo on D13
+  REG_TCC0_CCB3 = oArm;       // TCC0 CCB3 - center the servo on D13
   while(TCC0->SYNCBUSY.bit.CCB3);
 
   // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-  REG_TCC0_CCB2 = 1200;       // TCC0 CCB0 - center the servo on D12
+  REG_TCC0_CCB2 = oArm;       // TCC0 CCB0 - center the servo on D12
   while(TCC0->SYNCBUSY.bit.CCB2);
 
   // Divide the 16MHz signal by 8 giving 2MHz (0.5us) TCC0 timer tick and enable the outputs
@@ -99,17 +99,3 @@ void ESCDirect::SetSpeed(int16_t pct)
 	uint16_t pulseUS = constrain(speed, oMin, oMax);
 	WriteMicroseconds(pulseUS);
 }
-
-// void ESCDirect::SetSpeed(int percent)
-// {
-//   int value = percent*1 + 1500;
-//   if (percent == 0)
-//   {
-//     stopMotors();
-//   } 
-
-//   else
-//   {
-//     setThrottle(value);
-//   }
-// }
