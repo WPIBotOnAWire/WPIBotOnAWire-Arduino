@@ -2,6 +2,10 @@
 
 #include <Arduino.h>
 
+/**
+ * This sets up TCC0 to send "RC-servo" pulses to pins 10 and 13. We skip the Arduino Servo library
+ * (which is a hack) and use the timers directly. This will produce a much smoother pulse output.
+*/
 void ESCDirect::Init(void)
 {
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(3) |          // Divide the 48MHz clock source by divisor 3: 48MHz/3=16MHz
@@ -57,40 +61,4 @@ void ESCDirect::Init(void)
   REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV8 |    // Divide GCLK4 by 8
                     TCC_CTRLA_ENABLE;             // Enable the TCC0 output
   while (TCC0->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
-
-
-
-
-    // /**
-    //  * We use a hack to set up the timer. Namely, by calling analogWrite on pin 6, Arduino will
-    //  * set up all the machinery to do PWM on pin 6, as well as pin 4. We can then alter them with a 
-    //  * lot less code.
-    //  * 
-    //  * I'm just trying to get this working, and I'll tidy it all up 'properly' later.
-    // */
-    
-    // analogWrite(6, 0); //use Arduino to set up PWM machinery on TCC0
-    // analogWrite(4, 0); //use Arduino to set up PWM machinery on TCC0
-
-    // //We want ~20 ms loops, so change the prescaler and TOP
-    // REG_TCC0_CTRLA &= ~TCC_CTRLA_ENABLE;            // Disable the TCC0 output
-    // while (TCC0->SYNCBUSY.bit.ENABLE) {}            // Wait for synchronization
-
-    // REG_TCC0_CTRLA = TCC_CTRLA_PRESCSYNC_GCLK | // superfluous, since it's 0
-    //                  TCC_CTRLA_PRESCALER_DIV64 |
-
-    //     TCx->COUNT16.CTRLA.reg | TC_CTRLA_MODE_COUNT16 | TC_CTRLA_WAVEGEN_NPWM;
-
-    //   REG_TCC0_WAVE               
-    
-    // TCC_CTRLA_PRESCALER_DIV64 |   // Divide GCLK4 by 8
-    //                     TCC_CTRLA_ENABLE;           // Enable the TCC0 output
-
-    // REG_TCC0_CTRLA = TCC_CTRLA_PRESCALER_DIV64 |   // Divide GCLK4 by 8
-    //                     TCC_CTRLA_ENABLE;           // Enable the TCC0 output
-
-
-    // while (TCC0->SYNCBUSY.bit.ENABLE) {}            // Wait for synchronization
- 
- 
 }
