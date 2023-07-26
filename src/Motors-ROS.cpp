@@ -9,7 +9,7 @@
 
 #define Serial SerialUSB
 
-// Motor Constants
+// Motor Constants -- TODO: pass to constructor
 // fullforward = 2000, fullback = 1000
 #define MOTOR_FULLFORWARD    2000
 #define MOTOR_FULLBACK       1000
@@ -44,7 +44,8 @@ void init_motors(ros::NodeHandle& nh)
 {
     //sets up the ESCs and battery info to allow them to spin
     escPair.Init();
-    escPair.Calibrate(); 
+    //escPair.Calibrate(); 
+    escPair.Arm();
 
     escPair.Stop();
 
@@ -68,7 +69,7 @@ void processEncoders(void)
     lastEncoderReport = currTime;
 
     int32_t currTicks = encoder.TakeSnapshot();
-    int32_t delta = encoder.CalcDelta();
+    int32_t delta = encoder.CalcDelta(); // TODO: convert to linear speed and publish
 
     enc_val.data = currTicks;
     pub_enc.publish(&enc_val);
