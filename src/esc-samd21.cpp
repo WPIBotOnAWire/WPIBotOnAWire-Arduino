@@ -99,3 +99,16 @@ void ESCDirect::SetSpeed(int16_t pct)
 	uint16_t pulseUS = constrain(speed, oMin, oMax);
 	WriteMicroseconds(pulseUS);
 }
+
+/*
+ * Calibrate the maximum and minimum PWM signal the ESC is expecting
+ * depends on the outputMin, outputMax values from the constructor
+ */
+void ESCDirect::Calibrate(void)
+{
+	WriteMicroseconds(oMax);
+    delay(calibrationDelay);
+    WriteMicroseconds(oMin);
+	delay(calibrationDelay);
+	Arm();
+}

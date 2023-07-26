@@ -45,7 +45,7 @@ void init_motors(ros::NodeHandle& nh)
 {
     //sets up the ESCs and battery info to allow them to spin
     escPair.Init();
-    escPair.Arm(); //needs a delay?
+    escPair.Calibrate(); //needs a delay?
 
     escPair.Stop();
 

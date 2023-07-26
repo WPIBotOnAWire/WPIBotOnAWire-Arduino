@@ -21,4 +21,5 @@ public:
     void Arm(void);
     void Stop(void) {WriteMicroseconds(oStop);}
     void SetSpeed(int16_t pct);
+    void Calibrate(void);
 };
