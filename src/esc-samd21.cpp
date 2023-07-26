@@ -5,6 +5,9 @@
 /**
  * This sets up TCC0 to send "RC-servo" pulses to pins 10 and 13. We skip the Arduino Servo library
  * (which is a hack) and use the timers directly. This will produce a much smoother pulse output.
+ * 
+ * Note that we set up two channels, one for each motor, which is somewhat redundant, as both
+ * motors are sent the same command. Perhaps there will someday be a need to control independently?
 */
 void ESCDirect::Init(void)
 {
