@@ -102,7 +102,6 @@ void setup()
 // long timer;
 char hello[13] = "hello world!";
 
-
 void loop(void) 
 {
   static uint32_t lastPing = 0;

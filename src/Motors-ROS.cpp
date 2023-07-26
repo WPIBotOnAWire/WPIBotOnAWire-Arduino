@@ -48,11 +48,7 @@ void init_motors(ros::NodeHandle& nh)
 
     escPair.Stop();
 
-    //nh.advertise(pub_bat_level);
-
     nh.subscribe(motor_sub);
-
-    //bat_monitor.begin();
 }
 
 //  encoder stuff
