@@ -70,6 +70,7 @@ void ESCDirect::Init(void)
 void ESCDirect::Arm(void)
 {
 	WriteMicroseconds(oArm);
+    delay(500); //might need to make non-blocking
 }
 
 void ESCDirect::WriteMicroseconds(uint16_t uSec)
@@ -107,7 +108,7 @@ void ESCDirect::SetSpeed(int16_t pct)
 void ESCDirect::Calibrate(void)
 {
 	WriteMicroseconds(oMax);
-    delay(calibrationDelay);
+    delay(calibrationDelay); //needs to be non-blocking
     WriteMicroseconds(oMin);
 	delay(calibrationDelay);
 	Arm();

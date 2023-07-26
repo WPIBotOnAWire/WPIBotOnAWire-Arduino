@@ -1,6 +1,6 @@
 #include "Motors-ROS.h"
 
-#include <ESC.h>
+// #include <ESC.h>
 #include "encoder.h"
 
 #include <std_msgs/Int16.h>
@@ -45,7 +45,7 @@ void init_motors(ros::NodeHandle& nh)
 {
     //sets up the ESCs and battery info to allow them to spin
     escPair.Init();
-    escPair.Calibrate(); //needs a delay?
+    escPair.Calibrate(); 
 
     escPair.Stop();
 
