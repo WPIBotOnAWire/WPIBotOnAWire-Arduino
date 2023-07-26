@@ -40,43 +40,43 @@ ESC esc2(ESC2_PIN, MOTOR_FULLBACK, MOTOR_FULLFORWARD, MOTOR_STOP);
 
 ESCDirect escPair;
 
-void stopMotors()
-{
-    esc1.speed(MOTOR_STOP);
-    esc2.speed(MOTOR_STOP);
-}
+// void stopMotors()
+// {
+//     esc1.speed(MOTOR_STOP);
+//     esc2.speed(MOTOR_STOP);
+// }
 
-void setThrottle(int throttle)
-{
-    //updateBat();
+// void setThrottle(int throttle)
+// {
+//     //updateBat();
 
-    // Sets the speed of the motors with a given input
-    esc1.speed(throttle);
-    esc2.speed(throttle);
+//     // Sets the speed of the motors with a given input
+//     esc1.speed(throttle);
+//     esc2.speed(throttle);
 
-    Serial.println("Driving at ");
-    Serial.print(throttle);
-    Serial.println("");
-}
+//     Serial.println("Driving at ");
+//     Serial.print(throttle);
+//     Serial.println("");
+// }
 
-void setSpeed(int percent)
-{
-  int value = percent*1 + 1500;
-  if (percent == 0)
-  {
-    stopMotors();
-  } 
+// void setSpeed(int percent)
+// {
+//   int value = percent*1 + 1500;
+//   if (percent == 0)
+//   {
+//     stopMotors();
+//   } 
 
-  else
-  {
-    setThrottle(value);
-  }
-}
+//   else
+//   {
+//     setThrottle(value);
+//   }
+// }
 
 // callback function for receiving speed commands
 void cb_motor(const std_msgs::Int16& msg) 
 {
-    setSpeed(msg.data);
+    escPair.SetSpeed(msg.data);
 }
 
 ros::Subscriber<std_msgs::Int16> motor_sub("/motor_speed", cb_motor);
@@ -87,12 +87,10 @@ void init_motors(ros::NodeHandle& nh)
     escPair.Init();
     escPair.Arm();
 
-    esc1.arm();
-    esc2.arm();
+    //esc1.arm();
+    //esc2.arm();
 
-    delay(500); //???
-
-    stopMotors();
+    //stopMotors();
     escPair.Stop();
 
     //nh.advertise(pub_bat_level);

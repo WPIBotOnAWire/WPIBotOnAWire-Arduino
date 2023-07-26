@@ -87,8 +87,29 @@ void ESCDirect::WriteMicroseconds(uint16_t uSec)
  * Sent a signal to set the ESC speed
  * depends on the calibration minimum and maximum values
  */
-void ESCDirect::SetSpeed(uint16_t speed)
+void ESCDirect::SetSpeed(int16_t pct)
 {
+    if(pct == 0)
+    {
+        Stop();
+        return;
+    }
+
+    uint16_t speed = oMid + pct * (oMax - oMin) / 200;
 	uint16_t pulseUS = constrain(speed, oMin, oMax);
 	WriteMicroseconds(pulseUS);
 }
+
+// void ESCDirect::SetSpeed(int percent)
+// {
+//   int value = percent*1 + 1500;
+//   if (percent == 0)
+//   {
+//     stopMotors();
+//   } 
+
+//   else
+//   {
+//     setThrottle(value);
+//   }
+// }

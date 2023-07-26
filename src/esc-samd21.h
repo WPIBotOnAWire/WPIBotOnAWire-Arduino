@@ -7,6 +7,7 @@ class ESCDirect
 private:
     // Calibration
     int oMin = 1000; 
+    int oMid = 1500;
     int oMax = 2000;
     int oESC = 1000;
     int oArm = 500;
@@ -20,5 +21,5 @@ public:
     void Init(void);
     void Arm(void);
     void Stop(void) {WriteMicroseconds(stopPulse);}
-    void SetSpeed(uint16_t speed);
+    void SetSpeed(int16_t pct);
 };
