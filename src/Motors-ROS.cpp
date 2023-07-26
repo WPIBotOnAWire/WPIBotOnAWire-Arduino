@@ -59,6 +59,10 @@ void setup_encoder(ros::NodeHandle& nh)
   nh.advertise(pub_enc);
 }
 
+/**
+ * Reads the current encoder count (count is updated in an ISR) and publishes the result.
+ * Nominally tested and working with a quadrature encoder.
+*/
 void processEncoders(void)
 {
   static uint32_t lastEncoderReport = 0;
