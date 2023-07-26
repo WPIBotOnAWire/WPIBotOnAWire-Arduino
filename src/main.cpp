@@ -44,13 +44,6 @@ int sound_regulator = 0;
 bool override_was_active = false;
 
 
-void updateBat(){
-    //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
-    bat_msg.voltage = bat_monitor.readBusVoltage();
-    bat_msg.current = bat_monitor.readCurrent();
-    pub_bat_level.publish(&bat_msg);
-}
-
 
 // function to control leds in state machine
 void cb_led(const std_msgs::Bool &msg) {
@@ -106,7 +99,8 @@ void loop(void)
     str_msg.data = hello;
     chatter.publish( &str_msg );
 
-    DEBUG_SERIAL.println("Just one ping.");
+    DEBUG_SERIAL.print(millis());
+    DEBUG_SERIAL.println("\tJust one ping.");
   }
   
   processRangefinders();
@@ -114,9 +108,6 @@ void loop(void)
   processBatteryMonitor();
 
     // if(millis()-timer> 1000){
-    //   updateBat();
-    //   // rangefinder();
-    //   // encoderCounts();
     //   override_was_active = true;
     //   sound_regulator++;
     //   timer = millis();
