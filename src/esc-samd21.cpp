@@ -14,12 +14,19 @@ void ESCDirect::Init(void)
                      GCLK_GENCTRL_ID(4);          // Select GCLK4
   while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
 
-  // Enable the port multiplexer for digital pin 13 (D13): timer TCC0 output
+  // Enable the port multiplexer for digital pin 13 (D13; PA17): timer TCC0 output
   PORT->Group[g_APinDescription[13].ulPort].PINCFG[g_APinDescription[13].ulPin].bit.PMUXEN = 1;
   
   // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
   // F & E specify the timers: TCC0, TCC1 and TCC2
   PORT->Group[g_APinDescription[13].ulPort].PMUX[g_APinDescription[13].ulPin >> 1].reg = PORT_PMUX_PMUXO_F;
+  
+  // Enable the port multiplexer for digital pin 10 (D10; PA18): timer TCC0 output
+  PORT->Group[g_APinDescription[10].ulPort].PINCFG[g_APinDescription[10].ulPin].bit.PMUXEN = 1;
+  
+  // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+  // F & E specify the timers: TCC0, TCC1 and TCC2
+  PORT->Group[g_APinDescription[10].ulPort].PMUX[g_APinDescription[10].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
   
   // Feed GCLK4 to TCC0 and TCC1
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |         // Enable GCLK4 to TCC0 and TCC1
@@ -39,8 +46,12 @@ void ESCDirect::Init(void)
   while(TCC0->SYNCBUSY.bit.PER);
 
   // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-  REG_TCC0_CCB3 = 1500;       // TCC0 CCB3 - center the servo on D13
+  REG_TCC0_CCB3 = 1800;       // TCC0 CCB3 - center the servo on D13
   while(TCC0->SYNCBUSY.bit.CCB3);
+
+  // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+  REG_TCC0_CCB2 = 1200;       // TCC0 CCB0 - center the servo on D12
+  while(TCC0->SYNCBUSY.bit.CCB2);
 
   // Divide the 16MHz signal by 8 giving 2MHz (0.5us) TCC0 timer tick and enable the outputs
   REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV8 |    // Divide GCLK4 by 8
