@@ -4,7 +4,7 @@
 #include <std_msgs/UInt16.h>
 
 /**
- * Sets up TC3 for pulsing LEDs.
+ * Sets up TC3 for pulsing LEDs. This only works on pin 5!
 */
 void setupTC3forLED(void)
 {
@@ -31,10 +31,7 @@ void setupTC3forLED(void)
 
   TC->CC[0].reg = 37499; // with P = 256, freq = 48^6 / 256 / 37500 = 5 Hz, or 200ms on, 200ms off, etc...
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
-  
-  // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  // PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = PORT_PMUX_PMUXO_E;
-  
+    
   // Enable TC
   TC->CTRLA.reg |= TC_CTRLA_ENABLE;
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync
