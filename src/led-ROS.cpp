@@ -31,7 +31,7 @@ void setupTC3forLED(void)
   TC->CTRLA.reg |= TC_CTRLA_PRESCALER_DIV256;   // Set prescaler
   while (TC->STATUS.bit.SYNCBUSY == 1);         // wait for sync
 
-  TC->CC[0].reg = 37499; // with P = 256, freq = 48^6 / 256 / 37500 = 5 Hz, or 200ms on, 200ms off, etc...
+  TC->CC[0].reg = 18749; // with P = 256, freq = 48^6 / 256 / 18750 = 10 Hz, or 100ms on, 100ms off, etc...
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
     
   // Interrupts
@@ -64,7 +64,7 @@ void clearLED(void)
   // (this is probably not needed, but won't hurt anything)
   PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0;  
 
-  // Set to output low to ensure 0 voltage (testing showed it only fell to 0.25V without)
+  // Set to output low to ensure 0 voltage (testing showed it only fell to 0.25V without formally setting to output)
   pinMode(5, OUTPUT);
 }
 
@@ -75,7 +75,7 @@ void cb_LED(const std_msgs::UInt16& msg)
   else clearLED();        //turn off LEDs
 
   //set the count for how many flashes we want; counted down in the ISR
-  //note that because the timer toggles on ovf, the flashes will be half the number sent
+  //note that because the timer toggles on ovf, the actual flashes will be half the number sent
   flashCount = msg.data;  
 }
 
