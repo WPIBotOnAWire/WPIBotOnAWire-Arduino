@@ -31,9 +31,6 @@ void setupTC3forLED(void)
 
   TC->CC[0].reg = 37499; // with P = 256, freq = 48^6 / 256 / 37500 = 5 Hz, or 200ms on, 200ms off, etc...
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
-
-  // Enable the port multiplexer for digital pin 5 (D5; PA15)
-  PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
   
   // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
   // PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = PORT_PMUX_PMUXO_E;
@@ -45,14 +42,24 @@ void setupTC3forLED(void)
 
 void setLED(void)
 {
+  // Enable the port multiplexer for digital pin 5 (D5; PA15). Doing so disconnects the normal pinMode behaviour
+  PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
+
   // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
   PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = PORT_PMUX_PMUXO_E;  
 }
 
 void clearLED(void)
 {
-  // Clear the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0; //PORT_PMUX_PMUXO_E;    
+  // Clear the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE  
+  PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 0;
+
+  // Disconnect the TC3 timer from the port output - port pins are paired odd PMUXO and even PMUXE
+  // (this is probably not needed, but won't hurt anything)
+  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0;  
+
+  // Set to output low to ensure 0 voltage (testing showed it only fell to 0.25V without)
+  pinMode(5, OUTPUT);
 }
 
 // callback function for receiving LED commands
@@ -67,6 +74,7 @@ ros::Subscriber<std_msgs::UInt16> led_sub("/led_cmd", cb_LED);
 void initLED(ros::NodeHandle& nh)
 {
   setupTC3forLED();
+  clearLED();
 
   nh.subscribe(led_sub);
 }
