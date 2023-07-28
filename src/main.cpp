@@ -14,6 +14,7 @@
 #include "battery-ROS.h"
 
 #include "rangefinder-ROS.h"
+#include "led.h"
 
 #include "gps-ROS.h"
 
@@ -82,6 +83,7 @@ void setup()
   setup_encoder(nh);
   initBatteryMonitor(nh);
   setupGPS(nh);
+  initLED();
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
