@@ -5,7 +5,7 @@
 std_msgs::UInt16 mbFrontCM; //in cm
 ros::Publisher pubMBfront("/rangefinder/front/MB", &mbFrontCM);
 
-MaxBotixPulse mbFront(A3);
+MaxBotixPulse mbFront(A0);
 void ISR_MB_FRONT(void) {mbFront.mbISR();}
 
 void setup_rangefinder(ros::NodeHandle& nh)
