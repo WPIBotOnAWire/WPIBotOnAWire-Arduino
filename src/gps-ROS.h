@@ -1,3 +1,4 @@
+#include <ros.h>
 
-void setupGPS(void);
+void setupGPS(ros::NodeHandle& nh);
 void processGPS(void);

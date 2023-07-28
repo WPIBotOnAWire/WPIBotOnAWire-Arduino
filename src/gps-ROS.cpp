@@ -5,6 +5,9 @@
 
 #include <gps.h>
 
+#include <std_msgs/Int32.h>
+
+
 /*
  * setup serial for the GPS on SERCOM2: 
  * Arduino pin 3 -> sercom 2:1* -> RX
@@ -19,7 +22,10 @@ void SERCOM2_Handler()
   gpsSerial.IrqHandler();
 }
 
-void setupGPS(void) 
+std_msgs::Int32 gps_report;
+ros::Publisher pub_gps("/GPS", &gps_report);
+
+void setupGPS(ros::NodeHandle& nh) 
 {
   SerialUSB.println(F("setupGPS()"));
   gps.Init();
@@ -40,12 +46,14 @@ void setupGPS(void)
   //gps.SetReportTime(2000);
   //gps.SendNMEA("PMTK314,0,5,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
 
+  nh.advertise(pub_gps);
+
   SerialUSB.println(F("/setupGPS()"));
 }
 
 void processGPS(void) 
 {
-  if(gps.CheckSerial() & GGA) //if we have a GGA
+  if(gps.CheckSerial()) // & GGA) //if we have a GGA
   {
     // this spends time trying to consolidate readings...might want to undo and use ROS constructs
     String reportStr = gps.GetReading().MakeDataString();

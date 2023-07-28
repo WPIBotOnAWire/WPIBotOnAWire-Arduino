@@ -81,7 +81,7 @@ void setup()
   init_motors(nh);
   setup_encoder(nh);
   initBatteryMonitor(nh);
-  setupGPS();
+  setupGPS(nh);
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
