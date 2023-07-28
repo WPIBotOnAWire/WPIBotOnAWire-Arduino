@@ -24,7 +24,7 @@ private:
   volatile int32_t snapTicks = 0; //frozen "snapshot" for speed calculations
   volatile int32_t prevTicks = 0; //previous value for calculating speed
 
-  static void ProcessA(void) 
+  static void ProcessA(void)
   {
     //could speed up with direct register call, but we'll use digitalRead for now
     if (digitalRead(A) == digitalRead(B)) currTicks++;
@@ -63,14 +63,18 @@ public:
 
   int32_t TakeSnapshot(void) //volatile
   {
+    noInterrupts();
     snapTicks = currTicks;
+    interrupts();
     return snapTicks;
   }
 
   int32_t CalcDelta(void) //volatile
   {
+    noInterrupts();
     int32_t delta = snapTicks - prevTicks;
     prevTicks = snapTicks;
+    interrupts();
 
     return delta;
   }
