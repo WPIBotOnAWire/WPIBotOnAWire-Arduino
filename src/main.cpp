@@ -83,7 +83,7 @@ void setup()
   setup_encoder(nh);
   initBatteryMonitor(nh);
   setupGPS(nh);
-  initLED();
+  initLED(nh);
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  

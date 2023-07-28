@@ -1,3 +1,4 @@
+#include <ros.h>
 
-void initLED(void);
+void initLED(ros::NodeHandle& nh);
 

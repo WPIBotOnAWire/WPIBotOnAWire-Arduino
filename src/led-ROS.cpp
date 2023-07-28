@@ -1,11 +1,12 @@
 #include "led-ROS.h"
 
 #include <Arduino.h>
+#include <std_msgs/UInt16.h>
 
 /**
  * Sets up TC3 for pulsing LEDs.
 */
-void initLED(void)
+void setupTC3forLED(void)
 {
   // Feed GCLK0 (already enabled) to TCC2 (and TC3)
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |         // Enable 
@@ -31,13 +32,41 @@ void initLED(void)
   TC->CC[0].reg = 37499; // with P = 256, freq = 48^6 / 256 / 37500 = 5 Hz, or 200ms on, 200ms off, etc...
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
 
-  // Enable the port multiplexer for digital pin 5 (D5; PA15): timer TC3 output
+  // Enable the port multiplexer for digital pin 5 (D5; PA15)
   PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
   
   // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = PORT_PMUX_PMUXO_E;
+  // PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = PORT_PMUX_PMUXO_E;
   
   // Enable TC
   TC->CTRLA.reg |= TC_CTRLA_ENABLE;
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync
+}
+
+void setLED(void)
+{
+  // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = PORT_PMUX_PMUXO_E;  
+}
+
+void clearLED(void)
+{
+  // Clear the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0; //PORT_PMUX_PMUXO_E;    
+}
+
+// callback function for receiving LED commands
+void cb_LED(const std_msgs::UInt16& msg)
+{
+    if(msg.data) setLED();
+    else clearLED();
+}
+
+ros::Subscriber<std_msgs::UInt16> led_sub("/led_cmd", cb_LED);
+
+void initLED(ros::NodeHandle& nh)
+{
+  setupTC3forLED();
+
+  nh.subscribe(led_sub);
 }
