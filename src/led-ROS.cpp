@@ -3,6 +3,8 @@
 #include <Arduino.h>
 #include <std_msgs/UInt16.h>
 
+volatile uint16_t flashCount = 0;
+
 /**
  * Sets up TC3 for pulsing LEDs. This only works on pin 5!
 */
@@ -32,6 +34,13 @@ void setupTC3forLED(void)
   TC->CC[0].reg = 37499; // with P = 256, freq = 48^6 / 256 / 37500 = 5 Hz, or 200ms on, 200ms off, etc...
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
     
+  // Interrupts
+  TC->INTENCLR.reg = 0x3B;           // disable all interrupts
+  TC->INTENSET.bit.OVF = 1;          // enable overfollow interrupt
+ 
+  // Enable InterruptVector
+  NVIC_EnableIRQ(TC3_IRQn);
+
   // Enable TC
   TC->CTRLA.reg |= TC_CTRLA_ENABLE;
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync
@@ -62,8 +71,12 @@ void clearLED(void)
 // callback function for receiving LED commands
 void cb_LED(const std_msgs::UInt16& msg)
 {
-    if(msg.data) setLED();
-    else clearLED();
+  if(msg.data) setLED();  //turn on LEDs
+  else clearLED();        //turn off LEDs
+
+  //set the count for how many flashes we want; counted down in the ISR
+  //note that because the timer toggles on ovf, the flashes will be half the number sent
+  flashCount = msg.data;  
 }
 
 ros::Subscriber<std_msgs::UInt16> led_sub("/led_cmd", cb_LED);
@@ -74,4 +87,15 @@ void initLED(ros::NodeHandle& nh)
   clearLED();
 
   nh.subscribe(led_sub);
+}
+
+void TC3_Handler()  // Interrupt on overflow
+{
+  TcCount16* TC = (TcCount16*) TC3; // get timer struct
+  
+  if (TC->INTFLAG.bit.OVF == 1)   // An overflow caused the interrupt
+  {
+    TC->INTFLAG.bit.OVF = 1;    // writing a one clears the flag ovf flag
+    if(!(--flashCount)) clearLED();
+  }
 }
