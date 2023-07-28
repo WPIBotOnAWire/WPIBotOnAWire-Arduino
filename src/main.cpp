@@ -15,6 +15,8 @@
 
 #include "rangefinder-ROS.h"
 
+#include "gps-ROS.h"
+
 #ifdef USE_USBCON
   #define DEBUG_SERIAL Serial1 //pins 0/1 on the SAMD21 mini breakout
 #else
@@ -79,6 +81,7 @@ void setup()
   init_motors(nh);
   setup_encoder(nh);
   initBatteryMonitor(nh);
+  setupGPS();
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
@@ -99,6 +102,7 @@ void loop(void)
     str_msg.data = hello;
     chatter.publish( &str_msg );
 
+    DEBUG_SERIAL.print('\n');
     DEBUG_SERIAL.print(millis());
     DEBUG_SERIAL.println("\tJust one ping.");
   }
@@ -106,6 +110,7 @@ void loop(void)
   processRangefinders();
   processEncoders();
   processBatteryMonitor();
+  processGPS();
 
     // if(millis()-timer> 1000){
     //   override_was_active = true;

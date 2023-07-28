@@ -18,3 +18,38 @@ void SERCOM2_Handler()
 {
   gpsSerial.IrqHandler();
 }
+
+void setupGPS(void) 
+{
+  SerialUSB.println(F("setupGPS()"));
+  gps.Init();
+  
+  //assign pins 3 & 4 SERCOM functionality
+  pinPeripheral(3, PIO_SERCOM_ALT);
+  pinPeripheral(4, PIO_SERCOM_ALT);
+
+  gps.SetActiveNMEAStrings(GGA | RMC);
+
+//   SerialUSB.println(F("Checking for signal."));
+//   while(!(gps.CheckSerial() & RMC) && !SerialUSB.available()) {}
+
+//   GPSDatum gpsDatum = gps.GetReading();  
+  
+  //no longer need RMC
+  //gps.SetActiveNMEAStrings(GGA);
+  //gps.SetReportTime(2000);
+  //gps.SendNMEA("PMTK314,0,5,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
+
+  SerialUSB.println(F("/setupGPS()"));
+}
+
+void processGPS(void) 
+{
+  if(gps.CheckSerial() & GGA) //if we have a GGA
+  {
+    // this spends time trying to consolidate readings...might want to undo and use ROS constructs
+    String reportStr = gps.GetReading().MakeDataString();
+
+    SerialUSB.println(reportStr);  
+  }
+}
