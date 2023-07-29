@@ -96,6 +96,6 @@ void TC3_Handler()  // Interrupt on overflow
   if (TC->INTFLAG.bit.OVF == 1)   // An overflow caused the interrupt
   {
     TC->INTFLAG.bit.OVF = 1;    // writing a one clears the flag ovf flag
-    if(!(--flashCount)) clearLED();
+    if(!(flashCount--)) clearLED();
   }
 }
