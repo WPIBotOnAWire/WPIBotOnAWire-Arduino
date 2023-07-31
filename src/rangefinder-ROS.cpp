@@ -11,7 +11,7 @@ void ISR_MB_FRONT(void) {mbFront.mbISR();}
 std_msgs::UInt16 mbAftCM; //in cm
 ros::Publisher pubMBaft("/rangefinder/aft/MB", &mbAftCM);
 
-MaxBotixPulse mbAft(A1);
+MaxBotixPulse mbAft(A3);
 void ISR_MB_AFT(void) {mbAft.mbISR();}
 
 void setup_rangefinders(ros::NodeHandle& nh)

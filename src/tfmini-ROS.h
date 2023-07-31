@@ -15,8 +15,9 @@ protected:
     HardwareSerial* serial;
 
 public:
-    void setupTFmini(void);
+    void setupTFmini(HardwareSerial* ser);
     bool getDistance(uint16_t& distance);
+    void setOutputRate(uint16_t rateHz);
 };
 
 void setupTFminis(ros::NodeHandle& nh);

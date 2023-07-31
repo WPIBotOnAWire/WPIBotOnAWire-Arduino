@@ -7,7 +7,10 @@
 #define Serial SerialUSB
 
 std_msgs::UInt16 tfForeCMmsg; //in cm
-ros::Publisher pubTFfore("/rangefinder/front/TF", &tfForeCMmsg);
+ros::Publisher pubTFfore("/rangefinder/fore/TF", &tfForeCMmsg);
+
+std_msgs::UInt16 tfAftCMmsg; //in cm
+ros::Publisher pubTFaft("/rangefinder/aft/TF", &tfAftCMmsg);
 
 /**
  * Sets up a tfmini on SERCOM5, pins D6 and D7.
@@ -25,32 +28,32 @@ ros::Publisher pubTFfore("/rangefinder/front/TF", &tfForeCMmsg);
  * 
  * Uart(SERCOM *_s, uint8_t _pinRX, uint8_t _pinTX, SercomRXPad _padRX, SercomUartTXPad _padTX);
  */
-Uart tfSerial (&sercom5, 7, 6, SERCOM_RX_PAD_3, UART_TX_PAD_2);
+Uart tfSerialFore (&sercom5, 7, 6, SERCOM_RX_PAD_3, UART_TX_PAD_2);
+
+/*
+ * setup serial for the TFmini on SERCOM4: 
+ * Arduino pin A1 -> sercom 4:0 -> TX
+ * Arduino pin A2 -> sercom 4:1 -> RX
+ * 
+ * Uart(SERCOM *_s, uint8_t _pinRX, uint8_t _pinTX, SercomRXPad _padRX, SercomUartTXPad _padTX);
+ */
+Uart tfSerialAft (&sercom4, A2, A1, SERCOM_RX_PAD_1, UART_TX_PAD_0);
 
 void SERCOM5_Handler(void)
 {
-  tfSerial.IrqHandler();
+  tfSerialFore.IrqHandler();
 }
 
-void TFmini::setupTFmini(void)
+void SERCOM4_Handler(void)
+{
+  tfSerialAft.IrqHandler();
+}
+
+void TFmini::setupTFmini(HardwareSerial* ser)
 {
     //start the serial
-    serial = &tfSerial;  // this could be prettier...
+    serial = ser;  // this could be prettier...
     serial->begin(115200);
-
-    //then we have to set the pads
-    //assign pins 6 & 7 SERCOM functionality
-    pinPeripheral(6, PIO_SERCOM);
-    pinPeripheral(7, PIO_SERCOM);
-
-    delay(5); //short delay to make sure things are up?
-
-    serial->write((uint8_t)0x5A);
-    serial->write((uint8_t)0x06);
-    serial->write((uint8_t)0x03);
-    serial->write((uint8_t)(uint8_t)0x0A); //10 Hz
-    serial->write((uint8_t)0x00);
-    serial->write((uint8_t)(0x5A + 0x06 + 0x03 + 0x0A + 0x00)); //checksum -- could be more generic, but works for 10 Hz
 }
 
 bool TFmini::handleUART(uint8_t b)
@@ -101,6 +104,7 @@ bool TFmini::getDistance(uint16_t& distance)
 }
 
 TFmini tfFore;
+TFmini tfAft;
 
 void processTFminis(void)
 {
@@ -110,10 +114,49 @@ void processTFminis(void)
     tfForeCMmsg.data = foreDistance;
     pubTFfore.publish(&tfForeCMmsg);
   }
+
+  uint16_t aftDistance = 0;
+  if(tfAft.getDistance(aftDistance))
+  {
+    tfAftCMmsg.data = aftDistance;
+    pubTFaft.publish(&tfAftCMmsg);
+  }
 }
 
 void setupTFminis(ros::NodeHandle& nh)
 {   
-    tfFore.setupTFmini();
+    tfFore.setupTFmini(&tfSerialFore);
+
+    //then we have to set the pads
+    //assign pins 6 & 7 SERCOM functionality
+    pinPeripheral(6, PIO_SERCOM);
+    pinPeripheral(7, PIO_SERCOM);
+
     nh.advertise(pubTFfore);
+
+    tfFore.setOutputRate(10);
+
+    tfAft.setupTFmini(&tfSerialAft);
+
+    //then we have to set the pads
+    //assign pins A1 & A2 SERCOM functionality
+    pinPeripheral(A1, PIO_SERCOM);
+    pinPeripheral(A2, PIO_SERCOM);
+
+    nh.advertise(pubTFaft);
+
+    tfFore.setOutputRate(10);
+}
+
+void TFmini::setOutputRate(uint16_t rateHz)
+{
+    uint8_t lowByte = rateHz;
+    uint8_t highByte = rateHz >> 8;
+
+    serial->write((uint8_t)0x5A);
+    serial->write((uint8_t)0x06);
+    serial->write((uint8_t)0x03);
+    serial->write((uint8_t)lowByte);
+    serial->write((uint8_t)highByte);
+    serial->write((uint8_t)(0x5A + 0x06 + 0x03 + lowByte + highByte));
 }
