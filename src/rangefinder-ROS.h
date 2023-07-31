@@ -6,5 +6,5 @@
  * Utility functions for dealing with rangefinders.
 */
 
-void setup_rangefinder(ros::NodeHandle& nh);
+void setup_rangefinders(ros::NodeHandle& nh);
 void processRangefinders(void);

@@ -8,12 +8,20 @@ ros::Publisher pubMBfront("/rangefinder/front/MB", &mbFrontCM);
 MaxBotixPulse mbFront(A0);
 void ISR_MB_FRONT(void) {mbFront.mbISR();}
 
-void setup_rangefinder(ros::NodeHandle& nh)
+std_msgs::UInt16 mbAftCM; //in cm
+ros::Publisher pubMBaft("/rangefinder/aft/MB", &mbAftCM);
+
+MaxBotixPulse mbAft(A1);
+void ISR_MB_AFT(void) {mbAft.mbISR();}
+
+void setup_rangefinders(ros::NodeHandle& nh)
 {
   //nh.getHardware()->setBaud(9600); //struggling to understand this one...
   nh.advertise(pubMBfront);
+  nh.advertise(pubMBaft);
 
   mbFront.init(ISR_MB_FRONT);
+  mbAft.init(ISR_MB_AFT);
   
   // // wait controller to be connected
   // while (!nh.connected()){
@@ -32,11 +40,18 @@ void setup_rangefinder(ros::NodeHandle& nh)
 
 void processRangefinders(void)
 {
-  float frontDist = 0;
+  uint16_t frontDist = 0;
   if(mbFront.getDistance(frontDist))
   {
-    mbFrontCM.data = frontDist;
+    mbFrontCM.data = frontDist / 10; //raw reading is in mm
     pubMBfront.publish(&mbFrontCM);
+  }
+
+  uint16_t aftDist = 0;
+  if(mbAft.getDistance(aftDist))
+  {
+    mbAftCM.data = aftDist / 10; //raw reading is in mm
+    pubMBaft.publish(&mbAftCM);
   }
 
   //   if ((millis()-range_timer) > 50){

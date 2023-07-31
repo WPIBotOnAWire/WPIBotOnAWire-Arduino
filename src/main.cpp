@@ -78,7 +78,7 @@ void setup()
 
   nh.advertise(chatter);
 
-  setup_rangefinder(nh);
+  setup_rangefinders(nh);
   init_motors(nh);
   setup_encoder(nh);
   initBatteryMonitor(nh);
