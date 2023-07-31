@@ -17,6 +17,7 @@
 #include "led-ROS.h"
 
 #include "gps-ROS.h"
+#include "tfmini-ROS.h"
 
 #ifdef USE_USBCON
   #define DEBUG_SERIAL Serial1 //pins 0/1 on the SAMD21 mini breakout
@@ -84,6 +85,7 @@ void setup()
   initBatteryMonitor(nh);
   setupGPS(nh);
   initLED(nh);
+  setupTFminis(nh);
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
@@ -113,6 +115,7 @@ void loop(void)
   processEncoders();
   processBatteryMonitor();
   processGPS();
+  processTFminis();
 
     // if(millis()-timer> 1000){
     //   override_was_active = true;
