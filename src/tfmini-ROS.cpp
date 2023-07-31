@@ -140,8 +140,9 @@ void setupTFminis(ros::NodeHandle& nh)
 
     //then we have to set the pads
     //assign pins A1 & A2 SERCOM functionality
-    pinPeripheral(A1, PIO_SERCOM);
-    pinPeripheral(A2, PIO_SERCOM);
+    //(the graphical datasheet doesn't show it, but these pins use the ALT)
+    pinPeripheral(A1, PIO_SERCOM_ALT);
+    pinPeripheral(A2, PIO_SERCOM_ALT);
 
     nh.advertise(pubTFaft);
 
