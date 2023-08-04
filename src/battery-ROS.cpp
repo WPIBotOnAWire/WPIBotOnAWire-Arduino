@@ -25,7 +25,7 @@ void processBatteryMonitor(void)
     {
         lastBatteryReport = currTime;
 
-        //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ^^^^
+        //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ????
         bat_msg.voltage = bat_monitor.readBusVoltage();
         bat_msg.current = bat_monitor.readCurrent();
 
