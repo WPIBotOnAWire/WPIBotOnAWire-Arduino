@@ -34,31 +34,14 @@ ros::Publisher chatter("chatter", &str_msg);
 std_msgs::Float32 rf_front_val, rf_back_val;
 std_msgs::Bool man_override;
 std_msgs::Int32 speaker_val;
-ros::Publisher pub_rf_front("/rangefinder/front", &rf_front_val);
-ros::Publisher pub_rf_back("/rangefinder/back", &rf_back_val);
 ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
-
-
 
 // Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
 // VL53L0X_RangingMeasurementData_t measure;
 unsigned long range_timer;
 int sound_regulator = 0;
 bool override_was_active = false;
-
-
-
-// function to control leds in state machine
-void cb_led(const std_msgs::Bool &msg) {
-    int state = msg.data ? HIGH : LOW;
-    digitalWrite(LED_PIN, state);
-}
-
-
-ros::Subscriber<std_msgs::Bool> led_sub("/deterrents/led", cb_led);
-
-
 */
 
 void setup()
