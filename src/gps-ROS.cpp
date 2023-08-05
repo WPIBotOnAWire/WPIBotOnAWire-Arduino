@@ -27,6 +27,9 @@ void SERCOM2_Handler()
  * Need to figure out the whole gps_common thing...might need to custom build the messages???
  * 
  * In the meantime, I'll just pass a string and move on.
+ * 
+ * TODO:
+ * GPSFix and GPSStatus are stoooopidly big. I'll just get the data I want and pass it.
 */
 gps_common::GPSFix gpsFix;
 gps_common::GPSStatus gpsStatus;
@@ -46,16 +49,6 @@ void setupGPS(ros::NodeHandle& nh)
   pinPeripheral(4, PIO_SERCOM_ALT);
 
   gps.SetActiveNMEAStrings(GGA | RMC);
-
-//   SerialUSB.println(F("Checking for signal."));
-//   while(!(gps.CheckSerial() & RMC) && !SerialUSB.available()) {}
-
-//   GPSDatum gpsDatum = gps.GetReading();  
-  
-  //no longer need RMC
-  //gps.SetActiveNMEAStrings(GGA);
-  //gps.SetReportTime(2000);
-  //gps.SendNMEA("PMTK314,0,5,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0");
 
 //   nh.advertise(pub_gps_fix);
 //   nh.advertise(pub_gps_status);
