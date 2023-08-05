@@ -16,6 +16,7 @@
  */
 Uart gpsSerial (&sercom2, 3, 4, SERCOM_RX_PAD_1, UART_TX_PAD_0);
 
+// A GPS I have on hand. Easily updated.
 GPS_EM506 gps(&gpsSerial);
 
 void SERCOM2_Handler()
