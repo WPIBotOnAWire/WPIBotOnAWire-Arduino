@@ -1,6 +1,33 @@
 #include "position_filter.h"
 
 /**
+ * Setup the geometry.
+*/
+Location::Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float a)
+{
+    LAT1DMM = lat1;
+    LON1DMM = lon1;
+    
+    LAT2DMM = lat2;
+    LON2DMM = lon2;
+
+    LAT0DMM = (LAT1DMM + LAT2DMM) / 2;
+    LON0DMM = (LON1DMM + LON2DMM) / 2;
+
+    metersPerDMMLat = 0; //?????
+    metersPerDMMLon = metersPerDMMLat * cos(LAT0DMM / 0); //needs factor!!!
+
+    // find the delta
+    float deltaXi = (LON2DMM - LON0DMM) * metersPerDMMLon;
+    float deltaEta = (LAT2DMM - LAT0DMM) * metersPerDMMLat;
+
+    // and convert to unit vector
+    float xMax = sqrt(deltaXi*deltaXi + deltaEta*deltaEta);
+    unitXi = deltaXi / xMax;
+    unitEta = deltaEta / xMax;
+}
+
+/**
  * Receives lat,lon in decimilliminutes and calculates x, the linear distance from the midpoint
  * between the two poles
 */
@@ -11,10 +38,6 @@ float Location::updateFromGPS(int32_t latDMM, int32_t lonDMM)
 
     float distLat = deltaLat * metersPerDMMLat;
     float distLon = deltaLon * metersPerDMMLon;
-
-    // these are expensive -- no need for them...
-    // float phi = atan2(distLat, distLon);
-    // float r = sqrt(distLat*distLat + distLon*distLon);
 
     // dot the GPS vector with the unit vector of the cable to get x 
     // (ie, project the GPS reading to conform to the cable)
