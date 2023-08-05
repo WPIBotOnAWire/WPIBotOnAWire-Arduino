@@ -18,4 +18,5 @@ float Location::updateFromGPS(int32_t latDMM, int32_t lonDMM)
 
     //wait, we can just dot the location vector with the unit vector of the cable?
 
+    return 9999999;
 }
