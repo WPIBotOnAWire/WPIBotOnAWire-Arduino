@@ -5,6 +5,9 @@
 const float RAD_PER_DMM = M_PI / (180 * 60 * 10000); //precision problem?
 const float KAPPA = 0.25;
 
+std_msgs::Float32 loc_msg;
+ros::Publisher pub_location("/location", &loc_msg);
+
 /**
  * Setup the geometry.
 */
@@ -41,9 +44,6 @@ Location::Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float
     updateFromGPS(LAT2DMM, LON2DMM);
     sEstimated = sGPS;
 }
-
-std_msgs::Float32 loc_msg;
-ros::Publisher pub_location("/location", &loc_msg);
 
 void Location::InitFilter(ros::NodeHandle& nh)
 {

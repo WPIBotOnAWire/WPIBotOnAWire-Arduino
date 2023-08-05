@@ -4,6 +4,7 @@
 
 #include <std_msgs/Int16.h>
 #include <std_msgs/Int32.h>
+#include <std_msgs/Float32.h>
 
 #include "esc-samd21.h"
 
@@ -29,6 +30,9 @@ QuadEncoder<ENCODER_PIN1,ENCODER_PIN2> encoder;
 
 std_msgs::Int32 enc_val;
 ros::Publisher pub_enc("/encoder", &enc_val);
+
+std_msgs::Float32 speed_enc;
+ros::Publisher pub_speed("/speed_mps", &speed_enc);
 
 ESCDirect escPair;
 
@@ -77,5 +81,8 @@ void processEncoders(void)
 
     enc_val.data = currTicks;
     pub_enc.publish(&enc_val);
+
+    speed_enc.data = delta * METERS_PER_TICK;
+    pub_speed.publish(&speed_enc);
   }  
 }
