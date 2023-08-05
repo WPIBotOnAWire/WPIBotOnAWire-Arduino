@@ -15,6 +15,9 @@
  * 
  * The encoders measure changes in s.
  * The GPS measures changes in x (by way of lat/lon).
+ * 
+ * Lat/Lon are stored as "decimilliminutes" (DMM) so they can be stored as integers.
+ * Divide by 10000 to get minutes, where there are 60 minutes in a degree.
 */
 class Location
 {
@@ -23,11 +26,11 @@ private:
     float x = 0; // distance between the poles, measure from the middle
 
     float xMax, sMax;
-    uint16_t LAT1, LON1; // lat, lon of pole 1 (negative end)
-    uint16_t LAT2, LON2; // lat, lon of pole 2 (positive end)
+    int32_t LAT1DMM, LON1DMM; // lat, lon of pole 1 (negative end); stored as DMM
+    int32_t LAT2DMM, LON2DMM; // lat, lon of pole 2 (positive end); stored as DMM
 
 public:
     Location(void) {}
     float updateFromEncoder(float deltaS);
-    float updateFromGPS(uint16_t lat, uint16_t lon);
+    float updateFromGPS(int32_t latDMM, int32_t lonDMM);
 };
