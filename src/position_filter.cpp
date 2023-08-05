@@ -12,11 +12,16 @@ float Location::updateFromGPS(int32_t latDMM, int32_t lonDMM)
     float distLat = deltaLat * metersPerDMMLat;
     float distLon = deltaLon * metersPerDMMLon;
 
-    // these are expensive
-    float phi = atan2(distLat, distLon);
-    float r = sqrt(distLat*distLat + distLon*distLon);
+    // these are expensive -- no need for them...
+    // float phi = atan2(distLat, distLon);
+    // float r = sqrt(distLat*distLat + distLon*distLon);
 
-    //wait, we can just dot the location vector with the unit vector of the cable?
+    // dot the GPS vector with the unit vector of the cable to get x 
+    // (ie, project the GPS reading to conform to the cable)
+    float currX = distLat * unitXi + distLon * unitEta;
+    float currS = vertexH * sinh(currX / vertexH);
 
-    return 9999999;
+    // do I want/need to update x,s datums?
+
+    return currS;
 }

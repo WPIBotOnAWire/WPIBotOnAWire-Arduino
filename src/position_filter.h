@@ -33,6 +33,12 @@ private:
     float metersPerDMMLat;
     float metersPerDMMLon;
 
+    // unit vector of the cable, where xi is east/west; eta is north/south
+    float unitXi;
+    float unitEta;
+
+    float vertexH; // a geometric parameter of the catenary
+
 public:
     Location(void) {}
     float updateFromEncoder(float deltaS);
