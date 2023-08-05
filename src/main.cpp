@@ -100,11 +100,5 @@ void loop(void)
   processGPS();
   processTFminis();
 
-    // if(millis()-timer> 1000){
-    //   override_was_active = true;
-    //   sound_regulator++;
-    //   timer = millis();
-    // }
-
   nh.spinOnce();
 }
