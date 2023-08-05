@@ -91,7 +91,7 @@ void loop(void)
 
     DEBUG_SERIAL.print('\n');
     DEBUG_SERIAL.print(millis());
-    DEBUG_SERIAL.println("\tJust one ping.");
+    DEBUG_SERIAL.println("\tHeartbeat.");
   }
   
   processRangefinders();
