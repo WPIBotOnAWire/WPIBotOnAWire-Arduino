@@ -40,7 +40,7 @@ private:
     float vertexH; // a geometric parameter of the catenary
 
 public:
-    Location(void) {}
+    Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float a);
     float updateFromEncoder(float deltaS);
     float updateFromGPS(int32_t latDMM, int32_t lonDMM);
 };
