@@ -30,6 +30,11 @@ Location::Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float
     float xMax = sqrt(deltaXi*deltaXi + deltaEta*deltaEta);
     unitXi = deltaXi / xMax;
     unitEta = deltaEta / xMax;
+
+    // default position to end by just copying over the pole location
+    updateFromGPS(LAT2DMM, LON2DMM);
+    xFused = xGPS;
+    sFused = sGPS;
 }
 
 /**
@@ -46,10 +51,8 @@ float Location::updateFromGPS(int32_t latDMM, int32_t lonDMM)
 
     // dot the GPS vector with the unit vector of the cable to get x 
     // (ie, project the GPS reading to conform to the cable)
-    float currX = distLat * unitXi + distLon * unitEta;
-    float currS = vertexH * sinh(currX / vertexH); // sinh is expensive, but the only one
+    xGPS = distLat * unitXi + distLon * unitEta;
+    sGPS = vertexH * sinh(xGPS / vertexH); // sinh is expensive, but the only one
 
-    // do I want/need to update x,s datums?
-
-    return currS;
+    return sGPS;
 }

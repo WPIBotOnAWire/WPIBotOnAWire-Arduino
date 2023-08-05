@@ -22,8 +22,11 @@
 class Location
 {
 private:
-    float s = 0; // distance along the wire, measured from the middle
-    float x = 0; // distance between the poles, measure from the middle
+    float xFused = 0; // estimated position along the wire, measured from the middle
+    float sFused = 0; // estimated position between the poles, measure from the middle
+
+    float xGPS = 0; // observed position from GPS
+    float sGPS = 0; // observed position from GPS
 
     float xMax, sMax;
     int32_t LAT1DMM, LON1DMM; // lat, lon of pole 1 (negative end); stored as DMM
