@@ -25,7 +25,8 @@ void processBatteryMonitor(void)
     {
         lastBatteryReport = currTime;
 
-        //THESE GET THE BATTERY INFO AND ARE NEEDED TO MAKE MOTOR SPIN ????
+        // The previous team claims that this needs to be published for the motors to spin
+        // I'm not sure if it's the publishing or a hardware connection, or what
         bat_msg.voltage = bat_monitor.readBusVoltage();
         bat_msg.current = bat_monitor.readCurrent();
 
