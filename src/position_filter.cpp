@@ -1,6 +1,7 @@
 #include "position_filter.h"
 
 const float RAD_PER_DMM = M_PI / (180 * 60 * 10000); //precision problem?
+const float KAPPA = 0.25;
 
 /**
  * Setup the geometry.
@@ -31,10 +32,12 @@ Location::Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float
     unitXi = deltaXi / xMax;
     unitEta = deltaEta / xMax;
 
+    // sMax
+    sMax = vertexH * sinh(xMax / vertexH);
+
     // default position to end by just copying over the pole location
     updateFromGPS(LAT2DMM, LON2DMM);
-    xFused = xGPS;
-    sFused = sGPS;
+    sEstimated = sGPS;
 }
 
 /**
@@ -54,5 +57,12 @@ float Location::updateFromGPS(int32_t latDMM, int32_t lonDMM)
     xGPS = distLat * unitXi + distLon * unitEta;
     sGPS = vertexH * sinh(xGPS / vertexH); // sinh is expensive, but the only one
 
+    sEstimated = sEstimated + KAPPA * (sGPS - sEstimated);
+
     return sGPS;
+}
+
+float Location::updateFromEncoder(float deltaS)
+{
+    return sEstimated += deltaS;
 }
