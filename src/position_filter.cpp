@@ -1,5 +1,7 @@
 #include "position_filter.h"
 
+#include <std_msgs/Float32.h>
+
 const float RAD_PER_DMM = M_PI / (180 * 60 * 10000); //precision problem?
 const float KAPPA = 0.25;
 
@@ -40,10 +42,10 @@ Location::Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float
     sEstimated = sGPS;
 }
 
-sts_msgs::Float32 loc_msg;
+std_msgs::Float32 loc_msg;
 ros::Publisher pub_location("/location", &loc_msg);
 
-void Locatio::InitFilter(ros::NodeHandle& nh)
+void Location::InitFilter(ros::NodeHandle& nh)
 {
     nh.advertise(pub_location);
 
