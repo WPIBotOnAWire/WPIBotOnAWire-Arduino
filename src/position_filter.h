@@ -1,5 +1,5 @@
 #pragma once
-
+#include <ros.h>
 #include <Arduino.h>
 
 /**
@@ -18,6 +18,17 @@
  * 
  * Lat/Lon are stored as "decimilliminutes" (DMM) so they can be stored as integers.
  * Divide by 10000 to get minutes, where there are 60 minutes in a degree.
+*/
+
+/**
+ * TODO: Add more statistics:
+ * - innovation
+ * - deviation of GPS from the cable
+ * - bias
+ * 
+ * TODO: Take time lags into account
+ * 
+ * TODO: Do I _really_ want this here? Or should I put it on the Jetson?
 */
 class Location
 {
@@ -45,6 +56,7 @@ private:
 
 public:
     Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float a);
+    void InitFilter(ros::NodeHandle& nh);
     float updateFromEncoder(float deltaS);
     float updateFromGPS(int32_t latDMM, int32_t lonDMM);
 };

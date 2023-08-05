@@ -40,6 +40,18 @@ Location::Location(int32_t lat1, int32_t lon1, int32_t lat2, int32_t lon2, float
     sEstimated = sGPS;
 }
 
+sts_msgs::Float32 loc_msg;
+ros::Publisher pub_location("/location", &loc_msg);
+
+void Locatio::InitFilter(ros::NodeHandle& nh)
+{
+    nh.advertise(pub_location);
+
+    // default position to end by just copying over the pole location
+    updateFromGPS(LAT2DMM, LON2DMM);
+    sEstimated = sGPS;
+}
+
 /**
  * Receives lat,lon in decimilliminutes and calculates x, the linear distance from the midpoint
  * between the two poles
@@ -58,6 +70,9 @@ float Location::updateFromGPS(int32_t latDMM, int32_t lonDMM)
     sGPS = vertexH * sinh(xGPS / vertexH); // sinh is expensive, but the only one
 
     sEstimated = sEstimated + KAPPA * (sGPS - sEstimated);
+
+    loc_msg.data = sGPS;
+    pub_location.publish(&loc_msg);
 
     return sGPS;
 }

@@ -19,6 +19,8 @@
 #include "gps-ROS.h"
 #include "tfmini-ROS.h"
 
+#include "position_filter.h"
+
 #ifdef USE_USBCON
   #define DEBUG_SERIAL Serial1 //pins 0/1 on the SAMD21 mini breakout
 #else
