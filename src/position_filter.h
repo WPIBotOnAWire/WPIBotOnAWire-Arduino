@@ -28,6 +28,10 @@ private:
     float xMax, sMax;
     int32_t LAT1DMM, LON1DMM; // lat, lon of pole 1 (negative end); stored as DMM
     int32_t LAT2DMM, LON2DMM; // lat, lon of pole 2 (positive end); stored as DMM
+    int32_t LAT0DMM, LON0DMM; // lat, lon of midpoint between poles; stored as DMM
+
+    float metersPerDMMLat;
+    float metersPerDMMLon;
 
 public:
     Location(void) {}
