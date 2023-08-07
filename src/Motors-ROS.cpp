@@ -29,10 +29,10 @@
 QuadEncoder<ENCODER_PIN1,ENCODER_PIN2> encoder; 
 
 std_msgs::Int32 enc_val;
-ros::Publisher pub_enc("/encoder", &enc_val);
+ros::Publisher pub_enc("/encoder/count", &enc_val);
 
 std_msgs::Float32 speed_enc;
-ros::Publisher pub_speed("/speed_mps", &speed_enc);
+ros::Publisher pub_speed("/encoder/meters_per_interval", &speed_enc);
 
 ESCDirect escPair;
 
@@ -42,7 +42,7 @@ void cb_motor(const std_msgs::Int16& msg)
     escPair.SetSpeed(msg.data); //this is percent full speed; should be m/s?
 }
 
-ros::Subscriber<std_msgs::Int16> motor_sub("/motor_speed", cb_motor);
+ros::Subscriber<std_msgs::Int16> motor_sub("/target_speed", cb_motor);
 
 void init_motors(ros::NodeHandle& nh)
 {
