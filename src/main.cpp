@@ -55,10 +55,10 @@ void setup()
    * Be careful when uncommenting the following, as you _must_ connect to the Serial Monitor if
    * you leave them uncommented!
   */
-  while(!DEBUG_SERIAL)
-  {
-    delay(100);
-  }
+  // while(!DEBUG_SERIAL)
+  // {
+  //   delay(100);
+  // }
   
   DEBUG_SERIAL.println("setup");
 
@@ -69,7 +69,7 @@ void setup()
   setup_rangefinders(nh);
   init_motors(nh);
   setup_encoder(nh);
-  initBatteryMonitor(nh);
+  //initBatteryMonitor(nh);
   setupGPS(nh);
   initLED(nh);
   setupTFminis(nh);
@@ -100,7 +100,7 @@ void loop(void)
   
   processRangefinders();
   processEncoders();
-  processBatteryMonitor();
+  //processBatteryMonitor();
   processGPS();
   processTFminis();
 
