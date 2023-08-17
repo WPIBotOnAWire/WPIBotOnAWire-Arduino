@@ -69,7 +69,7 @@ void setup()
   setup_rangefinders(nh);
   init_motors(nh);
   setup_encoder(nh);
-  //initBatteryMonitor(nh);
+  initBatteryMonitor(nh);
   setupGPS(nh);
   initLED(nh);
   setupTFminis(nh);
@@ -100,7 +100,7 @@ void loop(void)
   
   processRangefinders();
   processEncoders();
-  //processBatteryMonitor();
+  processBatteryMonitor();
   processGPS();
   processTFminis();
 
