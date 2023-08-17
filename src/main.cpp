@@ -3,6 +3,8 @@
  * USE_USBCON needs to be defined before including ros.h.
  * 
  * If you comment it out, it's reversed: ROS will use Serial1 and debugging happens on the USB.
+ * 
+ * Serial1 consists of Pin 0 (RX) and Pin 1 (TX)
 */
 //#define USE_USBCON 
 
