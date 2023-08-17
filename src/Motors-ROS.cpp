@@ -61,6 +61,7 @@ void setup_encoder(ros::NodeHandle& nh)
 {
   encoder.Init();
   nh.advertise(pub_enc);
+  nh.advertise(pub_speed);
 }
 
 /**
