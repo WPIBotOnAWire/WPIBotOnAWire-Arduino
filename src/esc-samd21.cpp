@@ -2,6 +2,12 @@
 
 #include <Arduino.h>
 
+// Motor Constants -- TODO: pass to constructor
+// fullforward = 2000, fullback = 1000
+#define MOTOR_FULLFORWARD    2000
+#define MOTOR_FULLBACK       1000
+#define MOTOR_STOP           1500
+
 /**
  * This sets up TCC0 to send "RC-servo" pulses to pins 10 and 13. We skip the Arduino Servo library
  * (which is a hack) and use the timers directly. This will produce a much smoother pulse output.

@@ -10,12 +10,6 @@
 
 #define Serial SerialUSB
 
-// Motor Constants -- TODO: pass to constructor
-// fullforward = 2000, fullback = 1000
-// #define MOTOR_FULLFORWARD    2000
-// #define MOTOR_FULLBACK       1000
-// #define MOTOR_STOP           1500
-
 #define Kp 1
 #define Ki 0.01
 
