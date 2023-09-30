@@ -22,6 +22,7 @@
 #define PPR                     1024.0  // pulses per revolution of the encoder
 #define METERS_PER_TICK         0.0001286 // meters/tick
 #define CM_PER_TICK             0.01286 // cm/tick // maybe use this?
+#define LOOP_RATE_MS            50
 
 QuadEncoder<ENCODER_PIN1,ENCODER_PIN2> encoder; 
 
@@ -33,16 +34,18 @@ ros::Publisher pub_speed("/encoder/meters_per_second", &speed_enc);
 
 ESCDirect escPair;
 
-float targetSpeed = 0;
+int16_t targetSpeedTicksPerInterval = 0;
+int16_t currentTargetTicksPerInterval = 0;
 
 // callback function for receiving speed commands
 void cbTargetSpeed(const std_msgs::Float32& msg) 
 {
-  targetSpeed = msg.data;
+  float targetSpeed = msg.data;
+  targetSpeedTicksPerInterval = targetSpeed * (LOOP_RATE_MS / 1000.0) / METERS_PER_TICK;
 //    escPair.SetSpeed(msg.data); //this is percent full speed; should be m/s?
 }
 
-ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed", cbTargetSpeed);
+ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed_meters_per_sec", cbTargetSpeed);
 
 void init_motors(ros::NodeHandle& nh)
 {
@@ -68,8 +71,6 @@ void setup_encoder(ros::NodeHandle& nh)
  * Reads the current encoder count (count is updated in an ISR) and publishes the result.
  * Nominally tested and working with a quadrature encoder.
 */
-#define LOOP_RATE_MS 50
-
 void processEncoders(void)
 {
   static uint32_t lastEncoderReport = 0;
@@ -80,17 +81,19 @@ void processEncoders(void)
     lastEncoderReport = currTime;
 
     int32_t currTicks = encoder.TakeSnapshot();
-    int32_t delta = encoder.CalcDelta(); // TODO: convert to linear speed and publish
+    int32_t delta = encoder.CalcDelta();
 
     enc_val.data = currTicks;
     pub_enc.publish(&enc_val);
 
-    float speedMeterPerSecond = delta * METERS_PER_TICK / (float) LOOP_RATE_MS;
-    speed_enc.data = speedMeterPerSecond;
+    float speedMetersPerSecond = delta * METERS_PER_TICK / (float) LOOP_RATE_MS;
+    speed_enc.data = speedMetersPerSecond;
     pub_speed.publish(&speed_enc);
 
-    float error = targetSpeed - speedMeterPerSecond;
-    static float sumError = 0;
+
+
+    int16_t error = targetSpeedTicksPerInterval - delta;
+    static int16_t sumError = 0;
     sumError += error;
 
     float effort = Kp * error + Ki * sumError;
