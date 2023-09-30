@@ -88,7 +88,16 @@ void processEncoders(void)
     enc_val.data = currTicks;
     pub_enc.publish(&enc_val);
 
-    speed_enc.data = delta * METERS_PER_TICK / (float) LOOP_RATE_MS;
+    float speedMeterPerSecond = delta * METERS_PER_TICK / (float) LOOP_RATE_MS;
+    speed_enc.data = speedMeterPerSecond;
     pub_speed.publish(&speed_enc);
+
+    float error = targetSpeed - speedMeterPerSecond;
+    static float sumError = 0;
+    sumError += error;
+
+    float effort = Kp * error + Ki * sumError;
+    effort = constrain(effort, -100, 100);
+    escPair.SetSpeed(effort);
   }  
 }
