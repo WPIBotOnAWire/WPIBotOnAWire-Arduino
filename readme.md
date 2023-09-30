@@ -1,5 +1,16 @@
 # Arduino code
 
+## Building
+
+You'll need to set credentials.
+You'll need to comment out the SERCOM5 in your samd variants:
+
+    `.../.platformio/packages/framework-arduino-samd-sparkfun/variants/SparkFun_SAMD_Mini/variant.cpp`
+
+(currently lines 217 - 220)
+
+## Connecting from ROS
+
 Provides interface with low-level devices: sensors, motors, etc.
 
 ROS interface is provided via a Serial on pins 0 and 1 -- **not** the main USB connector, which is used for sending debugging info.

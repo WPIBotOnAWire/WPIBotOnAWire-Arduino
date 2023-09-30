@@ -38,7 +38,7 @@ gps_common::GPSStatus gpsStatus;
 // ros::Publisher pub_gps_status("GPSStatus", &gpsStatus);
 
 std_msgs::String gpsNMEA;
-ros::Publisher pubNMEA("strNMEA", &gpsNMEA);
+ros::Publisher pubNMEA("/strNMEA", &gpsNMEA);
 
 void setupGPS(ros::NodeHandle& nh) 
 {

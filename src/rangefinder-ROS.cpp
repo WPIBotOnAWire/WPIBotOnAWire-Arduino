@@ -3,7 +3,7 @@
 #include <std_msgs/UInt16.h>
 
 std_msgs::UInt16 mbFrontCM; //in cm
-ros::Publisher pubMBfront("/rangefinder/front/MB", &mbFrontCM);
+ros::Publisher pubMBfront("/rangefinder/fore/MB", &mbFrontCM);
 
 MaxBotixPulse mbFront(A0);
 void ISR_MB_FRONT(void) {mbFront.mbISR();}

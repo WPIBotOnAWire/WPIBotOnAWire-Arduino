@@ -32,7 +32,7 @@
 ros::NodeHandle nh;
 
 std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
+ros::Publisher chatter("/chatter", &str_msg);
 
 /*
 std_msgs::Float32 rf_front_val, rf_back_val;
