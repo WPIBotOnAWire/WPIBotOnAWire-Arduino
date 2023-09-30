@@ -32,20 +32,20 @@ std_msgs::Int32 enc_val;
 ros::Publisher pub_enc("/encoder/count", &enc_val);
 
 std_msgs::Float32 speed_enc;
-ros::Publisher pub_speed("/encoder/meters_per_interval", &speed_enc);
+ros::Publisher pub_speed("/encoder/meters_per_second", &speed_enc);
 
 ESCDirect escPair;
 
-int16_t targetSpeed = 0;
+float targetSpeed = 0;
 
 // callback function for receiving speed commands
-void cbTargetSpeed(const std_msgs::Int16& msg) 
+void cbTargetSpeed(const std_msgs::Float32& msg) 
 {
   targetSpeed = msg.data;
 //    escPair.SetSpeed(msg.data); //this is percent full speed; should be m/s?
 }
 
-ros::Subscriber<std_msgs::Int16> motor_sub("/target_speed", cbTargetSpeed);
+ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed", cbTargetSpeed);
 
 void init_motors(ros::NodeHandle& nh)
 {
@@ -71,12 +71,14 @@ void setup_encoder(ros::NodeHandle& nh)
  * Reads the current encoder count (count is updated in an ISR) and publishes the result.
  * Nominally tested and working with a quadrature encoder.
 */
+#define LOOP_RATE_MS 50
+
 void processEncoders(void)
 {
   static uint32_t lastEncoderReport = 0;
   uint32_t currTime = millis();
 
-  if(currTime - lastEncoderReport > 50) // 50 ms loop, for now
+  if(currTime - lastEncoderReport > LOOP_RATE_MS) 
   {
     lastEncoderReport = currTime;
 
@@ -86,7 +88,7 @@ void processEncoders(void)
     enc_val.data = currTicks;
     pub_enc.publish(&enc_val);
 
-    speed_enc.data = delta * METERS_PER_TICK;
+    speed_enc.data = delta * METERS_PER_TICK / (float) LOOP_RATE_MS;
     pub_speed.publish(&speed_enc);
   }  
 }
