@@ -10,7 +10,8 @@
 
 #include <Arduino.h>
 #include <ros.h>
-#include <std_msgs/String.h>
+//#include <std_msgs/String.h>
+#include <std_msgs/UInt32.h>
 #include "Motors-ROS.h"
 // #include "Adafruit_VL53L0X.h"
 #include "battery-ROS.h"
@@ -31,8 +32,8 @@
 
 ros::NodeHandle nh;
 
-std_msgs::String str_msg;
-ros::Publisher chatter("/chatter", &str_msg);
+std_msgs::UInt32 heartbeatMsg;
+ros::Publisher heartbeat("/heartbeat", &heartbeatMsg);
 
 /*
 std_msgs::Float32 rf_front_val, rf_back_val;
@@ -64,7 +65,7 @@ void setup()
 
   nh.initNode();
 
-  nh.advertise(chatter);
+  nh.advertise(heartbeat);
 
   setup_rangefinders(nh);
   init_motors(nh);
@@ -80,7 +81,7 @@ void setup()
 }
   
 // long timer;
-char hello[13] = "hello world!";
+// char heartbeatMsg[20];
 
 void loop(void) 
 {
@@ -90,8 +91,8 @@ void loop(void)
   {
     lastPing = currTime;
 
-    str_msg.data = hello;
-    chatter.publish( &str_msg );
+    heartbeatMsg.data = millis();
+    heartbeat.publish( &heartbeatMsg );
 
     DEBUG_SERIAL.print('\n');
     DEBUG_SERIAL.print(millis());
