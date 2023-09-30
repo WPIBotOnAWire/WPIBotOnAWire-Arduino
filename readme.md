@@ -2,12 +2,13 @@
 
 ## Building
 
-You'll need to set credentials.
 You'll need to comment out the SERCOM5 in your samd variants:
 
     `.../.platformio/packages/framework-arduino-samd-sparkfun/variants/SparkFun_SAMD_Mini/variant.cpp`
 
 (currently lines 217 - 220)
+
+Otherwise, the code should just pull from various github libraries (see .ini file).
 
 ## Connecting from ROS
 

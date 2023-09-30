@@ -111,7 +111,7 @@ void ESCDirect::SetSpeed(int16_t pct)
 void ESCDirect::Calibrate(void)
 {
 	WriteMicroseconds(oMax);
-    delay(calibrationDelay); //needs to be non-blocking
+    delay(calibrationDelay);
     WriteMicroseconds(oMin);
 	delay(calibrationDelay);
 	Arm();
