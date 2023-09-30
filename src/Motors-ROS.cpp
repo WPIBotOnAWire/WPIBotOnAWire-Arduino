@@ -36,13 +36,16 @@ ros::Publisher pub_speed("/encoder/meters_per_interval", &speed_enc);
 
 ESCDirect escPair;
 
+int16_t targetSpeed = 0;
+
 // callback function for receiving speed commands
-void cb_motor(const std_msgs::Int16& msg) 
+void cbTargetSpeed(const std_msgs::Int16& msg) 
 {
-    escPair.SetSpeed(msg.data); //this is percent full speed; should be m/s?
+  targetSpeed = msg.data;
+//    escPair.SetSpeed(msg.data); //this is percent full speed; should be m/s?
 }
 
-ros::Subscriber<std_msgs::Int16> motor_sub("/target_speed", cb_motor);
+ros::Subscriber<std_msgs::Int16> motor_sub("/target_speed", cbTargetSpeed);
 
 void init_motors(ros::NodeHandle& nh)
 {
