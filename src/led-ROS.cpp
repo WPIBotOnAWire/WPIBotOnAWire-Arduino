@@ -76,7 +76,8 @@ void cb_LED(const std_msgs::UInt16& msg)
 
   //set the count for how many flashes we want; counted down in the ISR
   //note that because the timer toggles on ovf, the actual flashes will be half the number sent
-  flashCount = msg.data;  
+  flashCount = -1;  
+  if(msg.data == 0) flashCount = 0;
 }
 
 ros::Subscriber<std_msgs::UInt16> led_sub("/led_cmd", cb_LED);
