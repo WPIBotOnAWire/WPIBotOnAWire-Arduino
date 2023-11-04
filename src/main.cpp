@@ -75,9 +75,6 @@ void setup()
  
   DEBUG_SERIAL.println("/setup");
 }
-  
-// long timer;
-// char heartbeatMsg[20];
 
 void loop(void) 
 {
