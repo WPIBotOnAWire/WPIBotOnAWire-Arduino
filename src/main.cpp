@@ -43,12 +43,6 @@ std_msgs::Bool man_override;
 std_msgs::Int32 speaker_val;
 ros::Publisher pub_man_override("/manual_override", &man_override);
 ros::Publisher pub_speakers("/play_sound", &speaker_val);
-
-// Adafruit_VL53L0X sensor = Adafruit_VL53L0X();
-// VL53L0X_RangingMeasurementData_t measure;
-unsigned long range_timer;
-int sound_regulator = 0;
-bool override_was_active = false;
 */
 
 void setup()
