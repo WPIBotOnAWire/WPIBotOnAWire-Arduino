@@ -11,6 +11,21 @@
  */
 //#define USE_USBCON 
 
+/**
+ * Current list of pins:
+ * 
+ * 0,1:   Serial1 for Jetson comms
+ * 2:     ESC control ***CHANGED 11/5***
+ * 3,4:   GPS on SERCOM2*
+ * 5:     LED control
+ * 6,7:   ToF sensor on SERCOM5
+ * 8,9:   Encoders
+ * 10-13: FREE
+ * A0:    MaxBotix
+ * A1,A2: ToF sensor on SERCOM4
+ * A3:    MaxBotix
+*/
+
 #include <Arduino.h>
 #include <ros.h>
 //#include <std_msgs/String.h>
