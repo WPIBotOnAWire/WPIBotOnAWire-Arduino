@@ -20,7 +20,7 @@
  * 5:     LED control
  * 6,7:   ToF sensor on SERCOM5
  * 8,9:   Encoders
- * 10-13: FREE
+ * 10-13: FREE (SPI bus)
  * A0:    MaxBotix
  * A1,A2: ToF sensor on SERCOM4
  * A3:    MaxBotix
