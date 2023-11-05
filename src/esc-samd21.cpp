@@ -2,12 +2,6 @@
 
 #include <Arduino.h>
 
-// Motor Constants -- TODO: pass to constructor
-// fullforward = 2000, fullback = 1000
-#define MOTOR_FULLFORWARD    2000
-#define MOTOR_FULLBACK       1000
-#define MOTOR_STOP           1500
-
 /**
  * This sets up TCC0 to send "RC-servo" pulses to pins 10 and 13. We skip the Arduino Servo library
  * (which is a hack) and use the timers directly. This will produce a much smoother pulse output.
@@ -27,20 +21,28 @@ void ESCDirect::Init(void)
                      GCLK_GENCTRL_ID(4);          // Select GCLK4
   while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
 
-  // Enable the port multiplexer for digital pin 13 (D13; PA17): timer TCC0 output
-  PORT->Group[g_APinDescription[13].ulPort].PINCFG[g_APinDescription[13].ulPin].bit.PMUXEN = 1;
+//   // Enable the port multiplexer for digital pin 13 (D13; PA17): timer TCC0 output
+//   PORT->Group[g_APinDescription[13].ulPort].PINCFG[g_APinDescription[13].ulPin].bit.PMUXEN = 1;
+  
+//   // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+//   // F & E specify the timers: TCC0, TCC1 and TCC2
+//   PORT->Group[g_APinDescription[13].ulPort].PMUX[g_APinDescription[13].ulPin >> 1].reg = PORT_PMUX_PMUXO_F;
+  
+//   // Enable the port multiplexer for digital pin 10 (D10; PA18): timer TCC0 output
+//   PORT->Group[g_APinDescription[10].ulPort].PINCFG[g_APinDescription[10].ulPin].bit.PMUXEN = 1;
+  
+//   // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+//   // F & E specify the timers: TCC0, TCC1 and TCC2
+//   PORT->Group[g_APinDescription[10].ulPort].PMUX[g_APinDescription[10].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
+  
+  // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
+  PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
   
   // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
   // F & E specify the timers: TCC0, TCC1 and TCC2
-  PORT->Group[g_APinDescription[13].ulPort].PMUX[g_APinDescription[13].ulPin >> 1].reg = PORT_PMUX_PMUXO_F;
-  
-  // Enable the port multiplexer for digital pin 10 (D10; PA18): timer TCC0 output
-  PORT->Group[g_APinDescription[10].ulPort].PINCFG[g_APinDescription[10].ulPin].bit.PMUXEN = 1;
-  
-  // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  // F & E specify the timers: TCC0, TCC1 and TCC2
-  PORT->Group[g_APinDescription[10].ulPort].PMUX[g_APinDescription[10].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
-  
+  PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
+
+
   // Feed GCLK4 to TCC0 and TCC1
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |         // Enable GCLK4 to TCC0 and TCC1
                      GCLK_CLKCTRL_GEN_GCLK4 |     // Select GCLK4
@@ -58,13 +60,17 @@ void ESCDirect::Init(void)
   REG_TCC0_PER = 20000;      // Set the frequency of the PWM on TCC0 to 50Hz
   while(TCC0->SYNCBUSY.bit.PER);
 
-  // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-  REG_TCC0_CCB3 = oArm;       // TCC0 CCB3 - center the servo on D13
-  while(TCC0->SYNCBUSY.bit.CCB3);
+//   // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+//   REG_TCC0_CCB3 = oMid;       // TCC0 CCB3 - center the servo on D13
+//   while(TCC0->SYNCBUSY.bit.CCB3);
+
+//   // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+//   REG_TCC0_CCB2 = oMid;       // TCC0 CCB2 - center the servo on D10
+//   while(TCC0->SYNCBUSY.bit.CCB2);
 
   // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-  REG_TCC0_CCB2 = oArm;       // TCC0 CCB0 - center the servo on D12
-  while(TCC0->SYNCBUSY.bit.CCB2);
+  REG_TCC0_CCB0 = oMid;       // TCC0 CCB0 - center the servo on D2
+  while(TCC0->SYNCBUSY.bit.CCB0);
 
   // Divide the 16MHz signal by 8 giving 2MHz (0.5us) TCC0 timer tick and enable the outputs
   REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV8 |    // Divide GCLK4 by 8
@@ -73,52 +79,63 @@ void ESCDirect::Init(void)
 }
 
 /*
- * Sent a signal to Arm the ESC
- * depends on the Arming value from the constructor
+ * We don't actually do anything here. The ESC arms by default when the
+ * uC powers up (see the Init() function). So we'll just check that 3 
+ * seconds has elapsed before we allow commands.
  */
-void ESCDirect::Arm(void)
+ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
 {
-	WriteMicroseconds(oArm);
-    delay(500); //might need to make non-blocking
+    switch(motorState)
+    {
+        case IDLE:
+            if(millis() > 5000)
+            motorState = ARMED;
+            break;
+
+        default:
+            break;
+    }
+
+    return motorState;
 }
 
 void ESCDirect::WriteMicroseconds(uint16_t uSec)
 {
-    // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-    REG_TCC0_CCB3 = uSec;       // TCC0 CCB3 - center the servo on D13
-    while(TCC0->SYNCBUSY.bit.CCB3);
+    // // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+    // REG_TCC0_CCB3 = uSec;       // TCC0 CCB3 - center the servo on D13
+    // while(TCC0->SYNCBUSY.bit.CCB3);
+
+    // // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+    // REG_TCC0_CCB2 = uSec;       // TCC0 CCB0 - center the servo on D12
+    // while(TCC0->SYNCBUSY.bit.CCB2);
 
     // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-    REG_TCC0_CCB2 = uSec;       // TCC0 CCB0 - center the servo on D12
-    while(TCC0->SYNCBUSY.bit.CCB2);
+    REG_TCC0_CCB0 = uSec;       // TCC0 CCB0 - center the servo on D12
+    while(TCC0->SYNCBUSY.bit.CCB0);
 }
 
 /*
  * Sent a signal to set the ESC speed
  * depends on the calibration minimum and maximum values
  */
-void ESCDirect::SetSpeed(int16_t pct)
+ESCDirect::MOTOR_STATE ESCDirect::SetSpeed(int16_t pct)
 {
-    if(pct == 0)
+    if(motorState != ARMED) return motorState;
+    
+    else
     {
-        Stop();
-        return;
+        if(pct == 0)
+        {
+            Stop();
+        }
+
+        else
+        {
+            uint16_t speed = oMid + pct * (oMax - oMin) / 200;
+            uint16_t pulseUS = constrain(speed, oMin, oMax);
+            WriteMicroseconds(pulseUS);
+        }
     }
 
-    uint16_t speed = oMid + pct * (oMax - oMin) / 200;
-	uint16_t pulseUS = constrain(speed, oMin, oMax);
-	WriteMicroseconds(pulseUS);
-}
-
-/*
- * Calibrate the maximum and minimum PWM signal the ESC is expecting
- * depends on the outputMin, outputMax values from the constructor
- */
-void ESCDirect::Calibrate(void)
-{
-	WriteMicroseconds(oMax);
-    delay(calibrationDelay);
-    WriteMicroseconds(oMin);
-	delay(calibrationDelay);
-	Arm();
+    return motorState;
 }
