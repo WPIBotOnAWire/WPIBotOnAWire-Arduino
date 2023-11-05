@@ -14,8 +14,8 @@
 /**
  * Current list of pins:
  * 
- * 0,1:   Serial1 for Jetson comms
- * 2:     ESC control ***CHANGED 11/5***
+ * 0,1:   Serial1 for Jetson comms (SERCOM0, set up by Arduino library)
+ * 2:     ESC control ***CHANGED 11/5 -- used to be D10,13***
  * 3,4:   GPS on SERCOM2*
  * 5:     LED control
  * 6,7:   ToF sensor on SERCOM5
@@ -24,6 +24,7 @@
  * A0:    MaxBotix
  * A1,A2: ToF sensor on SERCOM4
  * A3:    MaxBotix
+ * 20,21: Battery monitor on I2C bus (SERCOM3)
 */
 
 #include <Arduino.h>
