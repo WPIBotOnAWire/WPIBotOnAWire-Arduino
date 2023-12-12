@@ -33,6 +33,7 @@
 #include <std_msgs/UInt32.h>
 #include "Motors-ROS.h"
 #include "battery-ROS.h"
+#include "status-ROS.h"
 
 #include "rangefinder-ROS.h"
 #include "led-ROS.h"
@@ -79,12 +80,13 @@ void setup()
 
   nh.advertise(heartbeat);
 
+  init_status(nh);
   setup_rangefinders(nh);
   init_motors(nh);
   setup_encoder(nh);
   //initBatteryMonitor(nh);
-  setupGPS(nh);
-  initLED(nh);
+  //setupGPS(nh);
+  //initLED(nh);
   setupTFminis(nh);
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
@@ -110,8 +112,9 @@ void loop(void)
   
   processRangefinders();
   processEncoders();
+  updateMotors();
   //processBatteryMonitor();
-  processGPS();
+  //processGPS();
   processTFminis();
 
   nh.spinOnce();

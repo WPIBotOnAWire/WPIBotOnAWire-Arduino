@@ -27,6 +27,9 @@ public:
     enum MOTOR_STATE {IDLE, ARMED};
 
 private:
+    float targetSpeed = 0;
+    float currentSpeed = 0;
+
     MOTOR_STATE motorState = IDLE;
     EventTimer motorTimer;
 
@@ -46,5 +49,16 @@ public:
     bool isArmed(void) {return motorState == ARMED;}
     
     MOTOR_STATE SetSpeed(int16_t pct);
-    void Stop(void) {WriteMicroseconds(oStop);}
+//    void Stop(void) {currentSpeed = 0; WriteMicroseconds(oStop);}
+    void EStop(void) 
+    {
+        targetSpeed = 0; 
+        currentSpeed = 0; 
+        WriteMicroseconds(oStop); 
+        motorState = IDLE;
+    }
+
+    ESCDirect::MOTOR_STATE UpdateMotors(void);
 };
+
+extern ESCDirect escPair;

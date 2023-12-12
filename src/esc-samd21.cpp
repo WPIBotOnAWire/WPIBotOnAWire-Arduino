@@ -2,6 +2,8 @@
 
 #include <Arduino.h>
 
+#define MOTOR_UPDATE_MS 20
+
 /**
  * This sets up TCC0 to send "RC-servo" pulses to pin 2. We skip the Arduino Servo library
  * (which is a hack) and use the timers directly. This will produce a much smoother pulse output.
@@ -66,7 +68,10 @@ ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
     {
         case IDLE:
             if(millis() > 5000)
-            motorState = ARMED;
+            {
+                motorState = ARMED;
+                targetSpeed = currentSpeed = 0;
+            }
             break;
 
         default:
@@ -89,22 +94,42 @@ void ESCDirect::WriteMicroseconds(uint16_t uSec)
  */
 ESCDirect::MOTOR_STATE ESCDirect::SetSpeed(int16_t pct)
 {
-    if(motorState != ARMED) return motorState;
-    
-    else
+    if(motorState != ARMED) 
     {
-        if(pct == 0)
-        {
-            Stop();
-        }
+        return motorState;
+    }
 
-        else
+    else targetSpeed = constrain(pct, -100, 100);
+
+    return motorState;
+}
+
+ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
+{
+    static uint32_t lastMotorUpdate = 0;
+    uint32_t currTime = millis();
+
+    if(currTime - lastMotorUpdate > MOTOR_UPDATE_MS) 
+    {
+        lastMotorUpdate = currTime;
+
+        if(motorState == ARMED) 
         {
-            uint16_t speed = oMid + pct * (oMax - oMin) / 200;
-            uint16_t pulseUS = constrain(speed, oMin, oMax);
+            // SerialUSB.print(targetSpeed);
+            // SerialUSB.print('\t');
+            // SerialUSB.print(currentSpeed);
+            // SerialUSB.print('\n');
+
+            if(currentSpeed < targetSpeed) currentSpeed += 1.0;
+            if(currentSpeed > targetSpeed) currentSpeed -= 1.0;
+
+            uint16_t pulseUS = oMid + currentSpeed * (oMax - oMin) / 200;
+            pulseUS = constrain(pulseUS, oMin, oMax);
             WriteMicroseconds(pulseUS);
         }
     }
 
     return motorState;
 }
+
+void updateMotors(void) {escPair.UpdateMotors();}

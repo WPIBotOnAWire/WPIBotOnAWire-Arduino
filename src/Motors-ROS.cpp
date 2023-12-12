@@ -41,8 +41,13 @@ int16_t currentTargetTicksPerInterval = 0;
 void cbTargetSpeed(const std_msgs::Float32& msg) 
 {
   float targetSpeed = msg.data;
-  targetSpeedTicksPerInterval = targetSpeed * (LOOP_RATE_MS / 1000.0) / METERS_PER_TICK;
+  
+//  targetSpeedTicksPerInterval = targetSpeed * (LOOP_RATE_MS / 1000.0) / METERS_PER_TICK;
 //    escPair.SetSpeed(msg.data); //this is percent full speed; should be m/s?
+      // float effort = Kp * error + Ki * sumError;
+    
+    int16_t effort = constrain(targetSpeed, -100, 100);
+    escPair.SetSpeed(effort);
 }
 
 ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed_meters_per_sec", cbTargetSpeed);
@@ -51,10 +56,11 @@ void init_motors(ros::NodeHandle& nh)
 {
     //sets up the ESCs and battery info to allow them to spin
     escPair.Init();
+
     //escPair.Calibrate(); 
     escPair.Arm();
 
-    escPair.Stop();
+    //escPair.Stop();
 
     nh.subscribe(motor_sub);
 }
@@ -92,12 +98,9 @@ void processEncoders(void)
 
 
 
-    int16_t error = targetSpeedTicksPerInterval - delta;
-    static int16_t sumError = 0;
-    sumError += error;
+    // int16_t error = targetSpeedTicksPerInterval - delta;
+    // static int16_t sumError = 0;
+    // sumError += error;
 
-    float effort = Kp * error + Ki * sumError;
-    effort = constrain(effort, -100, 100);
-    escPair.SetSpeed(effort);
   }  
 }
