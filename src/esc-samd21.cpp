@@ -83,8 +83,8 @@ ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
 
 void ESCDirect::WriteMicroseconds(uint16_t uSec)
 {
-    // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-    REG_TCC0_CCB0 = uSec;       // TCC0 CCB0 - center the servo on D12
+    // The CCBx register value corresponds to the pulsewidth in microseconds
+    REG_TCC0_CCB0 = uSec;       // TCC0_CCB0 - sets the pulse width on D2
     while(TCC0->SYNCBUSY.bit.CCB0);
 }
 
@@ -100,6 +100,12 @@ ESCDirect::MOTOR_STATE ESCDirect::SetSpeed(int16_t pct)
     }
 
     else targetSpeed = constrain(pct, -100, 100);
+
+    // I had put this in for testing, but now I don't think it's supposed
+    // to be here
+    // uint16_t pulseUS = oMid + targetSpeed * (oMax - oMin) / 200;
+    // pulseUS = constrain(pulseUS, oMin, oMax);
+    // WriteMicroseconds(pulseUS);
 
     return motorState;
 }
@@ -120,6 +126,7 @@ ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
             // SerialUSB.print(currentSpeed);
             // SerialUSB.print('\n');
 
+            // this does the ramping of the motor to avoid jerk
             if(currentSpeed < targetSpeed) currentSpeed += 1.0;
             if(currentSpeed > targetSpeed) currentSpeed -= 1.0;
 
