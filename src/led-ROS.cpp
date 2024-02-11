@@ -69,12 +69,12 @@ void setupTC3forLED(void)
 
   // Each timer counts up to a maximum or TOP value set by the PER register,
   // this determines the frequency of the PWM operation:
-  // 20000 = 50Hz, 10000 = 100Hz, 2500  = 400Hz
-  REG_TCC2_PER = 5000;      // Set the frequency of the PWM on TCC0 to 50Hz
+  // freq = 48MHz / (4 * PER) ==> PER = 48MHz / (4 * freq)
+  // 30000 = 400Hz
+  REG_TCC2_PER = 30000;      // Set the frequency of the PWM on TCC0 to 50Hz
   while(TCC2->SYNCBUSY.bit.PER);
 
-  // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-  REG_TCC2_CCB0 = 1500;       // TCC0 CCB0 - center the servo on D2
+  REG_TCC2_CCB0 = 15000;   // sets the duty cycle -- 50%    
   while(TCC2->SYNCBUSY.bit.CCB0);
 
   // Divide the 16MHz signal by 8 giving 2MHz (0.5us) TCC0 timer tick and enable the outputs
