@@ -102,7 +102,7 @@ ESCDirect::MOTOR_STATE ESCDirect::SetSpeed(int16_t pct)
     else targetSpeed = constrain(pct, -100, 100);
 
     // I had put this in for testing, but now I don't think it's supposed
-    // to be here
+    // to be here -- motors are controlled through updateMotors()
     // uint16_t pulseUS = oMid + targetSpeed * (oMax - oMin) / 200;
     // pulseUS = constrain(pulseUS, oMin, oMax);
     // WriteMicroseconds(pulseUS);
