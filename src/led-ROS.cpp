@@ -88,6 +88,7 @@ void setLED(void)
   // Enable the port multiplexer for digital pin 5 (D5; PA15). Doing so disconnects the normal pinMode behaviour
   PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
 
+  // moved to setup -- easier to do there
   // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
   // Note that we |= so as not to clobber the ESCs!
   //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E;  
@@ -100,12 +101,13 @@ void clearLED(void)
   // Clear the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE  
   PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 0;
 
+  // No longer clear the MUX -- just disable above
   // Disconnect the TC3 timer from the port output - port pins are paired odd PMUXO and even PMUXE
   // (this is probably not needed, but won't hurt anything)
   //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0;  
 
   // Set to output low to ensure 0 voltage (testing showed it only fell to 0.25V without formally setting to output)
-  pinMode(5, OUTPUT);
+  // pinMode(5, OUTPUT);
 }
 
 // callback function for receiving LED commands
