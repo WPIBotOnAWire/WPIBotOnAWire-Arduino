@@ -5,13 +5,13 @@
 std_msgs::UInt16 mbFrontCM; //in cm
 ros::Publisher pubMBfront("/rangefinder/fore/MB", &mbFrontCM);
 
-MaxBotixPulse mbFront(A0);
+MaxBotixPulse mbFront(A3);
 void ISR_MB_FRONT(void) {mbFront.mbISR();}
 
 std_msgs::UInt16 mbAftCM; //in cm
 ros::Publisher pubMBaft("/rangefinder/aft/MB", &mbAftCM);
 
-MaxBotixPulse mbAft(A3);
+MaxBotixPulse mbAft(A0);
 void ISR_MB_AFT(void) {mbAft.mbISR();}
 
 void setup_rangefinders(ros::NodeHandle& nh)
