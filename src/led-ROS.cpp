@@ -10,7 +10,7 @@ volatile uint16_t flashCount = 0;
 */
 void setupTC3forLED(void)
 {
-  // Feed GCLK0 (already enabled) to TCC2 (and TC3)
+  // Feed GCLK0 (already enabled) to TCC2 and TC3
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |         // Enable 
                      GCLK_CLKCTRL_GEN_GCLK0 |     // Select GCLK0
                      GCLK_CLKCTRL_ID_TCC2_TC3;    // Feed GCLK4 to TCC2 and TC3
@@ -44,6 +44,43 @@ void setupTC3forLED(void)
   // Enable TC
   TC->CTRLA.reg |= TC_CTRLA_ENABLE;
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync
+
+  // This pipes the TC3 to pin 5 (PA15), but note that it's not enabled until the MUX is enabled in setLED()
+  // We use |= to not clobber ESCs!!!
+  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E;  
+
+  /**
+   * Set up sound on Pin 11 while we're here...
+  */
+
+  // GCLK0 is already fed to TCC2 and TC3 above
+
+  // Enable the port multiplexer for digital pin 11 (D11; PA16)
+  PORT->Group[g_APinDescription[11].ulPort].PINCFG[g_APinDescription[11].ulPin].bit.PMUXEN = 1;
+  
+  // Connect the TCC2 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+  // F & E specify the timers: TCC0, TCC1 and TCC2
+  PORT->Group[g_APinDescription[11].ulPort].PMUX[g_APinDescription[11].ulPin >> 1].reg = PORT_PMUX_PMUXE_E;
+
+  // Dual slope PWM operation: timers continuously count up to PER register value then down 0
+  REG_TCC2_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC2 outputs
+                   TCC_WAVE_WAVEGEN_DSBOTTOM;    // Setup dual slope PWM on TCC0
+  while (TCC2->SYNCBUSY.bit.WAVE);               // Wait for synchronization
+
+  // Each timer counts up to a maximum or TOP value set by the PER register,
+  // this determines the frequency of the PWM operation:
+  // 20000 = 50Hz, 10000 = 100Hz, 2500  = 400Hz
+  REG_TCC2_PER = 5000;      // Set the frequency of the PWM on TCC0 to 50Hz
+  while(TCC2->SYNCBUSY.bit.PER);
+
+  // The CCBx register value corresponds to the pulsewidth in microseconds (us)
+  REG_TCC2_CCB0 = 1500;       // TCC0 CCB0 - center the servo on D2
+  while(TCC2->SYNCBUSY.bit.CCB0);
+
+  // Divide the 16MHz signal by 8 giving 2MHz (0.5us) TCC0 timer tick and enable the outputs
+  REG_TCC2_CTRLA |= TCC_CTRLA_PRESCALER_DIV2 |    // Divide GCLK4 by 8
+                    TCC_CTRLA_ENABLE;             // Enable the TCC2 output
+  while (TCC2->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
 }
 
 void setLED(void)
@@ -52,7 +89,10 @@ void setLED(void)
   PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
 
   // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = PORT_PMUX_PMUXO_E;  
+  // Note that we |= so as not to clobber the ESCs!
+  //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E;  
+
+  flashCount = 100;
 }
 
 void clearLED(void)
@@ -62,7 +102,7 @@ void clearLED(void)
 
   // Disconnect the TC3 timer from the port output - port pins are paired odd PMUXO and even PMUXE
   // (this is probably not needed, but won't hurt anything)
-  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0;  
+  //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0;  
 
   // Set to output low to ensure 0 voltage (testing showed it only fell to 0.25V without formally setting to output)
   pinMode(5, OUTPUT);
@@ -85,12 +125,14 @@ ros::Subscriber<std_msgs::UInt16> led_sub("/led_cmd", cb_LED);
 void initLED(ros::NodeHandle& nh)
 {
   setupTC3forLED();
-  clearLED();
+  //clearLED();
+
+  setLED();
 
   nh.subscribe(led_sub);
 }
 
-void TC3_Handler()  // Interrupt on overflow
+void TC3_Handler(void)  // Interrupt on overflow
 {
   TcCount16* TC = (TcCount16*) TC3; // get timer struct
   

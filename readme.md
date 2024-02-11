@@ -23,3 +23,18 @@ On a ROS device connected via USB, run
 where the port is typically `/dev/ttyACM0` or `/dev/ttyUSB0` -- you may need to list out the ports to find it.
 
 More info about rosserial can be found at http://wiki.ros.org/rosserial_arduino/Tutorials/
+
+## List of SERCOMs
+
+* SERCOM0: Jetson via UART on D0 and D1.
+* SERCOM1: Standard SPI on D10-13. Nothing connected, yet. Might be disabled, since I'm using the TCs connected to those pins.
+* SERCOM2: GPS on D3 and D4. `See gps-ROS.cpp`.
+* SERCOM3: Standard I2C on D20 and D21. So far just battery monitor.
+* SERCOM4: TFmini on pins A1 and A2 (D15 and D16, I think). See `tfmini-ROS.cpp`.
+* SERCOM5: TFmini on pins D6 and D7. Note that you have to remove the default SERCOM5 in Arduino to make this work. See `tfmini-ROS.cpp` for deets.
+
+## List of Custom Timers
+
+* TCC0:4 on D2 for the ESC. 50Hz.
+* TC3:1 on D5 for the LED. 10Hz.
+* TCC2 on D11 for sound. Variable freq.

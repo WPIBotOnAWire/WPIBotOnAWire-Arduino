@@ -27,7 +27,7 @@ void ESCDirect::Init(void)
   PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
   
   // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  // F & E specify the timers: TCC0, TCC1 and TCC2
+  // F & E specify the timers: e.g., TCC0, TCC1 and TCC2
   PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
 
   // Feed GCLK4 to TCC0 and TCC1
