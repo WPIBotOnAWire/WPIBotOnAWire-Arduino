@@ -81,12 +81,12 @@ void setup()
   nh.advertise(heartbeat);
 
   init_status(nh);
-  //setup_rangefinders(nh);
+  setup_rangefinders(nh);
   init_motors(nh);
-  //setup_encoder(nh);
+  setup_encoder(nh);
   //initBatteryMonitor(nh);
   //setupGPS(nh);
-  //setupTFminis(nh);
+  setupTFminis(nh);
   initLED(nh);
 
     // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
@@ -110,12 +110,12 @@ void loop(void)
     DEBUG_SERIAL.println("\tHeartbeat.");
   }
   
-  //processRangefinders();
-  //processEncoders();
+  processRangefinders();
+  processEncoders();
   updateMotors();
   //processBatteryMonitor();
   //processGPS();
-  //processTFminis();
+  processTFminis();
 
   nh.spinOnce();
 }
