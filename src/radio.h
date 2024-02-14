@@ -18,7 +18,7 @@ public:
 
     virtual bool GetPulseWidth(uint32_t& pulseWidth);
 
-    inline void radioISR(void)
+    inline void radioISR(void) volatile
     {
         if(digitalRead(rcPin))    //transitioned to HIGH
         {

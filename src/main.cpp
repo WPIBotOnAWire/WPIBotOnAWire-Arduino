@@ -42,6 +42,7 @@
 #include "tfmini-ROS.h"
 
 #include "position_filter.h"
+#include "radio-ROS.h"
 
 #ifdef USE_USBCON
   #define DEBUG_SERIAL Serial1 //pins 0/1 on the SAMD21 mini breakout
@@ -74,12 +75,13 @@ void setup()
   //   delay(100);
   // }
   
-  DEBUG_SERIAL.println("setup");
+  DEBUG_SERIAL.println("setup()");
 
   nh.initNode();
 
   nh.advertise(heartbeat);
 
+  setupRadio(nh);
   init_status(nh);
   setup_rangefinders(nh);
   init_motors(nh);
@@ -88,8 +90,6 @@ void setup()
   //setupGPS(nh);
   setupTFminis(nh);
   initLED(nh);
-
-    // // pinMode(RADIO_OVERRIDE_PIN, INPUT);
  
   DEBUG_SERIAL.println("/setup");
 }
@@ -116,6 +116,7 @@ void loop(void)
   //processBatteryMonitor();
   //processGPS();
   processTFminis();
+  processRadio();
 
   nh.spinOnce();
 }

@@ -2,8 +2,8 @@
 #include "esc-samd21.h"
 #include <std_msgs/Bool.h>
 
-#define RADIO_OVERRIDE_PIN  13
-#define RADIO_SPEED_PIN  12
+#define RADIO_OVERRIDE_PIN  12      // slot 5 of the radio receiver
+#define RADIO_SPEED_PIN     13      // slot 1 of the radio receiver
 
 std_msgs::Bool radioOverrideMsg;
 ros::Publisher pubRadioOverride("/radio/override", &radioOverrideMsg);
@@ -16,10 +16,11 @@ void ISR_RADIO_SPEED(void) {radioSpeed.radioISR();}
 
 void setupRadio(ros::NodeHandle& nh)
 {
-  nh.advertise(pubRadioOverride);
+    SerialUSB.println("sR");
+    nh.advertise(pubRadioOverride);
 
-  radioOverride.Init(ISR_RADIO_OVERRIDE);
-  radioSpeed.Init(ISR_RADIO_SPEED);
+    radioOverride.Init(ISR_RADIO_OVERRIDE);
+    radioSpeed.Init(ISR_RADIO_SPEED);
 }
 
 bool override = false;
@@ -34,11 +35,12 @@ void processRadio(void)
         pubRadioOverride.publish(&radioOverrideMsg);
     }
 
-    if(override)
+    uint32_t radioSpeedPulse = 0;
+    if(radioSpeed.GetPulseWidth(radioSpeedPulse))
     {
-        uint32_t radioSpeedPulse = 0;
-        if(radioSpeed.GetPulseWidth(radioSpeedPulse))
+        if(override)
         {
+            SerialUSB.println("override");
             escPair.SetOverridePulse(radioSpeedPulse);
         }
     }

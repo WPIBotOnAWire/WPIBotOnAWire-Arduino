@@ -5,14 +5,12 @@
 
 void RadioPulse::Init(void (*isr)(void))
 {
-    Serial.println("RadioPulse::init()");
-    
-    pinMode(rcPin, INPUT);
+    pinMode(rcPin, INPUT_PULLUP);
 
     if(digitalPinToInterrupt(rcPin) != NOT_AN_INTERRUPT)
     {
-        Serial.print(F("Attaching ISR to pin: "));
-        Serial.println(rcPin);
+        SerialUSB.print(F("Attaching ISR to pin: "));
+        SerialUSB.println(rcPin);
         attachInterrupt(digitalPinToInterrupt(rcPin), isr, CHANGE);
     }
 
@@ -27,10 +25,10 @@ void RadioPulse::Init(void (*isr)(void))
 
     else
     {
-        Serial.println(F("Not an interrupt pin!"));
+        SerialUSB.println(F("Not an interrupt pin!"));
     }
 
-    Serial.println("/RadioPulse::init()");
+    SerialUSB.println("/RadioPulse::init()");
 }
 
 bool RadioPulse::GetPulseWidth(uint32_t& pulseWidth)
