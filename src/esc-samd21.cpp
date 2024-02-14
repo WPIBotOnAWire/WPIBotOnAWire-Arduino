@@ -70,7 +70,7 @@ ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
             if(millis() > 5000)
             {
                 motorState = ARMED;
-                targetSpeed = currentSpeed = 0;
+                targetSpeed = currentSetPoint = 0;
             }
             break;
 
@@ -92,7 +92,7 @@ void ESCDirect::WriteMicroseconds(uint16_t uSec)
  * Sent a signal to set the ESC speed
  * depends on the calibration minimum and maximum values
  */
-ESCDirect::MOTOR_STATE ESCDirect::SetSpeed(int16_t pct)
+ESCDirect::MOTOR_STATE ESCDirect::SetTargetSpeed(int16_t pct)
 {
     if(motorState != ARMED) 
     {
@@ -127,13 +127,18 @@ ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
             // SerialUSB.print('\n');
 
             // this does the ramping of the motor to avoid jerk
-            if(currentSpeed < targetSpeed) currentSpeed += 1.0;
-            if(currentSpeed > targetSpeed) currentSpeed -= 1.0;
+            if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
+            if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
 
-            uint16_t pulseUS = oMid + currentSpeed * (oMax - oMin) / 200;
+            uint16_t pulseUS = oMid + currentSetPoint * (oMax - oMin) / 200;
             pulseUS = constrain(pulseUS, oMin, oMax);
             WriteMicroseconds(pulseUS);
         }
+
+        // else if(motorState == OVERRIDE)
+        // {
+        //     WriteMicroseconds(pulseUS);
+        // }
     }
 
     return motorState;

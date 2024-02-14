@@ -47,7 +47,7 @@ void cbTargetSpeed(const std_msgs::Float32& msg)
       // float effort = Kp * error + Ki * sumError;
     
     int16_t effort = constrain(targetSpeed, -100, 100);
-    escPair.SetSpeed(effort);
+    escPair.SetTargetSpeed(effort);
 }
 
 ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed_meters_per_sec", cbTargetSpeed);
