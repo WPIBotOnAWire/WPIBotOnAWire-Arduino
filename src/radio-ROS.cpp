@@ -1,4 +1,5 @@
 #include "radio-ROS.h"
+#include "esc-samd21.h"
 #include <std_msgs/Bool.h>
 
 #define RADIO_OVERRIDE_PIN  13
@@ -38,7 +39,7 @@ void processRadio(void)
         uint32_t radioSpeedPulse = 0;
         if(radioSpeed.GetPulseWidth(radioSpeedPulse))
         {
-            
+            escPair.SetOverridePulse(radioSpeedPulse);
         }
     }
 }
