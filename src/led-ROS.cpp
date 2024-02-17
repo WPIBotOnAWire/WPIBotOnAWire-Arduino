@@ -36,7 +36,7 @@ void setupTC3forLED(void)
     
   // Interrupts
   TC->INTENCLR.reg = 0x3B;           // disable all interrupts
-  TC->INTENSET.bit.OVF = 1;          // enable overfollow interrupt
+  //TC->INTENSET.bit.OVF = 1;        // hold off on enabling overfollow interrupt -- only needed when flashing
  
   // Enable InterruptVector
   NVIC_EnableIRQ(TC3_IRQn);
@@ -88,6 +88,10 @@ void setLED(void)
   // Enable the port multiplexer for digital pin 5 (D5; PA15). Doing so disconnects the normal pinMode behaviour
   PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
 
+  // Turn on the interrupts
+  TcCount16* TC = (TcCount16*) TC3;
+  TC->INTENSET.bit.OVF = 1;
+
   // moved to setup -- easier to do there
   // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
   // Note that we |= so as not to clobber the ESCs!
@@ -100,6 +104,10 @@ void clearLED(void)
 {
   // Clear the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE  
   PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 0;
+
+  // Turn off the interrupts
+  TcCount16* TC = (TcCount16*) TC3;
+  TC->INTENCLR.bit.OVF = 1;
 
   // No longer clear the MUX -- just disable above
   // Disconnect the TC3 timer from the port output - port pins are paired odd PMUXO and even PMUXE
