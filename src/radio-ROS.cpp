@@ -40,8 +40,9 @@ void processRadio(void)
     {
         if(override)
         {
-            SerialUSB.println("override");
-            escPair.SetOverridePulse(radioSpeedPulse);
+            if(radioSpeedPulse <= 1490 || radioSpeedPulse >= 1510)
+                escPair.SetOverridePulse(radioSpeedPulse);
+            else escPair.SetOverridePulse(1500);
         }
     }
 }

@@ -23,7 +23,7 @@ public:
         if(digitalRead(rcPin))    //transitioned to HIGH
         {
             pulseStart = micros();
-            //state |= PULSE_HIGH;
+            state &= ~PULSE_RECD; //cancel pulse; could raise a warning flag
         }
 
         else                    //transitioned to LOW

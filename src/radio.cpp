@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 
-
 void RadioPulse::Init(void (*isr)(void))
 {
     pinMode(rcPin, INPUT_PULLUP);
@@ -42,6 +41,9 @@ bool RadioPulse::GetPulseWidth(uint32_t& pulseWidth)
 
         pulseWidth = pulseEnd - pulseStart;
         interrupts();
+
+        SerialUSB.print(pulseWidth);
+        SerialUSB.print('\n');
 
         newReading = true;
     }
