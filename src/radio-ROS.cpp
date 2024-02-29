@@ -1,7 +1,6 @@
 #include "radio-ROS.h"
 #include "esc-samd21.h"
 #include <std_msgs/Bool.h>
-#include "comm.h"
 
 #define RADIO_OVERRIDE_PIN  12      // slot 5 of the radio receiver
 #define RADIO_SPEED_PIN     13      // slot 1 of the radio receiver

@@ -42,7 +42,7 @@ ros::Publisher pubNMEA("/strNMEA", &gpsNMEA);
 
 void setupGPS(ros::NodeHandle& nh) 
 {
-  SerialUSB.println(F("setupGPS()"));
+  DEBUG_SERIAL.println(F("setupGPS()"));
   gps.Init();
   
   //assign pins 3 & 4 SERCOM functionality
@@ -55,7 +55,7 @@ void setupGPS(ros::NodeHandle& nh)
 //   nh.advertise(pub_gps_status);
     nh.advertise(pubNMEA);
 
-  SerialUSB.println(F("/setupGPS()"));
+  DEBUG_SERIAL.println(F("/setupGPS()"));
 }
 
 /**

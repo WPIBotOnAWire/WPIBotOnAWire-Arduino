@@ -32,9 +32,6 @@
 #include "position_filter.h"
 #include "radio-ROS.h"
 
-#include "comm.h"
-
-
 ros::NodeHandle nh;
 
 std_msgs::UInt32 heartbeatMsg;

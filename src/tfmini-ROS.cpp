@@ -4,8 +4,6 @@
 #include "wiring_private.h" // pinPeripheral() function
 #include <std_msgs/UInt16.h>
 
-#define Serial SerialUSB
-
 std_msgs::UInt16 tfForeCMmsg; //in cm
 ros::Publisher pubTFfore("/rangefinder/fore/TF", &tfForeCMmsg);
 
@@ -77,7 +75,7 @@ bool TFmini::handleUART(uint8_t b)
       else tfIndex = 0; //didn't get the correct checkSum byte, so restart
       break;
     case 9:
-      Serial.println("Something is very wrong!"); //PANIC
+      DEBUG_SERIAL.println("Something is very wrong!"); //PANIC
       break;
     default:
       tfMiniArray[tfIndex++] = b;
