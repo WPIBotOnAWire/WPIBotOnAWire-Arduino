@@ -32,6 +32,8 @@
 #include "position_filter.h"
 #include "radio-ROS.h"
 
+#include "wdt_samd21.h"
+
 ros::NodeHandle nh;
 
 std_msgs::UInt32 heartbeatMsg;
@@ -58,6 +60,26 @@ void setup()
   // }
   
   DEBUG_SERIAL.println("setup()");
+
+  if(wdt_check_reset()) //watchdog timout!
+  {
+    nh.initNode();
+    setupRadio(nh);
+    while(1)
+    {
+      processRadio();
+      static uint32_t lastPing = 0;
+      uint32_t currTime = millis();
+      if(currTime - lastPing >= 1000)
+      {
+        lastPing = currTime;
+
+        DEBUG_SERIAL.println("wdt!");
+      }
+    }
+  }
+
+  wdt_init(WDT_CONFIG_PER_8K); // 8 second watchdog timeout
 
   nh.initNode();
 
@@ -90,6 +112,8 @@ void loop(void)
     DEBUG_SERIAL.print('\n');
     DEBUG_SERIAL.print(millis());
     DEBUG_SERIAL.println("\tHeartbeat.");
+
+    wdt_reset();
   }
   
   processRangefinders();
