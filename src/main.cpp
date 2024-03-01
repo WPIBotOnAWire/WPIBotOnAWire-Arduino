@@ -64,6 +64,8 @@ void setup()
   if(wdt_check_reset()) //watchdog timout!
   {
     nh.initNode();
+    nh.advertise(heartbeat);
+
     setupRadio(nh);
     while(1)
     {
@@ -74,7 +76,10 @@ void setup()
       {
         lastPing = currTime;
 
-        DEBUG_SERIAL.println("wdt!");
+        heartbeatMsg.data = -1;
+        heartbeat.publish( &heartbeatMsg );
+
+        DEBUG_SERIAL.println("Watchdog Timeout!");
       }
     }
   }
