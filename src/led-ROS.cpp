@@ -13,7 +13,7 @@ void setupTC3forLED(void)
   // Feed GCLK0 (already enabled) to TCC2 and TC3
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |         // Enable 
                      GCLK_CLKCTRL_GEN_GCLK0 |     // Select GCLK0
-                     GCLK_CLKCTRL_ID_TCC2_TC3;    // Feed GCLK4 to TCC2 and TC3
+                     GCLK_CLKCTRL_ID_TCC2_TC3;    // Feed GCLK0 to TCC2 and TC3
   while (GCLK->STATUS.bit.SYNCBUSY) {};           // Wait for synchronization
 
   // The type cast must fit with the selected timer mode (defaults to 16-bit)

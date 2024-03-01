@@ -121,10 +121,10 @@ ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
 
         if(motorState == ARMED) 
         {
-            // SerialUSB.print(targetSpeed);
-            // SerialUSB.print('\t');
-            // SerialUSB.print(currentSpeed);
-            // SerialUSB.print('\n');
+            // DEBUG_SERIAL.print(targetSpeed);
+            // DEBUG_SERIAL.print('\t');
+            // DEBUG_SERIAL.print(currentSpeed);
+            // DEBUG_SERIAL.print('\n');
 
             // this does the ramping of the motor to avoid jerk
             if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
