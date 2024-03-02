@@ -30,10 +30,10 @@ void processBatteryMonitor(void)
         bat_msg.voltage = bat_monitor.readBusVoltage();
         bat_msg.current = bat_monitor.readCurrent();
 
-        // SerialUSB.print(bat_msg.voltage);
-        // SerialUSB.print('\t');
-        // SerialUSB.print(bat_msg.current);
-        // SerialUSB.print('\n');
+        // DEBUG_SERIAL.print(bat_msg.voltage);
+        // DEBUG_SERIAL.print('\t');
+        // DEBUG_SERIAL.print(bat_msg.current);
+        // DEBUG_SERIAL.print('\n');
 
         pub_bat_level.publish(&bat_msg);
     }
