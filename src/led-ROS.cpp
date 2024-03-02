@@ -52,7 +52,7 @@ void setupTC3forLED(void)
   // We use |= to not clobber ESCs!!!
   // PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E; 
 
-  // Trying out pin 10 (PA18). Note that it's an 'even' pin.
+  // Pipes TC3 to pin 10 (PA18). Note that it's an 'even' pin. Won't flash until MUX is enabled in setLED()
   // We use |= to not clobber ESCs!!!
   PORT->Group[g_APinDescription[10].ulPort].PMUX[g_APinDescription[10].ulPin >> 1].reg |= PORT_PMUX_PMUXE_E; 
 
