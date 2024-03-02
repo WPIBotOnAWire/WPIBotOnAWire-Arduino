@@ -106,7 +106,7 @@ void setLED(void)
   // Note that we |= so as not to clobber the ESCs!
   //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E;  
 
-  flashCount = -1;
+  flashCount = 20;
 }
 
 void clearLED(void)
@@ -147,7 +147,7 @@ void initLED(ros::NodeHandle& nh)
   setupTC3forLED();
   //clearLED();
 
-  //setLED();
+  setLED();
 
   nh.subscribe(led_sub);
 }
