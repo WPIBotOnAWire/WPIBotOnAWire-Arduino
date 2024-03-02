@@ -10,6 +10,9 @@
  * 
  * Note that we only set up one channel, as both motors are sent the same command. 
  * Perhaps there will someday be a need to control independently?
+ * 
+ * PLL (48MHz) /3 -> GLCK4 (16MHz) /8 -> TCC0(2MHz)
+ * Dual slope w/TOP = 20000 -> 50Hz [2MHz / (20000*2) = 50Hz]
 */
 void ESCDirect::Init(void)
 {
