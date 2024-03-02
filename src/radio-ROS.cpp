@@ -30,7 +30,7 @@ void processRadio(void)
     uint32_t overridePulseLength = 0;
     if(radioOverride.GetPulseWidth(overridePulseLength))
     {
-        override = (overridePulseLength > 1500);
+        override = (overridePulseLength > 1900 && overridePulseLength < 2000);
         radioOverrideMsg.data = override;
         pubRadioOverride.publish(&radioOverrideMsg);
         if(override)
