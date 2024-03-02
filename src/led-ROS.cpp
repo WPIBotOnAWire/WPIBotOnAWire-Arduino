@@ -60,7 +60,7 @@ void setupTC3forLED(void)
   
   // Connect the TCC2 timer to the port output - port pins are paired odd PMUXO and even PMUXE
   // F & E specify the timers: TCC0, TCC1 and TCC2
-  PORT->Group[g_APinDescription[11].ulPort].PMUX[g_APinDescription[11].ulPin >> 1].reg = PORT_PMUX_PMUXE_E;
+  PORT->Group[g_APinDescription[11].ulPort].PMUX[g_APinDescription[11].ulPin >> 1].reg |= PORT_PMUX_PMUXE_E;
 
   // Dual slope PWM operation: timers continuously count up to PER register value then down 0
   REG_TCC2_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC2 outputs
@@ -77,8 +77,8 @@ void setupTC3forLED(void)
   REG_TCC2_CCB0 = 15000;   // sets the duty cycle -- 50%    
   while(TCC2->SYNCBUSY.bit.CCB0);
 
-  // Divide the 16MHz signal by 8 giving 2MHz (0.5us) TCC0 timer tick and enable the outputs
-  REG_TCC2_CTRLA |= TCC_CTRLA_PRESCALER_DIV2 |    // Divide GCLK4 by 8
+  // Divide the 48MHz signal by 2, giving 24MHz
+  REG_TCC2_CTRLA |= TCC_CTRLA_PRESCALER_DIV2 |    // Divide by 2
                     TCC_CTRLA_ENABLE;             // Enable the TCC2 output
   while (TCC2->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
 }
