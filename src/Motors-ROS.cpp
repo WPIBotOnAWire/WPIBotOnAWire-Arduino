@@ -89,7 +89,7 @@ void processEncoders(void)
     int32_t currTicks = encoder.TakeSnapshot();
     int32_t delta = encoder.CalcDelta();
 
-    DEBUG_SERIAL.println(currTicks);
+    // DEBUG_SERIAL.println(currTicks);
 
     enc_val.data = currTicks;
     pub_enc.publish(&enc_val);
