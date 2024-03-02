@@ -16,7 +16,7 @@ void ISR_RADIO_SPEED(void) {radioSpeed.radioISR();}
 
 void setupRadio(ros::NodeHandle& nh)
 {
-    DEBUG_SERIAL.println("sR");
+    DEBUG_SERIAL.println("setupRadio");
     nh.advertise(pubRadioOverride);
 
     radioOverride.Init(ISR_RADIO_OVERRIDE);
@@ -33,6 +33,13 @@ void processRadio(void)
         override = (overridePulseLength > 1500);
         radioOverrideMsg.data = override;
         pubRadioOverride.publish(&radioOverrideMsg);
+        if(override)
+        {
+            DEBUG_SERIAL.print("Override: ");
+            DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(overridePulseLength);
+            DEBUG_SERIAL.print('\n');
+        }
     }
 
     uint32_t radioSpeedPulse = 0;

@@ -42,8 +42,8 @@ bool RadioPulse::GetPulseWidth(uint32_t& pulseWidth)
         pulseWidth = pulseEnd - pulseStart;
         interrupts();
 
-        SerialUSB.print(pulseWidth);
-        SerialUSB.print('\n');
+        // SerialUSB.print(pulseWidth);
+        // SerialUSB.print('\n');
 
         newReading = true;
     }
