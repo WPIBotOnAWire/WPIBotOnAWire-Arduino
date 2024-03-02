@@ -30,6 +30,12 @@ void processRadio(void)
     uint32_t overridePulseLength = 0;
     if(radioOverride.GetPulseWidth(overridePulseLength))
     {
+        if(overridePulseLength > 2000) 
+        {
+            DEBUG_SERIAL.print("Spike: ");
+            DEBUG_SERIAL.println(overridePulseLength);
+        }
+
         override = (overridePulseLength > 1900 && overridePulseLength < 2000);
         radioOverrideMsg.data = override;
         pubRadioOverride.publish(&radioOverrideMsg);
