@@ -23,6 +23,7 @@ void ESCDirect::Init(void)
   REG_GCLK_GENCTRL = GCLK_GENCTRL_IDC |           // Set the duty cycle to 50/50 HIGH/LOW
                      GCLK_GENCTRL_GENEN |         // Enable GCLK4
                      GCLK_GENCTRL_SRC_DFLL48M |   // Set the 48MHz clock source
+//                     GCLK_CLKCTRL_GEN_GCLK0 |     // use GCLK0 directly?
                      GCLK_GENCTRL_ID(4);          // Select GCLK4
   while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
   
