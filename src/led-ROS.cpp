@@ -34,6 +34,9 @@ void setupTC3forLED(void)
   TC->CC[0].reg = 18749; // with P = 256, freq = 48^6 / 256 / 18750 = 10 Hz, or 100ms on, 100ms off, etc...
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
     
+  // TC->CC[1].reg = 18749; // with P = 256, freq = 48^6 / 256 / 18750 = 10 Hz, or 100ms on, 100ms off, etc...
+  // while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
+
   // Interrupts
   TC->INTENCLR.reg = 0x3B;           // disable all interrupts
   //TC->INTENSET.bit.OVF = 1;        // hold off on enabling overfollow interrupt -- only needed when flashing
@@ -47,7 +50,11 @@ void setupTC3forLED(void)
 
   // This pipes the TC3 to pin 5 (PA15), but note that it's not enabled until the MUX is enabled in setLED()
   // We use |= to not clobber ESCs!!!
-  PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E;  
+  // PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E; 
+
+  // Trying out pin 10 (PA18). Note that it's an 'even' pin.
+  // We use |= to not clobber ESCs!!!
+  PORT->Group[g_APinDescription[10].ulPort].PMUX[g_APinDescription[10].ulPin >> 1].reg |= PORT_PMUX_PMUXE_E; 
 
   /**
    * Set up sound on Pin 11 while we're here...
@@ -86,7 +93,9 @@ void setupTC3forLED(void)
 void setLED(void)
 {
   // Enable the port multiplexer for digital pin 5 (D5; PA15). Doing so disconnects the normal pinMode behaviour
-  PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
+  // PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 1;
+  // Enable the port multiplexer for digital pin 10 (D10; PA18). Doing so disconnects the normal pinMode behaviour
+  PORT->Group[g_APinDescription[10].ulPort].PINCFG[g_APinDescription[10].ulPin].bit.PMUXEN = 1;
 
   // Turn on the interrupts
   TcCount16* TC = (TcCount16*) TC3;
@@ -97,13 +106,14 @@ void setLED(void)
   // Note that we |= so as not to clobber the ESCs!
   //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E;  
 
-  flashCount = 100;
+  flashCount = -1;
 }
 
 void clearLED(void)
 {
-  // Clear the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE  
-  PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 0;
+  // Clear the TC3 timer to the port output
+  // PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 0;
+  PORT->Group[g_APinDescription[10].ulPort].PINCFG[g_APinDescription[10].ulPin].bit.PMUXEN = 0;
 
   // Turn off the interrupts
   TcCount16* TC = (TcCount16*) TC3;
