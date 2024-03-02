@@ -62,7 +62,7 @@ void ESCDirect::Init(void)
 
 /*
  * We don't actually do anything here. The ESC arms by default when the
- * uC powers up (see the Init() function). So we'll just check that 3 
+ * uC powers up (see the Init() function). So we'll just check that N 
  * seconds has elapsed before we allow commands.
  */
 ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
