@@ -147,7 +147,7 @@ void initLED(ros::NodeHandle& nh)
   setupTC3forLED();
   //clearLED();
 
-  setLED();
+  //setLED();
 
   nh.subscribe(led_sub);
 }
