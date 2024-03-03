@@ -2,6 +2,8 @@
 #include <MaxBotix.h>
 #include <std_msgs/UInt16.h>
 
+#include "robot.h"
+
 std_msgs::UInt16 mbFrontCM; //in cm
 ros::Publisher pubMBfront("/rangefinder/fore/MB", &mbFrontCM);
 
@@ -31,6 +33,7 @@ void processRangefinders(void)
   {
     mbFrontCM.data = frontDist / 10; //raw reading is in mm
     pubMBfront.publish(&mbFrontCM);
+    robot.handleMaxBotixReading(frontDist / 10, Robot::DIR_FWD);
   }
 
   uint16_t aftDist = 0;
@@ -38,6 +41,7 @@ void processRangefinders(void)
   {
     mbAftCM.data = aftDist / 10; //raw reading is in mm
     pubMBaft.publish(&mbAftCM);
+    robot.handleMaxBotixReading(aftDist / 10, Robot::DIR_REV);
   }
 }
 

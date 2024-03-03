@@ -2,6 +2,8 @@
 #include "esc-samd21.h"
 #include <std_msgs/Bool.h>
 
+#include "robot.h"
+
 #define RADIO_OVERRIDE_PIN  12      // slot 5 of the radio receiver
 #define RADIO_SPEED_PIN     13      // slot 1 of the radio receiver
 
@@ -23,6 +25,8 @@ void setupRadio(ros::NodeHandle& nh)
     radioSpeed.Init(ISR_RADIO_SPEED);
 }
 
+const uint8_t minOverrideCount = 5; // to avoid spikes, which are annoying
+uint8_t overrideCount = 0;
 bool override = false;
 
 void processRadio(void)
@@ -30,22 +34,41 @@ void processRadio(void)
     uint32_t overridePulseLength = 0;
     if(radioOverride.GetPulseWidth(overridePulseLength))
     {
+        bool prev_override = override;
+
         if(overridePulseLength > 2000) 
         {
             DEBUG_SERIAL.print("Spike: ");
             DEBUG_SERIAL.println(overridePulseLength);
         }
 
-        override = (overridePulseLength > 1900 && overridePulseLength < 2000);
+        /**
+         * This bit of code makes it so we have to get N overrides in a row to switch over.
+         * Been having issues with spikes.
+        */
+        if(overridePulseLength > 1900 && overridePulseLength < 2000) 
+        {
+            DEBUG_SERIAL.println(overrideCount);
+            if(++overrideCount >= minOverrideCount)
+            {
+                overrideCount = minOverrideCount; // cap it so we don't roll over
+                override = true;
+            }
+        }
+        else overrideCount = 0;
+
         radioOverrideMsg.data = override;
         pubRadioOverride.publish(&radioOverrideMsg);
-        if(override)
-        {
-            DEBUG_SERIAL.print("Override: ");
-            DEBUG_SERIAL.print('\t');
-            DEBUG_SERIAL.print(overridePulseLength);
-            DEBUG_SERIAL.print('\n');
-        }
+
+        // if(override && !prev_override)
+        // {
+        //     DEBUG_SERIAL.print("Override: ");
+        //     DEBUG_SERIAL.print('\t');
+        //     DEBUG_SERIAL.print(overridePulseLength);
+        //     DEBUG_SERIAL.print('\n');
+        // }
+
+        if(prev_override && !override) robot.Arm();
     }
 
     uint32_t radioSpeedPulse = 0;
@@ -53,7 +76,8 @@ void processRadio(void)
     {
         if(override)
         {
-            if(radioSpeedPulse <= 1490 || radioSpeedPulse >= 1510)
+            if(radioSpeedPulse > 2000 || radioSpeedPulse < 1000) {} //ignore the spike
+            else if(radioSpeedPulse <= 1490 || radioSpeedPulse >= 1510)
                 escPair.SetOverridePulse(radioSpeedPulse);
             else escPair.SetOverridePulse(1500);
         }

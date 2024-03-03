@@ -131,13 +131,13 @@ void clearLED(void)
 // callback function for receiving LED commands
 void cb_LED(const std_msgs::UInt16& msg)
 {
-  if(msg.data) setLED();  //turn on LEDs
-  else clearLED();        //turn off LEDs
+  // if(msg.data) setLED();  //turn on LEDs
+  // else clearLED();        //turn off LEDs
 
-  //set the count for how many flashes we want; counted down in the ISR
-  //note that because the timer toggles on ovf, the actual flashes will be half the number sent
-  flashCount = -1;  
-  if(msg.data == 0) flashCount = 0;
+  // //set the count for how many flashes we want; counted down in the ISR
+  // //note that because the timer toggles on ovf, the actual flashes will be half the number sent
+  // flashCount = -1;  
+  // if(msg.data == 0) flashCount = 0;
 }
 
 ros::Subscriber<std_msgs::UInt16> led_sub("/led_cmd", cb_LED);

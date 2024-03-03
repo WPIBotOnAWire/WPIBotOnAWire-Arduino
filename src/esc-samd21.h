@@ -49,6 +49,7 @@ public:
     bool isArmed(void) {return motorState == ARMED;}
     
     MOTOR_STATE SetTargetSpeed(int16_t pct);
+    MOTOR_STATE SetTargetSpeedMetersPerSecond(float speedMPS);
     MOTOR_STATE SetOverridePulse(uint32_t pulseWidth)
     {
         WriteMicroseconds(pulseWidth);

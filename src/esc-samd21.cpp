@@ -71,6 +71,7 @@ ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
     switch(motorState)
     {
         case IDLE:
+        case OVERRIDE:
             if(millis() > 5000)
             {
                 motorState = ARMED;
@@ -104,6 +105,33 @@ ESCDirect::MOTOR_STATE ESCDirect::SetTargetSpeed(int16_t pct)
     }
 
     else targetSpeed = constrain(pct, -100, 100);
+
+    // I had put this in for testing, but now I don't think it's supposed
+    // to be here -- motors are controlled through updateMotors()
+    // uint16_t pulseUS = oMid + targetSpeed * (oMax - oMin) / 200;
+    // pulseUS = constrain(pulseUS, oMin, oMax);
+    // WriteMicroseconds(pulseUS);
+
+    return motorState;
+}
+
+/*
+ * Sent a signal to set the ESC speed
+ * depends on the calibration minimum and maximum values
+ */
+ESCDirect::MOTOR_STATE ESCDirect::SetTargetSpeedMetersPerSecond(float speedMPS)
+{
+    if(motorState != ARMED) 
+    {
+        return motorState;
+        DEBUG_SERIAL.println("UNARMED!");
+    }
+
+    else 
+    {
+        float pct = speedMPS * 20; // totally made up number... 
+        targetSpeed = constrain(pct, -100, 100);
+    }
 
     // I had put this in for testing, but now I don't think it's supposed
     // to be here -- motors are controlled through updateMotors()

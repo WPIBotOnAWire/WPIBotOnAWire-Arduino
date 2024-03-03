@@ -16,23 +16,27 @@
 */
 
 #include <Arduino.h>
+
 #include <ros.h>
-//#include <std_msgs/String.h>
 #include <std_msgs/UInt32.h>
+
 #include "Motors-ROS.h"
 #include "battery-ROS.h"
 #include "status-ROS.h"
 
 #include "rangefinder-ROS.h"
+#include "tfmini-ROS.h"
+
 #include "led-ROS.h"
 
 #include "gps-ROS.h"
-#include "tfmini-ROS.h"
-
 #include "position_filter.h"
+
 #include "radio-ROS.h"
 
 #include "wdt_samd21.h"
+
+#include "robot.h"
 
 ros::NodeHandle nh;
 
@@ -92,12 +96,16 @@ void setup()
 
   setupRadio(nh);
   init_status(nh);
+
   setup_rangefinders(nh);
+  setupTFminis(nh);
+
   init_motors(nh);
   setup_encoder(nh);
-  initBatteryMonitor(nh);
+
+  //initBatteryMonitor(nh);
+
   //setupGPS(nh);
-  setupTFminis(nh);
   initLED(nh);
  
   DEBUG_SERIAL.println("/setup");
@@ -114,20 +122,35 @@ void loop(void)
     heartbeatMsg.data = millis();
     heartbeat.publish( &heartbeatMsg );
 
-//    DEBUG_SERIAL.print('\n');
     DEBUG_SERIAL.print(millis());
     DEBUG_SERIAL.println("\tHeartbeat.");
 
     wdt_reset();
+
+    if(DEBUG_SERIAL.available())
+    {
+      char ch = DEBUG_SERIAL.read();
+      if(ch == 'A') 
+      {
+        robot.Arm();
+      }
+      if(ch == 'D') 
+      {
+        robot.Disarm();
+      }
+    }
   }
   
   processRangefinders();
+  processTFminis();
+
   processEncoders();
   updateMotors();
-  processBatteryMonitor();
-  //processGPS();
-  processTFminis();
+
+  //processBatteryMonitor();
   processRadio();
+
+  //processGPS();
 
   nh.spinOnce();
 }

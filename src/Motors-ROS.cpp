@@ -8,6 +8,8 @@
 
 #include "esc-samd21.h"
 
+#include "robot.h"
+
 #define Serial SerialUSB
 
 #define Kp 1
@@ -47,7 +49,7 @@ void cbTargetSpeed(const std_msgs::Float32& msg)
       // float effort = Kp * error + Ki * sumError;
     
     int16_t effort = constrain(targetSpeed, -100, 100);
-    escPair.SetTargetSpeed(effort);
+    //escPair.SetTargetSpeed(effort); // moving onboard; ignore ROS commands
 }
 
 ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed_meters_per_sec", cbTargetSpeed);
@@ -94,11 +96,12 @@ void processEncoders(void)
     enc_val.data = currTicks;
     pub_enc.publish(&enc_val);
 
-    float speedMetersPerSecond = delta * METERS_PER_TICK / (float) LOOP_RATE_MS;
+    float movementMeters = delta * METERS_PER_TICK;
+    robot.handleEncoderUpdate(movementMeters * 100.0);
+
+    float speedMetersPerSecond = movementMeters / (float) LOOP_RATE_MS;
     speed_enc.data = speedMetersPerSecond;
     pub_speed.publish(&speed_enc);
-
-
 
     // int16_t error = targetSpeedTicksPerInterval - delta;
     // static int16_t sumError = 0;
