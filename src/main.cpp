@@ -103,7 +103,7 @@ void setup()
   init_motors(nh);
   setup_encoder(nh);
 
-  //initBatteryMonitor(nh);
+  initBatteryMonitor(nh);
 
   //setupGPS(nh);
   initLED(nh);
@@ -147,7 +147,7 @@ void loop(void)
   processEncoders();
   updateMotors();
 
-  //processBatteryMonitor();
+  processBatteryMonitor();
   processRadio();
 
   //processGPS();
