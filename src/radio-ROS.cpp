@@ -26,7 +26,7 @@ void setupRadio(ros::NodeHandle& nh)
 }
 
 const uint8_t minOverrideCount = 5; // to avoid spikes, which are annoying
-uint8_t overrideCount = 0;
+int8_t overrideCount = 0;
 bool override = false;
 
 void processRadio(void)
@@ -48,14 +48,20 @@ void processRadio(void)
         */
         if(overridePulseLength > 1900 && overridePulseLength < 2000) 
         {
-            DEBUG_SERIAL.println(overrideCount);
             if(++overrideCount >= minOverrideCount)
             {
                 overrideCount = minOverrideCount; // cap it so we don't roll over
                 override = true;
             }
         }
-        else overrideCount = 0;
+        else if (overridePulseLength < 1200)
+        {
+            if(--overrideCount <= 0)
+            {
+                override = false;
+                overrideCount = 0;
+            }
+        }
 
         radioOverrideMsg.data = override;
         pubRadioOverride.publish(&radioOverrideMsg);

@@ -72,7 +72,7 @@ ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
     {
         case IDLE:
         case OVERRIDE:
-            if(millis() > 5000)
+            if(millis() > 6000)
             {
                 motorState = ARMED;
                 targetSpeed = currentSetPoint = 0;

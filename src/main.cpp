@@ -126,18 +126,18 @@ void loop(void)
     DEBUG_SERIAL.println("\tHeartbeat.");
 
     wdt_reset();
+  }
 
-    if(DEBUG_SERIAL.available())
+  if(DEBUG_SERIAL.available())
+  {
+    char ch = DEBUG_SERIAL.read();
+    if(ch == 'A') 
     {
-      char ch = DEBUG_SERIAL.read();
-      if(ch == 'A') 
-      {
-        robot.Arm();
-      }
-      if(ch == 'D') 
-      {
-        robot.Disarm();
-      }
+      robot.Arm();
+    }
+    if(ch == 'D') 
+    {
+      robot.Disarm();
     }
   }
   
