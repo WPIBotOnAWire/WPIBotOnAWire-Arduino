@@ -29,6 +29,8 @@ const uint8_t minOverrideCount = 5; // to avoid spikes, which are annoying
 int8_t overrideCount = 0;
 bool override = false;
 
+int8_t directionCount = 0;
+
 void processRadio(void)
 {
     uint32_t overridePulseLength = 0;
@@ -86,6 +88,24 @@ void processRadio(void)
             else if(radioSpeedPulse <= 1490 || radioSpeedPulse >= 1510)
                 escPair.SetOverridePulse(radioSpeedPulse);
             else escPair.SetOverridePulse(1500);
+        }
+
+        else
+        {
+            if(radioSpeedPulse < 1200) directionCount--;
+            if(radioSpeedPulse > 1800) directionCount++;
+
+            if(directionCount < -5)
+            {
+                directionCount = -5;
+                robot.SetDirection(Robot::DIR_REV);
+            }
+
+            if(directionCount > 5)
+            {
+                directionCount = 5;
+                robot.SetDirection(Robot::DIR_FWD);
+            }
         }
     }
 }

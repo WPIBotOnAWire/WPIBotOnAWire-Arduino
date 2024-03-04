@@ -19,6 +19,8 @@ public:
     void setTargetSpeed(float speed);
     void handleEncoderUpdate(const float movementCM);
 
+    void SetDirection(DIRECTION dir);
+
     void Arm(void);
     void Disarm(void);
 };

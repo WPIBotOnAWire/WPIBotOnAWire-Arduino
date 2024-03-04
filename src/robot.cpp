@@ -14,8 +14,7 @@ const float PATROLLING_SPEED = 1.0; // m/s
 
 void Robot::Arm(void) 
 {
-    robotState = ROBOT_DETERRING; //start slow...
-    robotDirection = DIR_FWD; 
+    robotState = ROBOT_DETERRING; //start slow... 
     escPair.Arm();
     DEBUG_SERIAL.println("Arming");
 }
@@ -91,6 +90,11 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
             }
         }
     }
+}
+
+void Robot::SetDirection(DIRECTION dir)
+{
+    robotDirection = dir;
 }
 
 void Robot::setTargetSpeed(float speed)
