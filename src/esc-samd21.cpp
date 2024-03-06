@@ -129,7 +129,7 @@ ESCDirect::MOTOR_STATE ESCDirect::SetTargetSpeedMetersPerSecond(float speedMPS)
 
     else 
     {
-        float pct = speedMPS * 20; // totally made up number... 
+        float pct = speedMPS * 25; // totally made up number... 
         targetSpeed = constrain(pct, -100, 100);
     }
 
@@ -164,6 +164,7 @@ ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
 
             uint16_t pulseUS = oMid + currentSetPoint * (oMax - oMin) / 200;
             pulseUS = constrain(pulseUS, oMin, oMax);
+            DEBUG_SERIAL.println(pulseUS);
             WriteMicroseconds(pulseUS);
         }
 

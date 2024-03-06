@@ -93,7 +93,8 @@ void processRadio(void)
         else
         {
             if(radioSpeedPulse < 1200) directionCount--;
-            if(radioSpeedPulse > 1800) directionCount++;
+            else if(radioSpeedPulse > 1800) directionCount++;
+            else directionCount = 0; //but don't reset direction; just avoid spikes
 
             if(directionCount < -5)
             {
@@ -101,7 +102,7 @@ void processRadio(void)
                 robot.SetDirection(Robot::DIR_REV);
             }
 
-            if(directionCount > 5)
+            else if(directionCount > 5)
             {
                 directionCount = 5;
                 robot.SetDirection(Robot::DIR_FWD);
