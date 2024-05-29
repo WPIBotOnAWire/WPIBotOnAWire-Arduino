@@ -65,7 +65,13 @@ void setup()
   
   DEBUG_SERIAL.println("setup()");
 
-  if(wdt_check_reset()) //watchdog timout!
+  /**
+   * The following code _only_ gets called if there has been a watchdog timout.
+   * 
+   * It initializes the heartbeat (so we know it's alive) and then goes to processing
+   * the radio, which should allow the user to drive the robot back home.
+  */
+  if(wdt_check_reset()) 
   {
     nh.initNode();
     nh.advertise(heartbeat);
@@ -88,6 +94,9 @@ void setup()
     }
   }
 
+  /**
+   * Here is the typical setup sequence.
+  */
   wdt_init(WDT_CONFIG_PER_8K); // 8 second watchdog timeout
 
   nh.initNode();
