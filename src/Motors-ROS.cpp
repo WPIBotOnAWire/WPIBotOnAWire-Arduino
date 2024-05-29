@@ -78,6 +78,8 @@ void setup_encoder(ros::NodeHandle& nh)
 /**
  * Reads the current encoder count (count is updated in an ISR) and publishes the result.
  * Nominally tested and working with a quadrature encoder.
+ * 
+ * Not sure why I'm doing polling here -- better with a timer.
 */
 void processEncoders(void)
 {
