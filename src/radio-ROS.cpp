@@ -82,6 +82,10 @@ void processRadio(void)
     uint32_t radioSpeedPulse = 0;
     if(radioSpeed.GetPulseWidth(radioSpeedPulse))
     {
+        /**
+         * If we're in override mode, use the speed pulse to directly command the motors,
+         * with a small deadband.
+        */
         if(override)
         {
             if(radioSpeedPulse > 2000 || radioSpeedPulse < 1000) {} //ignore the spike
@@ -90,6 +94,9 @@ void processRadio(void)
             else escPair.SetOverridePulse(1500);
         }
 
+        /**
+         * If we're not in override mode, use the pulses to command the patrol direction.
+        */
         else
         {
             if(radioSpeedPulse < 1200) directionCount--;
