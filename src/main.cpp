@@ -122,6 +122,9 @@ void setup()
 
 void loop(void) 
 {
+  /**
+   * We send a heartbeat every second and reset the watchdog (which has an 8 second timeout).
+  */
   static uint32_t lastPing = 0;
   uint32_t currTime = millis();
   if(currTime - lastPing >= 1000)
@@ -137,6 +140,9 @@ void loop(void)
     wdt_reset();
   }
 
+  /**
+   * Allows simple testing through the debug interface.
+  */
   if(DEBUG_SERIAL.available())
   {
     char ch = DEBUG_SERIAL.read();
@@ -150,7 +156,7 @@ void loop(void)
     }
   }
   
-  processRangefinders();
+  processRangefinders(); // ultrasonics
   processTFminis();
 
   processEncoders();
