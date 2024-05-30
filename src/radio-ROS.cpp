@@ -36,7 +36,7 @@ void processRadio(void)
     uint32_t overridePulseLength = 0;
     if(radioOverride.GetPulseWidth(overridePulseLength))
     {
-        bool prev_override = override;
+        bool prev_override = override; // I don't like this here -- should go at end
 
         if(overridePulseLength > 2000) 
         {
