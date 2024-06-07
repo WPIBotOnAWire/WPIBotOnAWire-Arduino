@@ -6,7 +6,9 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/Float32.h>
 
-#include "esc-samd21.h"
+//#include "esc-samd21.h"
+
+#include "ESmotor.h"
 
 #include "robot.h"
 
@@ -34,7 +36,9 @@ ros::Publisher pub_enc("/encoder/count", &enc_val);
 std_msgs::Float32 speed_enc;
 ros::Publisher pub_speed("/encoder/meters_per_second", &speed_enc);
 
-ESCDirect escPair;
+//ESCDirect escPair;
+
+ESMotor esMotor;
 
 int16_t targetSpeedTicksPerInterval = 0;
 int16_t currentTargetTicksPerInterval = 0;
@@ -57,10 +61,10 @@ ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed_meters_per_sec", cbT
 void init_motors(ros::NodeHandle& nh)
 {
     //sets up the ESCs and battery info to allow them to spin
-    escPair.Init();
+    esMotor.Init();
 
     //escPair.Calibrate(); 
-    escPair.Arm();
+    esMotor.Arm();
 
     //escPair.Stop();
 

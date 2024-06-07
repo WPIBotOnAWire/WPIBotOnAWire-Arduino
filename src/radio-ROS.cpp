@@ -1,5 +1,5 @@
 #include "radio-ROS.h"
-#include "esc-samd21.h"
+#include "ESmotor.h"
 #include <std_msgs/Bool.h>
 
 #include "robot.h"
@@ -90,8 +90,8 @@ void processRadio(void)
         {
             if(radioSpeedPulse > 2000 || radioSpeedPulse < 1000) {} //ignore the spike
             else if(radioSpeedPulse <= 1490 || radioSpeedPulse >= 1510)
-                escPair.SetOverridePulse(radioSpeedPulse);
-            else escPair.SetOverridePulse(1500);
+                esMotor.SetOverridePulse(radioSpeedPulse);
+            else esMotor.SetOverridePulse(1500);
         }
 
         /**

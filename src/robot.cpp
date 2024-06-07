@@ -1,5 +1,5 @@
 #include "robot.h"
-#include "esc-samd21.h"
+#include "ESmotor.h"
 #include "led-ROS.h"
 
 Robot robot;
@@ -16,7 +16,7 @@ void Robot::Arm(void)
 {
     robotState = ROBOT_DETERRING; //start slow... 
     robotDirection = DIR_HOLD; 
-    escPair.Arm();
+    esMotor.Arm();
     DEBUG_SERIAL.println("Arming");
 }
 
@@ -24,7 +24,7 @@ void Robot::Disarm(void)
 {
     robotState = ROBOT_IDLE; //start slow...
     robotDirection = DIR_HOLD; 
-    escPair.EStop();
+    esMotor.EStop();
     DEBUG_SERIAL.println("Disarming");
 }
 
@@ -101,9 +101,9 @@ void Robot::SetDirection(DIRECTION dir)
 
 void Robot::setTargetSpeed(float speed)
 {
-    if(robotDirection == DIR_FWD) escPair.SetTargetSpeedMetersPerSecond(speed);
-    else if(robotDirection == DIR_REV) escPair.SetTargetSpeedMetersPerSecond(-speed);
-    else escPair.SetTargetSpeedMetersPerSecond(0);
+    if(robotDirection == DIR_FWD) esMotor.SetTargetSpeedMetersPerSecond(speed);
+    else if(robotDirection == DIR_REV) esMotor.SetTargetSpeedMetersPerSecond(-speed);
+    else esMotor.SetTargetSpeedMetersPerSecond(0);
 }
 
 void Robot::handleEncoderUpdate(const float movementCM)

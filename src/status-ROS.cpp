@@ -1,7 +1,7 @@
 #include "status-ROS.h"
 
 #include <std_msgs/String.h>
-#include "esc-samd21.h"
+#include "ESMotor.h"
 
 std_msgs::String status;
 //ros::Publisher pub_bat_level("/battery", &bat_msg);
@@ -13,12 +13,12 @@ void cbStatus(const std_msgs::String& msg)
     // SerialUSB.println(message);
     if(message == String("Arm"))
     {
-        escPair.Arm();
+        esMotor.Arm();
     }
 
     else if(message == String("Emergency Stop"))
     {
-        escPair.EStop();
+        esMotor.EStop();
     }
 }
 

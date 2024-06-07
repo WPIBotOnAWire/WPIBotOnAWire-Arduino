@@ -67,4 +67,4 @@ public:
     ESCDirect::MOTOR_STATE UpdateMotors(void);
 };
 
-extern ESCDirect escPair;
+//extern ESCDirect escPair;

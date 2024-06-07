@@ -1,20 +1,17 @@
-#include "esc-samd21.h"
-
-#include <Arduino.h>
+#include "ESmotor.h"
 
 #define MOTOR_UPDATE_MS 20
 
 /**
- * This sets up TCC0 to send "RC-servo" pulses to pin 2. We skip the Arduino Servo library
- * (which is a hack) and use the timers directly. This will produce a much smoother pulse output.
+ * Set up TCC0 on pin 2. 20 kHz.
  * 
  * Note that we only set up one channel, as both motors are sent the same command. 
  * Perhaps there will someday be a need to control independently?
  * 
- * PLL (48MHz) /3 -> GLCK4 (16MHz) /8 -> TCC0(2MHz)
- * Dual slope w/TOP = 20000 -> 50Hz [2MHz / (20000*2) = 50Hz]
+ * PLL (48MHz) /3 -> GLCK4 (16MHz) / 1 -> TCC0(16MHz)
+ * Dual slope w/TOP = 400 -> 20kHz [16MHz / (400*2) = 20kHz]
 */
-void ESCDirect::Init(void)
+void ESMotor::Init(void)
 {
   REG_GCLK_GENDIV = GCLK_GENDIV_DIV(3) |          // Divide the 48MHz clock source by divisor 3: 48MHz/3=16MHz
                     GCLK_GENDIV_ID(4);            // Select Generic Clock (GCLK) 4
@@ -41,23 +38,23 @@ void ESCDirect::Init(void)
   while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
 
   // Dual slope PWM operation: timers continuously count up to PER register value then down 0
-  REG_TCC0_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC0 outputs
+  REG_TCC0_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC0 outputs (?)
                    TCC_WAVE_WAVEGEN_DSBOTTOM;    // Setup dual slope PWM on TCC0
   while (TCC0->SYNCBUSY.bit.WAVE);               // Wait for synchronization
 
   // Each timer counts up to a maximum or TOP value set by the PER register,
   // this determines the frequency of the PWM operation:
-  // 20000 = 50Hz, 10000 = 100Hz, 2500  = 400Hz
-  REG_TCC0_PER = 20000;      // Set the frequency of the PWM on TCC0 to 50Hz
+  // 400 = 20kHz
+  REG_TCC0_PER = 400;
   while(TCC0->SYNCBUSY.bit.PER);
 
-  // The CCBx register value corresponds to the pulsewidth in microseconds (us)
-  REG_TCC0_CCB0 = oMid;       // TCC0 CCB0 - center the servo on D2
+  // The CCBx sets the duty cycle 
+  REG_TCC0_CCB0 = 0;       
   while(TCC0->SYNCBUSY.bit.CCB0);
 
-  // Divide the 16MHz signal by 8 giving 2MHz (0.5us) TCC0 timer tick and enable the outputs
-  REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV8 |    // Divide GCLK4 by 8
-                    TCC_CTRLA_ENABLE;             // Enable the TCC0 output
+  // Divide the 16MHz signal by 8 giving 16MHz (0.5us) TCC0 timer tick and enable the outputs
+  REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV1 |    // Divide GCLK4 by 8
+                    TCC_CTRLA_ENABLE;             // Enable the TCC0 output [should be moved to Arm()?]
   while (TCC0->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
 }
 
@@ -66,7 +63,7 @@ void ESCDirect::Init(void)
  * uC powers up (see the Init() function). So we'll just check that N 
  * seconds has elapsed before we allow commands.
  */
-ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
+ESMotor::MOTOR_STATE ESMotor::Arm(void)
 {
     switch(motorState)
     {
@@ -86,40 +83,10 @@ ESCDirect::MOTOR_STATE ESCDirect::Arm(void)
     return motorState;
 }
 
-void ESCDirect::WriteMicroseconds(uint16_t uSec)
-{
-    // The CCBx register value corresponds to the pulsewidth in microseconds
-    REG_TCC0_CCB0 = uSec;       // TCC0_CCB0 - sets the pulse width on D2
-    while(TCC0->SYNCBUSY.bit.CCB0);
-}
-
 /*
- * Sent a signal to set the ESC speed
- * depends on the calibration minimum and maximum values
+ * 
  */
-ESCDirect::MOTOR_STATE ESCDirect::SetTargetSpeed(int16_t pct)
-{
-    if(motorState != ARMED) 
-    {
-        return motorState;
-    }
-
-    else targetSpeed = constrain(pct, -100, 100);
-
-    // I had put this in for testing, but now I don't think it's supposed
-    // to be here -- motors are controlled through updateMotors()
-    // uint16_t pulseUS = oMid + targetSpeed * (oMax - oMin) / 200;
-    // pulseUS = constrain(pulseUS, oMin, oMax);
-    // WriteMicroseconds(pulseUS);
-
-    return motorState;
-}
-
-/*
- * Sent a signal to set the ESC speed
- * depends on the calibration minimum and maximum values
- */
-ESCDirect::MOTOR_STATE ESCDirect::SetTargetSpeedMetersPerSecond(float speedMPS)
+ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
 {
     if(motorState != ARMED) 
     {
@@ -142,7 +109,7 @@ ESCDirect::MOTOR_STATE ESCDirect::SetTargetSpeedMetersPerSecond(float speedMPS)
     return motorState;
 }
 
-ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
+ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
 {
     static uint32_t lastMotorUpdate = 0;
     uint32_t currTime = millis();
@@ -162,10 +129,10 @@ ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
             if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
             if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
 
-            uint16_t pulseUS = oMid + currentSetPoint * (oMax - oMin) / 200;
-            pulseUS = constrain(pulseUS, oMin, oMax);
-            DEBUG_SERIAL.println(pulseUS);
-            WriteMicroseconds(pulseUS);
+            // uint16_t pulseUS = oMid + currentSetPoint * (oMax - oMin) / 200;
+            // pulseUS = constrain(pulseUS, oMin, oMax);
+            // DEBUG_SERIAL.println(pulseUS);
+            // WriteMicroseconds(pulseUS);
         }
 
         // else if(motorState == OVERRIDE)
@@ -177,4 +144,4 @@ ESCDirect::MOTOR_STATE ESCDirect::UpdateMotors(void)
     return motorState;
 }
 
-//void updateMotors(void) {escPair.UpdateMotors();}
+void updateMotors(void) {esMotor.UpdateMotors();}
