@@ -13,18 +13,34 @@ class ESMotor
 public:
     enum MOTOR_STATE {IDLE, ARMED, OVERRIDE};
 
+    volatile int16_t encoderCount = 0;
+
+private:
+    volatile int16_t snapshotCount = 0;
+    volatile int16_t previousCount = 0;
     volatile int8_t readyToPID = 0;
+
+    int16_t sumError = 0;
+    int16_t integralCap = 10000; // need to size...
+
+    float Kp = 1;
+    float Ki = 0.1;
 
 private:
     uint8_t directionPin = -1;
+    uint8_t encoderPin = -1;
     MOTOR_STATE motorState = IDLE;
 
     float targetSpeed = 0;
     float currentSetPoint = 0;
+    int8_t direction = 0;
 
     void SetEffort(int16_t match);
 
 public:
+    ESMotor(int8_t dirPin = -1, int8_t encPin = -1) 
+        {directionPin = dirPin; encoderPin = encPin;}
+
     void Init(void);
     MOTOR_STATE Arm(void);
     bool isArmed(void) {return motorState == ARMED;}
@@ -46,6 +62,24 @@ public:
         motorState = IDLE;
     }
 
+    void handleEncoderISR(void) {encoderCount += direction;}
+    void TakeSnapshot(void)
+    {
+        snapshotCount = encoderCount;
+        readyToPID++;
+    }
+
+    int16_t CalcEncoderSpeed(void)
+    {
+        noInterrupts();
+        int16_t count = snapshotCount;
+        interrupts();
+
+        int16_t speed = count - previousCount;
+        previousCount = count;
+
+        return speed;
+    }
 };
 
 extern ESMotor esMotor;

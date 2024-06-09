@@ -1,10 +1,16 @@
 #include "ESmotor.h"
 #include "robot.h"
+#include "math.h"
 
-#define MOTOR_UPDATE_MS 20
+uint16_t MOTOR_UPDATE_MS = 20U;
+
+void encoderISR(void)
+{
+    esMotor.handleEncoderISR();
+}
 
 /**
- * Set up TCC0 on pin 2. 20 kHz.
+ * Set up TCC0 on pin 2 for PWM at 20 kHz.
  * 
  * Note that we only set up one channel, as both motors are sent the same command. 
  * Perhaps there will someday be a need to control independently?
@@ -53,34 +59,43 @@ void ESMotor::Init(void)
   REG_TCC0_CCB0 = 0;       
   while(TCC0->SYNCBUSY.bit.CCB0);
 
-  // Divide the 16MHz signal by 8 giving 16MHz (0.5us) TCC0 timer tick and enable the outputs
-  REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV1 |    // Divide GCLK4 by 8
+  // No pre-scaler. Enable the outputs
+  REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV1 |    // Divide GCLK4 by 1
                     TCC_CTRLA_ENABLE;             // Enable the TCC0 output [should be moved to Arm()?]
   while (TCC0->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
 
 
-  // Enable InterruptVector
-  NVIC_EnableIRQ(TCC1_IRQn);
+  /**
+   * Here we set up a 20ms timer that will be used to schedule the speed controller.
+   * General clock 4 is piped to TCC1 (divided by 3) above.
+   */
 
-  TCC1->INTENSET.reg = TCC_INTENSET_OVF;
+  // Single slope PWM operation
   TCC1->WAVE.reg |= TCC_WAVE_WAVEGEN_NFRQ;
-  
-  // Dual slope PWM operation: timers continuously count up to PER register value then down 0
-//   REG_TCC1_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC0 outputs (?)
-//                    TCC_WAVE_WAVEGEN_DSBOTTOM;    // Setup dual slope PWM on TCC1
   while (TCC1->SYNCBUSY.bit.WAVE);               // Wait for synchronization
 
   // Each timer counts up to a maximum or TOP value set by the PER register,
-  // this determines the frequency
-  // 20000 = 50Hz
-  REG_TCC1_PER = 20000;
+  // 20000 => 50Hz; w/pre-scaler of 3 above and 16 below, f=48MHz/3/16/(20*1000) = 50Hz
+  REG_TCC1_PER = MOTOR_UPDATE_MS * 1000U;
   while(TCC1->SYNCBUSY.bit.PER);
 
-  // Divide the 16MHz signal by 16 giving ... TCC1 timer
-  REG_TCC1_CTRLA |= TCC_CTRLA_PRESCALER_DIV16 | TCC_CTRLA_ENABLE;    // Divide GCLK4 by 16
-  while (TCC1->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
+  // Enable InterruptVector
+  NVIC_EnableIRQ(TCC1_IRQn);
 
-  pinMode(5, OUTPUT);  
+  // And set interrupt enable for overflow
+  TCC1->INTENSET.reg = TCC_INTENSET_OVF;
+
+  // Divide the 16MHz signal by 16 giving 3MHz TCC1 timer
+  REG_TCC1_CTRLA |= TCC_CTRLA_PRESCALER_DIV16   // Divide GCLK4 by 16
+                 | TCC_CTRLA_ENABLE;            // and enable
+  while (TCC1->SYNCBUSY.bit.ENABLE);            // Wait for synchronization
+
+  // Set direction pin as output
+  pinMode(directionPin, OUTPUT);  
+
+  // Set encoder pin as input, set up interrupt
+  pinMode(encoderPin, INPUT);
+  attachInterrupt(encoderPin, encoderISR, CHANGE);
 }
 
 
@@ -88,6 +103,8 @@ void ESMotor::Init(void)
  * We don't actually do anything here. The ESC arms by default when the
  * uC powers up (see the Init() function). So we'll just check that N 
  * seconds has elapsed before we allow commands.
+ * 
+ * TODO: move PWM enable here
  */
 ESMotor::MOTOR_STATE ESMotor::Arm(void)
 {
@@ -126,12 +143,6 @@ ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
         targetSpeed = constrain(pct, -100, 100);
     }
 
-    // I had put this in for testing, but now I don't think it's supposed
-    // to be here -- motors are controlled through updateMotors()
-    // uint16_t pulseUS = oMid + targetSpeed * (oMax - oMin) / 200;
-    // pulseUS = constrain(pulseUS, oMin, oMax);
-    // WriteMicroseconds(pulseUS);
-
     return motorState;
 }
 
@@ -143,27 +154,29 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
     static uint32_t lastMotorUpdate = 0;
     uint32_t currTime = millis();
 
-    if(currTime - lastMotorUpdate > MOTOR_UPDATE_MS) {}
-    
     if(readyToPID)
     {
-        lastMotorUpdate = currTime;
+        lastMotorUpdate = currTime; // holdover from prev version; in case I want to check/test
 
         if(motorState == ARMED) 
         {
-            // DEBUG_SERIAL.print(targetSpeed);
-            // DEBUG_SERIAL.print('\t');
-            // DEBUG_SERIAL.print(currentSpeed);
-            // DEBUG_SERIAL.print('\n');
-
+#ifdef __MOTOR_DEBUG__
+            DEBUG_SERIAL.print(targetSpeed);
+            DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(currentSpeed);
+            DEBUG_SERIAL.print('\n');
+#endif
             // this does the ramping of the motor to avoid jerk
             if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
             if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
 
-            // uint16_t pulseUS = oMid + currentSetPoint * (oMax - oMin) / 200;
-            // pulseUS = constrain(pulseUS, oMin, oMax);
-            // DEBUG_SERIAL.println(pulseUS);
-            // WriteMicroseconds(pulseUS);
+            int16_t speed = CalcEncoderSpeed();
+
+            int16_t error = currentSetPoint - speed;
+            if(abs(sumError) < integralCap) sumError += error;
+
+            float effort = Kp * error + Ki * sumError;
+            SetEffort(effort);
         }
 
         // else if(motorState == OVERRIDE)
@@ -182,8 +195,17 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
  */
 void ESMotor::SetEffort(int16_t match)
 {
-    if(match >=0) digitalWrite(directionPin, HIGH);
-    else { digitalWrite(directionPin, LOW); match = -match;}
+    if(match >=0) 
+    {
+        direction = 1;
+        digitalWrite(directionPin, HIGH);
+    }
+    else 
+    { 
+        direction = -1;
+        digitalWrite(directionPin, LOW); 
+        match = -match;
+    }
 
     REG_TCC0_CCB0 = match;       // TCC0_CCB0 - sets the compare match value on D2
     while(TCC0->SYNCBUSY.bit.CCB0);
@@ -194,9 +216,6 @@ void TCC1_Handler()
   if (TCC1->INTFLAG.bit.OVF) //Test if an OVF-Interrupt has occured
   {
     TCC1->INTFLAG.bit.OVF = 1;  //Clear the Interrupt-Flag
-    digitalWrite(5, !digitalRead(5));  //Toggle pin 5 for testing
-
-    esMotor.readyToPID++;
+    esMotor.TakeSnapshot();
   }
 }
-
