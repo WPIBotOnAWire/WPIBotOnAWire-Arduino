@@ -107,11 +107,6 @@ void processEncoders(void)
     float speedMetersPerSecond = movementMeters / (float) LOOP_RATE_MS;
     speed_enc.data = speedMetersPerSecond;
     pub_speed.publish(&speed_enc);
-
-    // int16_t error = targetSpeedTicksPerInterval - delta;
-    // static int16_t sumError = 0;
-    // sumError += error;
-
   }  
 }
 
