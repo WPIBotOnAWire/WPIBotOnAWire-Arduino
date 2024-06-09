@@ -22,7 +22,7 @@ void Robot::Arm(void)
 
 void Robot::Disarm(void) 
 {
-    robotState = ROBOT_IDLE; //start slow...
+    robotState = ROBOT_IDLE; 
     robotDirection = DIR_HOLD; 
     esMotor.EStop();
     DEBUG_SERIAL.println("Disarming");
@@ -94,7 +94,8 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
 }
 
 /**
- * Sets the direction for patrolling in auto. Ignore if called with current direction.
+ * Sets the direction for patrolling in auto. 
+ * Ignore if called with current direction.
  */
 void Robot::SetDirection(DIRECTION dir)
 {

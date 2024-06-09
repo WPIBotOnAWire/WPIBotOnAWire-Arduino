@@ -49,6 +49,7 @@ void setupTC3forLED(void)
   // We use |= to not clobber ESCs!!!
   PORT->Group[g_APinDescription[10].ulPort].PMUX[g_APinDescription[10].ulPin >> 1].reg |= PORT_PMUX_PMUXE_E; 
 
+
   /**
    * Set up sound on Pin 11 while we're here...
   */

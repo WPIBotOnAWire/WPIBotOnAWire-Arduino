@@ -31,13 +31,6 @@ void ESMotor::Init(void)
                      GCLK_GENCTRL_ID(4);          // Select GCLK4
   while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
   
-  // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
-  PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
-  
-  // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  // F & E specify the timers: e.g., TCC0, TCC1 and TCC2
-  PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
-
   // Feed GCLK4 to TCC0 and TCC1
   REG_GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN |         // Enable GCLK4 to TCC0 and TCC1
                      GCLK_CLKCTRL_GEN_GCLK4 |     // Select GCLK4
@@ -59,10 +52,10 @@ void ESMotor::Init(void)
   REG_TCC0_CCB0 = 0;       
   while(TCC0->SYNCBUSY.bit.CCB0);
 
-  // No pre-scaler. Enable the outputs
-  REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV1 |    // Divide GCLK4 by 1
-                    TCC_CTRLA_ENABLE;             // Enable the TCC0 output [should be moved to Arm()?]
-  while (TCC0->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
+  // No pre-scaler; enable and sync
+  REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV1 // Divide GCLK4 by 1 (no pre-scaler)
+                 | TCC_CTRLA_ENABLE;         // Enable the TCC0 output [should be moved to Arm()?]
+  while (TCC0->SYNCBUSY.bit.ENABLE);         // Wait for synchronization
 
 
   /**
@@ -98,13 +91,8 @@ void ESMotor::Init(void)
   attachInterrupt(digitalPinToInterrupt(encoderPin), encoderISR, CHANGE);
 }
 
-
 /*
- * We don't actually do anything here. The ESC arms by default when the
- * uC powers up (see the Init() function). So we'll just check that N 
- * seconds has elapsed before we allow commands.
- * 
- * TODO: move PWM enable here
+ * Arm the motor by engaging the TCC0 waveform on pin 2.
  */
 ESMotor::MOTOR_STATE ESMotor::Arm(void)
 {
@@ -112,16 +100,35 @@ ESMotor::MOTOR_STATE ESMotor::Arm(void)
     {
         case IDLE:
         case OVERRIDE:
-            if(millis() > 6000)
-            {
-                motorState = ARMED;
-                targetSpeed = currentSetPoint = 0;
-            }
+            DEBUG_SERIAL.println("Arming motors.");
+            motorState = ARMED;
+            targetSpeed = currentSetPoint = 0;
+
+            // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
+            PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
+  
+            // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+            // F & E specify the timers: e.g., TCC0, TCC1 and TCC2
+            PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
+
             break;
 
         default:
             break;
     }
+
+    return motorState;
+}
+
+
+ESMotor::MOTOR_STATE ESMotor::Disarm(void)
+{
+    DEBUG_SERIAL.println("Disarming motors.");
+
+    // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
+    PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 0;
+
+    motorState = IDLE;
 
     return motorState;
 }

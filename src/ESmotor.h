@@ -43,7 +43,9 @@ public:
 
     void Init(void);
     MOTOR_STATE Arm(void);
-    bool isArmed(void) {return motorState == ARMED;}
+    MOTOR_STATE Disarm(void);
+
+    // bool isArmed(void) {return motorState == ARMED;}
     MOTOR_STATE UpdateMotors(void);
 
     MOTOR_STATE SetTargetSpeed(int16_t pct);
