@@ -37,6 +37,13 @@ void ESMotor::Init(void)
                      GCLK_CLKCTRL_ID_TCC0_TCC1;   // Feed GCLK4 to TCC0 and TCC1
   while (GCLK->STATUS.bit.SYNCBUSY);              // Wait for synchronization
 
+
+    // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
+    // F & E specify the timers: e.g., TCC0, TCC1 and TCC2
+    PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg |= PORT_PMUX_PMUXE_F;
+
+
+
   // Dual slope PWM operation: timers continuously count up to PER register value then down 0
   REG_TCC0_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC0 outputs (?)
                    TCC_WAVE_WAVEGEN_DSBOTTOM;    // Setup dual slope PWM on TCC0
@@ -106,10 +113,6 @@ ESMotor::MOTOR_STATE ESMotor::Arm(void)
 
             // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
             PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
-  
-            // Connect the TCC0 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-            // F & E specify the timers: e.g., TCC0, TCC1 and TCC2
-            PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg = PORT_PMUX_PMUXE_F;
 
             break;
 
@@ -163,8 +166,9 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
     if(readyToPID)
     {
         lastMotorUpdate = currTime; // holdover from prev version; in case I want to check/test
-
-        //Serial.println(motorState);
+        // DEBUG_SERIAL.print(lastMotorUpdate);
+        // DEBUG_SERIAL.print('\t');
+        // Serial.println(motorState);
         if(motorState == ARMED) 
         {
             // this does the ramping of the motor to avoid jerk

@@ -38,7 +38,7 @@ void processRadio(void)
     {
         bool prev_override = override; // I don't like this here -- should go at end?
 
-        if(overridePulseLength > 2000) 
+        if(overridePulseLength >= 2010) 
         {
             DEBUG_SERIAL.print("Spike: ");
             DEBUG_SERIAL.println(overridePulseLength);
@@ -48,7 +48,7 @@ void processRadio(void)
          * This bit of code makes it so we have to get N overrides in a row to switch over.
          * Been having issues with spikes.
         */
-        if(overridePulseLength > 1900 && overridePulseLength < 2000) 
+        if(overridePulseLength > 1900 && overridePulseLength < 2010) 
         {
             if(++overrideCount >= minOverrideCount)
             {
@@ -56,7 +56,7 @@ void processRadio(void)
                 override = true;
             }
         }
-        else if (overridePulseLength < 1200)
+        else if (overridePulseLength < 1200 && overridePulseLength > 900)
         {
             if(--overrideCount <= 0)
             {
@@ -77,22 +77,19 @@ void processRadio(void)
         // }
 
         if(prev_override && !override) robot.Arm();
-        if(override && !prev_override) {}
+        if(override && !prev_override) esMotor.Arm();
     }
 
     uint32_t radioSpeedPulse = 0;
     if(radioSpeed.GetPulseWidth(radioSpeedPulse))
     {
         /**
-         * If we're in override mode, use the speed pulse to directly command the motors,
-         * with a small deadband.
+         * If we're in override mode, use the speed pulse to directly command the motors.
         */
         if(override)
         {
-            if(radioSpeedPulse > 2000 || radioSpeedPulse < 1000) {} //ignore the spike
-            else if(radioSpeedPulse <= 1490 || radioSpeedPulse >= 1510)
-                esMotor.SetOverridePulse(radioSpeedPulse);
-            else esMotor.SetOverridePulse(1500);
+            if(radioSpeedPulse > 2000 || radioSpeedPulse < 1000) {} //ignore the spikes
+            esMotor.SetOverridePulse(radioSpeedPulse);
         }
 
         /**

@@ -5,7 +5,7 @@
 class Robot
 {
 public:
-    enum ROBOT_STATE {ROBOT_IDLE, ROBOT_PATROLLING, ROBOT_APPROACHING, ROBOT_DETERRING};
+    enum ROBOT_STATE {ROBOT_IDLE, ROBOT_PATROLLING, ROBOT_APPROACHING, ROBOT_DETERRING, RADIO_OVERRIDE};
     enum DIRECTION {DIR_HOLD, DIR_REV, DIR_FWD, DIR_MAX};
 
 private:
@@ -23,6 +23,7 @@ public:
 
     void Arm(void);
     void Disarm(void);
+    void Override(void);
 };
 
 extern Robot robot;

@@ -14,10 +14,10 @@ const float PATROLLING_SPEED = 1.0; // m/s
 
 void Robot::Arm(void) 
 {
+    DEBUG_SERIAL.println("Arming");
     robotState = ROBOT_DETERRING; //start slow... 
     robotDirection = DIR_HOLD; 
     esMotor.Arm();
-    DEBUG_SERIAL.println("Arming");
 }
 
 void Robot::Disarm(void) 
@@ -28,6 +28,14 @@ void Robot::Disarm(void)
     DEBUG_SERIAL.println("Disarming");
 }
 
+void Robot::Override(void) 
+{
+    robotState = RADIO_OVERRIDE; 
+    robotDirection = DIR_HOLD; // ignored in override mode 
+    esMotor.Arm();
+    DEBUG_SERIAL.println("Overriding");
+}
+
 void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // needs to know what sensor
 {
     nearestObjectCM[direction] = distanceCM;
@@ -36,7 +44,7 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
         DEBUG_SERIAL.print("MB: ");
         DEBUG_SERIAL.print(distanceCM);
 
-       if(robotState != ROBOT_IDLE)
+       if(robotState != ROBOT_IDLE && robotState != RADIO_OVERRIDE)
         {
             float targetSpeed = PATROLLING_SPEED * (distanceCM - STOPPING_THRESHOLD) 
                                 / (APPROACHING_THRESHOLD - STOPPING_THRESHOLD);  // CAREFUL IF NEGATIVE!!
