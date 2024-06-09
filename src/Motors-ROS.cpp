@@ -37,7 +37,7 @@ ros::Publisher pub_speed("/encoder/meters_per_second", &speed_enc);
 
 //ESCDirect escPair;
 
-ESMotor esMotor;
+ESMotor esMotor(5, 3);
 
 int16_t targetSpeedTicksPerInterval = 0;
 int16_t currentTargetTicksPerInterval = 0;
