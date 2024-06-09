@@ -35,6 +35,7 @@ More info about rosserial can be found at http://wiki.ros.org/rosserial_arduino/
 
 ## List of Custom Timers
 
-* TCC0:4 on D2 (PA14) for the ESC. 50Hz. **N.B. PA14 and PA15 are on the same MUX register!** Be careful not to clobber. 
+* TCC0:4 on D2 (PA14) ~~for the ESC. 50Hz.~~ **N.B. PA14 and PA15 are on the same MUX register!** Be careful not to clobber. 
 * TC3:1 on D5 (PA15) for the LED. 10Hz. **N.B. PA14 and PA15 are on the same MUX register!** Be careful not to clobber. 
 * TCC2 on D11 (PA16) for sound. Variable freq. Set up in LED, since they share a source clock.
+* TCC1 for encoder timer. Set to 20ms. Raises flag to process encoder count.

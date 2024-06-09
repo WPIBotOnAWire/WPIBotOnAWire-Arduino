@@ -1,4 +1,5 @@
 #include "ESmotor.h"
+#include "robot.h"
 
 #define MOTOR_UPDATE_MS 20
 
@@ -56,7 +57,30 @@ void ESMotor::Init(void)
   REG_TCC0_CTRLA |= TCC_CTRLA_PRESCALER_DIV1 |    // Divide GCLK4 by 8
                     TCC_CTRLA_ENABLE;             // Enable the TCC0 output [should be moved to Arm()?]
   while (TCC0->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
+
+
+  // Enable InterruptVector
+  NVIC_EnableIRQ(TCC1_IRQn);
+
+  TCC1->INTENSET.reg = TCC_INTENSET_OVF;
+  TCC1->WAVE.reg |= TCC_WAVE_WAVEGEN_NFRQ;
+  
+  // Dual slope PWM operation: timers continuously count up to PER register value then down 0
+//   REG_TCC1_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC0 outputs (?)
+//                    TCC_WAVE_WAVEGEN_DSBOTTOM;    // Setup dual slope PWM on TCC1
+  while (TCC1->SYNCBUSY.bit.WAVE);               // Wait for synchronization
+
+  // Each timer counts up to a maximum or TOP value set by the PER register,
+  // this determines the frequency
+  // 20000 = 50Hz
+  REG_TCC1_PER = 20000;
+  while(TCC1->SYNCBUSY.bit.PER);
+
+  // Divide the 16MHz signal by 8 giving ... TCC1 timer
+  REG_TCC1_CTRLA |= TCC_CTRLA_PRESCALER_DIV8;    // Divide GCLK4 by 8
+  while (TCC1->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
 }
+
 
 /*
  * We don't actually do anything here. The ESC arms by default when the
@@ -109,12 +133,17 @@ ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
     return motorState;
 }
 
+/**
+ * Executes a simple PI controller.
+ */
 ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
 {
     static uint32_t lastMotorUpdate = 0;
     uint32_t currTime = millis();
 
-    if(currTime - lastMotorUpdate > MOTOR_UPDATE_MS) 
+    if(currTime - lastMotorUpdate > MOTOR_UPDATE_MS) {}
+    
+    if(readyToPID)
     {
         lastMotorUpdate = currTime;
 
@@ -144,4 +173,26 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
     return motorState;
 }
 
-void updateMotors(void) {esMotor.UpdateMotors();}
+/**
+ * Sets the effort on a scale of [-400, 400]
+ */
+void ESMotor::SetEffort(int16_t match)
+{
+    if(match >=0) digitalWrite(directionPin, HIGH);
+    else { digitalWrite(directionPin, LOW); match = -match;}
+
+    REG_TCC0_CCB0 = match;       // TCC0_CCB0 - sets the compare match value on D2
+    while(TCC0->SYNCBUSY.bit.CCB0);
+}
+
+void TCC1_Handler() 
+{
+  if (TCC1->INTFLAG.bit.OVF) //Test if an OVF-Interrupt has occured
+  {
+    TCC1->INTFLAG.bit.OVF = 1;  //Clear the Interrupt-Flag
+    digitalWrite(5, !digitalRead(5));  //Toggle pin 5 for testing
+
+    esMotor.readyToPID++;
+  }
+}
+

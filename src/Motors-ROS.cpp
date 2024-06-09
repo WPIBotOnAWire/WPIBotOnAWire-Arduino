@@ -1,14 +1,13 @@
 #include "Motors-ROS.h"
 
 #include "encoder.h"
+#include "ESmotor.h"
 
 #include <std_msgs/Int16.h>
 #include <std_msgs/Int32.h>
 #include <std_msgs/Float32.h>
 
 //#include "esc-samd21.h"
-
-#include "ESmotor.h"
 
 #include "robot.h"
 
@@ -115,3 +114,5 @@ void processEncoders(void)
 
   }  
 }
+
+void updateMotors(void) {esMotor.UpdateMotors();}

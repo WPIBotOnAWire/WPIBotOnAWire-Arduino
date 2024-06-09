@@ -13,12 +13,16 @@ class ESMotor
 public:
     enum MOTOR_STATE {IDLE, ARMED, OVERRIDE};
 
+    volatile int8_t readyToPID = 0;
+
 private:
     uint8_t directionPin = -1;
     MOTOR_STATE motorState = IDLE;
 
     float targetSpeed = 0;
     float currentSetPoint = 0;
+
+    void SetEffort(int16_t match);
 
 public:
     void Init(void);
