@@ -76,9 +76,11 @@ void ESMotor::Init(void)
   REG_TCC1_PER = 20000;
   while(TCC1->SYNCBUSY.bit.PER);
 
-  // Divide the 16MHz signal by 8 giving ... TCC1 timer
-  REG_TCC1_CTRLA |= TCC_CTRLA_PRESCALER_DIV8;    // Divide GCLK4 by 8
+  // Divide the 16MHz signal by 16 giving ... TCC1 timer
+  REG_TCC1_CTRLA |= TCC_CTRLA_PRESCALER_DIV16 | TCC_CTRLA_ENABLE;    // Divide GCLK4 by 16
   while (TCC1->SYNCBUSY.bit.ENABLE);              // Wait for synchronization
+
+  pinMode(5, OUTPUT);  
 }
 
 
@@ -168,6 +170,8 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
         // {
         //     WriteMicroseconds(pulseUS);
         // }
+
+        readyToPID = 0;
     }
 
     return motorState;
