@@ -112,7 +112,6 @@ void setup()
   setup_encoder(nh);
 
   //initBatteryMonitor(nh);
-
   //setupGPS(nh);
   initLED(nh);
  

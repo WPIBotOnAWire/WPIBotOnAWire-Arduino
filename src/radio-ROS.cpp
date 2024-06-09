@@ -36,7 +36,7 @@ void processRadio(void)
     uint32_t overridePulseLength = 0;
     if(radioOverride.GetPulseWidth(overridePulseLength))
     {
-        bool prev_override = override; // I don't like this here -- should go at end
+        bool prev_override = override; // I don't like this here -- should go at end?
 
         if(overridePulseLength > 2000) 
         {
@@ -77,6 +77,7 @@ void processRadio(void)
         // }
 
         if(prev_override && !override) robot.Arm();
+        if(override && !prev_override) {}
     }
 
     uint32_t radioSpeedPulse = 0;

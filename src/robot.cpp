@@ -93,10 +93,17 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
     }
 }
 
+/**
+ * Sets the direction for patrolling in auto. Ignore if called with current direction.
+ */
 void Robot::SetDirection(DIRECTION dir)
 {
-    robotDirection = dir;
-    DEBUG_SERIAL.println(dir);
+    if(robotDirection != dir) 
+    {
+        setTargetSpeed(0);
+        robotDirection = dir;
+        // DEBUG_SERIAL.println(dir);
+    }
 }
 
 void Robot::setTargetSpeed(float speed)
