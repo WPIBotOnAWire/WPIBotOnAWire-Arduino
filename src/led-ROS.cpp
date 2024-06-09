@@ -6,7 +6,7 @@
 volatile uint16_t flashCount = 0;
 
 /**
- * Sets up TC3 for pulsing LEDs. This only works on pin 5!
+ * Sets up TC3 for pulsing LEDs on pin 10.
 */
 void setupTC3forLED(void)
 {
@@ -33,9 +33,6 @@ void setupTC3forLED(void)
 
   TC->CC[0].reg = 18749; // with P = 256, freq = 48^6 / 256 / 18750 = 10 Hz, or 100ms on, 100ms off, etc...
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
-    
-  // TC->CC[1].reg = 18749; // with P = 256, freq = 48^6 / 256 / 18750 = 10 Hz, or 100ms on, 100ms off, etc...
-  // while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync 
 
   // Interrupts
   TC->INTENCLR.reg = 0x3B;           // disable all interrupts
@@ -47,10 +44,6 @@ void setupTC3forLED(void)
   // Enable TC
   TC->CTRLA.reg |= TC_CTRLA_ENABLE;
   while (TC->STATUS.bit.SYNCBUSY == 1); // wait for sync
-
-  // This pipes the TC3 to pin 5 (PA15), but note that it's not enabled until the MUX is enabled in setLED()
-  // We use |= to not clobber ESCs!!!
-  // PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E; 
 
   // Pipes TC3 to pin 10 (PA18). Note that it's an 'even' pin. Won't flash until MUX is enabled in setLED()
   // We use |= to not clobber ESCs!!!
@@ -101,18 +94,12 @@ void setLED(void)
   TcCount16* TC = (TcCount16*) TC3;
   TC->INTENSET.bit.OVF = 1;
 
-  // moved to setup -- easier to do there
-  // Connect the TC3 timer to the port output - port pins are paired odd PMUXO and even PMUXE
-  // Note that we |= so as not to clobber the ESCs!
-  //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg |= PORT_PMUX_PMUXO_E;  
-
   flashCount = 20;
 }
 
 void clearLED(void)
 {
   // Clear the TC3 timer to the port output
-  // PORT->Group[g_APinDescription[5].ulPort].PINCFG[g_APinDescription[5].ulPin].bit.PMUXEN = 0;
   PORT->Group[g_APinDescription[10].ulPort].PINCFG[g_APinDescription[10].ulPin].bit.PMUXEN = 0;
 
   // Turn off the interrupts
@@ -120,12 +107,7 @@ void clearLED(void)
   TC->INTENCLR.bit.OVF = 1;
 
   // No longer clear the MUX -- just disable above
-  // Disconnect the TC3 timer from the port output - port pins are paired odd PMUXO and even PMUXE
-  // (this is probably not needed, but won't hurt anything)
-  //PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0;  
-
-  // Set to output low to ensure 0 voltage (testing showed it only fell to 0.25V without formally setting to output)
-  // pinMode(5, OUTPUT);
+  // PORT->Group[g_APinDescription[5].ulPort].PMUX[g_APinDescription[5].ulPin >> 1].reg = 0;  
 }
 
 // callback function for receiving LED commands
@@ -158,7 +140,7 @@ void TC3_Handler(void)  // Interrupt on overflow
   
   if (TC->INTFLAG.bit.OVF == 1)   // An overflow caused the interrupt
   {
-    TC->INTFLAG.bit.OVF = 1;    // writing a one clears the flag ovf flag
+    TC->INTFLAG.bit.OVF = 1;    // writing a one clears the flag OVF flag
     if(!(flashCount--)) clearLED();
   }
 }

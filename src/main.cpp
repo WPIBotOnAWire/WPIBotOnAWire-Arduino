@@ -100,7 +100,6 @@ void setup()
   wdt_init(WDT_CONFIG_PER_8K); // 8 second watchdog timeout
 
   nh.initNode();
-
   nh.advertise(heartbeat);
 
   setupRadio(nh);
