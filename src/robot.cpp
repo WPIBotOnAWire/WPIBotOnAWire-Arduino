@@ -47,9 +47,12 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
             setTargetSpeed(targetSpeed);
 
             DEBUG_SERIAL.print("\tTarget:\t");
-            DEBUG_SERIAL.println(targetSpeed);
+            DEBUG_SERIAL.print(targetSpeed);
         }
 
+        DEBUG_SERIAL.print('\n');
+
+        // We use if and not elseif so that the logic cascades
         if(robotState == ROBOT_PATROLLING)
         {
             if(distanceCM <= APPROACHING_THRESHOLD)
@@ -59,7 +62,6 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
             }
         }
 
-        // not else if so it cascades
         if(robotState == ROBOT_APPROACHING)
         {
             if(distanceCM <= DETERRING_THRESHOLD)
