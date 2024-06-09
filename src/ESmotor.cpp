@@ -95,7 +95,7 @@ void ESMotor::Init(void)
 
   // Set encoder pin as input, set up interrupt
   pinMode(encoderPin, INPUT);
-  attachInterrupt(encoderPin, encoderISR, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoderPin), encoderISR, CHANGE);
 }
 
 
@@ -139,8 +139,7 @@ ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
 
     else 
     {
-        float pct = speedMPS * 25; // totally made up number... 
-        targetSpeed = constrain(pct, -100, 100);
+        targetSpeed = speedMPS / 0.041;
     }
 
     return motorState;
@@ -158,19 +157,23 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
     {
         lastMotorUpdate = currTime; // holdover from prev version; in case I want to check/test
 
+        //Serial.println(motorState);
         if(motorState == ARMED) 
         {
-#ifdef __MOTOR_DEBUG__
-            DEBUG_SERIAL.print(targetSpeed);
-            DEBUG_SERIAL.print('\t');
-            DEBUG_SERIAL.print(currentSpeed);
-            DEBUG_SERIAL.print('\n');
-#endif
             // this does the ramping of the motor to avoid jerk
             if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
             if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
 
             int16_t speed = CalcEncoderSpeed();
+
+#ifdef __MOTOR_DEBUG__
+            DEBUG_SERIAL.print(targetSpeed);
+            DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(currentSetPoint);
+            DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(speed);
+            DEBUG_SERIAL.print('\n');
+#endif
 
             int16_t error = currentSetPoint - speed;
             if(abs(sumError) < integralCap) sumError += error;
@@ -208,7 +211,7 @@ void ESMotor::SetEffort(int16_t match)
     }
 
     REG_TCC0_CCB0 = match;       // TCC0_CCB0 - sets the compare match value on D2
-    while(TCC0->SYNCBUSY.bit.CCB0);
+    while(TCC0->SYNCBUSY.bit.CCB0) {}
 }
 
 void TCC1_Handler() 

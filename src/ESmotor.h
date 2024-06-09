@@ -33,7 +33,7 @@ private:
 
     float targetSpeed = 0;
     float currentSetPoint = 0;
-    int8_t direction = 0;
+    volatile int8_t direction = 0;
 
     void SetEffort(int16_t match);
 
@@ -82,6 +82,12 @@ public:
         int16_t speed = count - previousCount;
         previousCount = count;
 
+#ifdef __ENC_DEBUG__
+        DEBUG_SERIAL.print(count);
+        DEBUG_SERIAL.print('\t');
+        DEBUG_SERIAL.print(previousCount);
+        DEBUG_SERIAL.print('\n');
+#endif
         return speed;
     }
 };
