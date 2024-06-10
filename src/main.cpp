@@ -102,18 +102,18 @@ void setup()
   nh.initNode();
   nh.advertise(heartbeat);
 
-  setupRadio(nh);
+  //setupRadio(nh);
   init_status(nh);
 
-  setup_rangefinders(nh);
-  setupTFminis(nh);
+  //setup_rangefinders(nh);
+  //setupTFminis(nh);
 
-  init_motors(nh);
+  //init_motors(nh);
   setup_encoder(nh);
 
   //initBatteryMonitor(nh);
   //setupGPS(nh);
-  initLED(nh);
+  //initLED(nh);
  
   DEBUG_SERIAL.println("/setup");
 }

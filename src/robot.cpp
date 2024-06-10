@@ -41,9 +41,10 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
     nearestObjectCM[direction] = distanceCM;
     if(robotDirection == direction)
     {
+#ifdef __DEBUG_MB__
         DEBUG_SERIAL.print("MB: ");
         DEBUG_SERIAL.print(distanceCM);
-
+#endif
        if(robotState != ROBOT_IDLE && robotState != RADIO_OVERRIDE)
         {
             float targetSpeed = PATROLLING_SPEED * (distanceCM - STOPPING_THRESHOLD) 
@@ -54,12 +55,15 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
 
             setTargetSpeed(targetSpeed);
 
+#ifdef __DEBUG_MB__
             DEBUG_SERIAL.print("\tTarget:\t");
             DEBUG_SERIAL.print(targetSpeed);
+#endif
         }
 
+#ifdef __DEBUG_MB__
         DEBUG_SERIAL.print('\n');
-
+#endif
         // We use if and not elseif so that the logic cascades
         if(robotState == ROBOT_PATROLLING)
         {

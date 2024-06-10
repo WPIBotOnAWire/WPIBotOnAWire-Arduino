@@ -39,6 +39,10 @@ bool RadioPulse::GetPulseWidth(uint32_t& pulseWidth)
         noInterrupts();
         state &= ~PULSE_RECD;
 
+        // Check for rollover
+        // Should really add MOTOR_UPDATE_MS * 1000U
+        if(pulseStart > pulseEnd) pulseEnd += 20000; 
+        
         pulseWidth = pulseEnd - pulseStart;
         interrupts();
 

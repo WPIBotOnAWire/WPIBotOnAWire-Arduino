@@ -20,15 +20,27 @@ public:
 
     inline void radioISR(void) volatile
     {
+        // Don't use micros(), as it glitches (what the hell?)
+        // TCC1 is set up for 1us per tick (with period the control interval)
+
+        // Step 1: Issue READYSYNC command
+        TCC1->CTRLBSET.reg = TCC_CTRLBSET_CMD_READSYNC;
+
+        // Step 2: Wait until the command is fully executed
+        while (TCC1->SYNCBUSY.bit.CTRLB); // or while (TCC1->SYNCBUSY.reg);
+
+        // Step 3: Now we can read the value of the COUNT register
+        uint32_t count = TCC1->COUNT.reg;
+
         if(digitalRead(rcPin))    //transitioned to HIGH
         {
-            pulseStart = micros();
+            pulseStart = count;
             state &= ~PULSE_RECD; //cancel pulse; could raise a warning flag
         }
 
         else                    //transitioned to LOW
         {
-            pulseEnd = micros();
+            pulseEnd = count;
             state |= PULSE_RECD;
         } 
     }
