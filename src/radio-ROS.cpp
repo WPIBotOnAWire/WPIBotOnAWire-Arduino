@@ -88,7 +88,8 @@ void processRadio(void)
         */
         if(override)
         {
-            if(radioSpeedPulse > 2000 || radioSpeedPulse < 1000) {} //ignore the spikes
+//            DEBUG_SERIAL.println(radioSpeedPulse);
+            if(radioSpeedPulse > 2100 || radioSpeedPulse < 900) {} //ignore the spikes
             esMotor.SetOverridePulse(radioSpeedPulse);
         }
 

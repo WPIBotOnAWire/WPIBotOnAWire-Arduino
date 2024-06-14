@@ -1,6 +1,6 @@
 #include "Motors-ROS.h"
 
-#include "encoder.h"
+//#include "encoder.h"
 #include "ESmotor.h"
 
 #include <std_msgs/Int16.h>
@@ -27,7 +27,7 @@
 //#define CM_PER_TICK             0.01286 // cm/tick // maybe use this?
 #define LOOP_RATE_MS            50
 
-QuadEncoder<ENCODER_PIN1,ENCODER_PIN2> encoder; 
+//QuadEncoder<ENCODER_PIN1,ENCODER_PIN2> encoder; 
 
 std_msgs::Int32 enc_val;
 ros::Publisher pub_enc("/encoder/count", &enc_val);
@@ -37,7 +37,7 @@ ros::Publisher pub_speed("/encoder/meters_per_second", &speed_enc);
 
 //ESCDirect escPair;
 
-ESMotor esMotor(5, 3);
+ESMotor esMotor(8, 9);
 
 int16_t targetSpeedTicksPerInterval = 0;
 int16_t currentTargetTicksPerInterval = 0;
@@ -73,7 +73,7 @@ void init_motors(ros::NodeHandle& nh)
 //  encoder stuff
 void setup_encoder(ros::NodeHandle& nh)
 {
-  encoder.Init();
+//  encoder.Init();
   nh.advertise(pub_enc);
   nh.advertise(pub_speed);
 }
@@ -84,30 +84,30 @@ void setup_encoder(ros::NodeHandle& nh)
  * 
  * Not sure why I'm doing polling here -- better with a timer.
 */
-void processEncoders(void)
-{
-  static uint32_t lastEncoderReport = 0;
-  uint32_t currTime = millis();
+// void processEncoders(void)
+// {
+//   static uint32_t lastEncoderReport = 0;
+//   uint32_t currTime = millis();
 
-  if(currTime - lastEncoderReport > LOOP_RATE_MS) 
-  {
-    lastEncoderReport = currTime;
+//   if(currTime - lastEncoderReport > LOOP_RATE_MS) 
+//   {
+//     lastEncoderReport = currTime;
 
-    int32_t currTicks = encoder.TakeSnapshot();
-    int32_t delta = encoder.CalcDelta();
+//     int32_t currTicks = encoder.TakeSnapshot();
+//     int32_t delta = encoder.CalcDelta();
 
-    // DEBUG_SERIAL.println(currTicks);
+//     // DEBUG_SERIAL.println(currTicks);
 
-    enc_val.data = currTicks;
-    pub_enc.publish(&enc_val);
+//     enc_val.data = currTicks;
+//     pub_enc.publish(&enc_val);
 
-    float movementMeters = delta * METERS_PER_TICK;
-    robot.handleEncoderUpdate(movementMeters * 100.0);
+//     float movementMeters = delta * METERS_PER_TICK;
+//     robot.handleEncoderUpdate(movementMeters * 100.0);
 
-    float speedMetersPerSecond = movementMeters / (float) LOOP_RATE_MS;
-    speed_enc.data = speedMetersPerSecond;
-    pub_speed.publish(&speed_enc);
-  }  
-}
+//     float speedMetersPerSecond = movementMeters / (float) LOOP_RATE_MS;
+//     speed_enc.data = speedMetersPerSecond;
+//     pub_speed.publish(&speed_enc);
+//   }  
+// }
 
 void updateMotors(void) {esMotor.UpdateMotors();}

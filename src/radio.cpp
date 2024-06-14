@@ -8,26 +8,26 @@ void RadioPulse::Init(void (*isr)(void))
 
     if(digitalPinToInterrupt(rcPin) != NOT_AN_INTERRUPT)
     {
-        SerialUSB.print(F("Attaching ISR to pin: "));
-        SerialUSB.println(rcPin);
+        DEBUG_SERIAL.print(F("Attaching ISR to pin: "));
+        DEBUG_SERIAL.println(rcPin);
         attachInterrupt(digitalPinToInterrupt(rcPin), isr, CHANGE);
     }
 
 #ifdef __AVR_
     else if(digitalPinToPCInterrupt(echoPin) != NOT_AN_INTERRUPT)
     {
-        Serial.print(F("Attaching PC_ISR to PCINT"));
-        Serial.println(digitalPinToPCInterrupt(echoPin));
+        DEBUG_SERIAL.print(F("Attaching PC_ISR to PCINT"));
+        DEBUG_SERIAL.println(digitalPinToPCInterrupt(echoPin));
         attachPCInt(digitalPinToPCInterrupt(echoPin), isr);
     }
 #endif
 
     else
     {
-        SerialUSB.println(F("Not an interrupt pin!"));
+        DEBUG_SERIAL.println(F("Not an interrupt pin!"));
     }
 
-    SerialUSB.println("/RadioPulse::init()");
+    DEBUG_SERIAL.println("/RadioPulse::init()");
 }
 
 bool RadioPulse::GetPulseWidth(uint32_t& pulseWidth)

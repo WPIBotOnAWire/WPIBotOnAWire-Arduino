@@ -109,7 +109,7 @@ void setup()
   setupTFminis(nh);
 
   init_motors(nh);
-  setup_encoder(nh);
+  //setup_encoder(nh);
 
   //initBatteryMonitor(nh);
   //setupGPS(nh);
@@ -157,7 +157,7 @@ void loop(void)
   processRangefinders(); // ultrasonics
   processTFminis();
 
-  processEncoders();
+  //processEncoders();
   updateMotors();
 
   //processBatteryMonitor();

@@ -168,22 +168,21 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
         lastMotorUpdate = currTime; // holdover from prev version; in case I want to check/test
         // DEBUG_SERIAL.print(lastMotorUpdate);
         // DEBUG_SERIAL.print('\t');
-        // Serial.println(motorState);
+        // DEBUG_SERIAL.println(motorState);
+        int16_t speed = CalcEncoderSpeed();
+
         if(motorState == ARMED) 
         {
             // this does the ramping of the motor to avoid jerk
             if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
             if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
 
-            int16_t speed = CalcEncoderSpeed();
 
 #ifdef __MOTOR_DEBUG__
             DEBUG_SERIAL.print(targetSpeed);
             DEBUG_SERIAL.print('\t');
             DEBUG_SERIAL.print(currentSetPoint);
             DEBUG_SERIAL.print('\t');
-            DEBUG_SERIAL.print(speed);
-            DEBUG_SERIAL.print('\n');
 #endif
 
             int16_t error = currentSetPoint - speed;
@@ -192,6 +191,12 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
             float effort = Kp * error + Ki * sumError;
             SetEffort(effort);
         }
+
+#ifdef __MOTOR_DEBUG__
+            DEBUG_SERIAL.print(speed);
+            DEBUG_SERIAL.print('\n');
+#endif
+
 
         // else if(motorState == OVERRIDE)
         // {
