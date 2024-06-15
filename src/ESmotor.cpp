@@ -156,6 +156,8 @@ ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
         targetSpeed = speedMPS / 0.041;
     }
 
+    targetSpeed = constrain(targetSpeed, -20, 20);
+
     return motorState;
 }
 
@@ -179,8 +181,13 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
         if(motorState == ARMED) 
         {
             // this does the ramping of the motor to avoid jerk
-            if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
-            if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
+            float deltaTarget = targetSpeed - currentSetPoint;
+            if(deltaTarget > 1) deltaTarget = 1;
+            if(deltaTarget < -1) deltaTarget = -1;
+            currentSetPoint += deltaTarget;
+
+            // if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
+            // if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
 
             int16_t error = currentSetPoint - speed;
             if(abs(sumError) < integralCap) sumError += error;
