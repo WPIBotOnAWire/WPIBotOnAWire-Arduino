@@ -178,10 +178,6 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
 
         if(motorState == ARMED) 
         {
-#ifdef __MOTOR_DEBUG__
-            DEBUG_SERIAL.print(speed);
-            DEBUG_SERIAL.print('\n');
-#endif
             // this does the ramping of the motor to avoid jerk
             if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
             if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
@@ -208,10 +204,10 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
 #endif
         }
 
-        // else if(motorState == OVERRIDE)
-        // {
-        //     WriteMicroseconds(pulseUS);
-        // }
+#ifdef __MOTOR_DEBUG__
+            DEBUG_SERIAL.print(speed);
+            DEBUG_SERIAL.print('\n');
+#endif
 
         readyToPID = 0;
     }

@@ -80,7 +80,7 @@ public:
         // For the E-S Motor, we must convert RC pulses to speed commands
         // 1000 -> -400; 2000 -> 400
         // map(long x, long in_min, long in_max, long out_min, long out_max)
-        int16_t speedCommand = map(pulseWidth, 1000, 2000, -400, 400);
+        int16_t speedCommand = map(pulseWidth, 1100, 1900, -400, 400);
         SetEffort(speedCommand);
         return motorState = OVERRIDE;
     }
