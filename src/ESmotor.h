@@ -26,6 +26,15 @@ private:
     float Kp = 5;
     float Ki = 0.5;
 
+    /**
+     * Really just open-loop, but might add info from IMU later.
+     * Target is in ticks/interval.
+     */
+    int16_t FeedForward(float target)
+    {
+        return 0;
+    }
+
 private:
     uint8_t directionPin = -1;
     uint8_t encoderPin = -1;

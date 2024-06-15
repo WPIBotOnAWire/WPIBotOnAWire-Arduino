@@ -191,7 +191,7 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
             int16_t error = currentSetPoint - speed;
             if(abs(sumError) < integralCap) sumError += error;
 
-            float effort = Kp * error + Ki * sumError;
+            float effort = FeedForward(currentSetPoint) + Kp * error + Ki * sumError;
             SetEffort(effort);
         }
 
@@ -199,7 +199,6 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
             DEBUG_SERIAL.print(speed);
             DEBUG_SERIAL.print('\n');
 #endif
-
 
         // else if(motorState == OVERRIDE)
         // {
