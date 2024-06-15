@@ -3,6 +3,8 @@
 #include <Arduino.h>
 #include <std_msgs/UInt16.h>
 
+#include "robot.h"
+
 volatile uint16_t flashCount = 0;
 
 /**
