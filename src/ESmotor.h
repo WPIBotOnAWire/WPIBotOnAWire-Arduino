@@ -30,9 +30,16 @@ private:
      * Really just open-loop, but might add info from IMU later.
      * Target is in ticks/interval.
      */
-    int16_t FeedForward(float target)
+    float FeedForward(float target)
     {
-        return 0;
+        float ff = 0;
+
+        if(target > 0)
+            ff = 160 + 10 * target;
+        else if (target < 0)
+            ff = -160 + 10 * target;
+
+        return ff;
     }
 
 private:

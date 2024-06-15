@@ -110,6 +110,7 @@ ESMotor::MOTOR_STATE ESMotor::Arm(void)
             DEBUG_SERIAL.println("Arming motors.");
             motorState = ARMED;
             targetSpeed = currentSetPoint = 0;
+            sumError = 0;
 
             // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
             PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
