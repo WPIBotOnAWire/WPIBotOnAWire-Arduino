@@ -24,6 +24,7 @@ public:
     void Arm(void);
     void Disarm(void);
     void Override(void);
+    void FullStop(void);
 };
 
 extern Robot robot;

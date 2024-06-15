@@ -73,7 +73,7 @@ public:
     // bool isArmed(void) {return motorState == ARMED;}
     MOTOR_STATE UpdateMotors(void);
 
-    MOTOR_STATE SetTargetSpeed(int16_t pct);
+    //MOTOR_STATE SetTargetSpeed(int16_t pct);
     MOTOR_STATE SetTargetSpeedMetersPerSecond(float speedMPS);
     MOTOR_STATE SetOverridePulse(uint32_t pulseWidth)
     {
@@ -89,8 +89,13 @@ public:
     {
         targetSpeed = 0; 
         currentSetPoint = 0; 
-        //WriteMicroseconds(oStop); 
         motorState = IDLE;
+    }
+
+    void FullStop(void) 
+    {
+        targetSpeed = 0; 
+        currentSetPoint = 0; 
     }
 
     void handleEncoderISR(void) {encoderCount += direction;}

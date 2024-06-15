@@ -36,6 +36,11 @@ void Robot::Override(void)
     DEBUG_SERIAL.println("Overriding");
 }
 
+void Robot::FullStop(void)
+{
+    esMotor.FullStop();
+}
+
 void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // needs to know what sensor
 {
     nearestObjectCM[direction] = distanceCM;
@@ -94,6 +99,7 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
         {
             if(distanceCM <= STOPPING_THRESHOLD) //superfluous, but maybe we'll need it later?
             {
+                FullStop();
                 robotState = ROBOT_DETERRING;
             }
 
