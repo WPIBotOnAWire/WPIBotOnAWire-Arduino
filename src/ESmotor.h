@@ -24,7 +24,7 @@ private:
     const float Ki = 0.2;
 
     float sumError = 0;
-    float integralCap = 400 / Ki; 
+    float integralCap = 400 / Ki; // doesn't need to be this big with the feedforward term?
 
     /**
      * Really just open-loop, but might add info from IMU later.

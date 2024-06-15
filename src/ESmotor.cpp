@@ -190,9 +190,13 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
             // if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
 
             float error = currentSetPoint - speed;
-            if(fabs(sumError) < integralCap) sumError += error;
+            //if(fabs(sumError) < integralCap) 
+            sumError += error;
 
             float effort = FeedForward(currentSetPoint) + Kp * error + Ki * sumError;
+
+            if(fabs(effort) > 400) sumError -= error; // prevent build up of integral
+
             SetEffort(effort);
 
 #ifdef __MOTOR_DEBUG__
