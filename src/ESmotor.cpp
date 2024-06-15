@@ -175,13 +175,16 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
         // DEBUG_SERIAL.println(motorState);
         int16_t speed = CalcEncoderSpeed();
 
+
         if(motorState == ARMED) 
         {
+#ifdef __MOTOR_DEBUG__
+            DEBUG_SERIAL.print(speed);
+            DEBUG_SERIAL.print('\n');
+#endif
             // this does the ramping of the motor to avoid jerk
             if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
             if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
-
-
 
             int16_t error = currentSetPoint - speed;
             if(abs(sumError) < integralCap) sumError += error;
@@ -190,21 +193,20 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
             SetEffort(effort);
 
 #ifdef __MOTOR_DEBUG__
-            DEBUG_SERIAL.print(FeedForward(currentSetPoint));
-            DEBUG_SERIAL.print('\t');
-            DEBUG_SERIAL.print(effort);
-            DEBUG_SERIAL.print('\t');
             DEBUG_SERIAL.print(targetSpeed);
             DEBUG_SERIAL.print('\t');
             DEBUG_SERIAL.print(currentSetPoint);
             DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(FeedForward(currentSetPoint));
+            DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(error);
+            DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(sumError);
+            DEBUG_SERIAL.print('\t');
+            DEBUG_SERIAL.print(effort);
+            DEBUG_SERIAL.print('\t');
 #endif
         }
-
-#ifdef __MOTOR_DEBUG__
-            DEBUG_SERIAL.print(speed);
-            DEBUG_SERIAL.print('\n');
-#endif
 
         // else if(motorState == OVERRIDE)
         // {
@@ -235,7 +237,7 @@ void ESMotor::SetEffort(int16_t match)
     }
 
     if(match > 400) match = 400;
-    
+
     REG_TCC0_CCB0 = match;       // TCC0_CCB0 - sets the compare match value on D2
     while(TCC0->SYNCBUSY.bit.CCB0) {}
 }
