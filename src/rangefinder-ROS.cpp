@@ -25,7 +25,6 @@ void setup_rangefinders(ros::NodeHandle& nh)
   mbAft.init(ISR_MB_AFT);
 }
 
-
 void processRangefinders(void)
 {
   uint16_t frontDist = 0;
@@ -44,4 +43,3 @@ void processRangefinders(void)
     robot.handleMaxBotixReading(aftDist / 10, Robot::DIR_REV);
   }
 }
-

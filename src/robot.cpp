@@ -97,7 +97,7 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
 
         if(robotState == ROBOT_DETERRING)
         {
-            if(distanceCM <= STOPPING_THRESHOLD) //superfluous, but maybe we'll need it later?
+            if(distanceCM <= STOPPING_THRESHOLD) 
             {
                 FullStop();
                 robotState = ROBOT_DETERRING;
