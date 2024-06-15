@@ -23,8 +23,8 @@ private:
     int16_t sumError = 0;
     int16_t integralCap = 10000; // need to size...
 
-    float Kp = 5;
-    float Ki = 0.5;
+    float Kp = 2;
+    float Ki = 0.2;
 
     /**
      * Really just open-loop, but might add info from IMU later.
