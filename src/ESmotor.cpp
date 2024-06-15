@@ -149,6 +149,9 @@ ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
 
     else 
     {
+        /**
+         * Convert from meters/second to ticks/interval
+         */
         targetSpeed = speedMPS / 0.041;
     }
 

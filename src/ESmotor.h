@@ -23,14 +23,23 @@ private:
     int16_t sumError = 0;
     int16_t integralCap = 10000; // need to size...
 
-    float Kp = 1;
-    float Ki = 0.1;
+    float Kp = 5;
+    float Ki = 0.5;
 
 private:
     uint8_t directionPin = -1;
     uint8_t encoderPin = -1;
     MOTOR_STATE motorState = IDLE;
 
+    /**
+     * targetSpeed is the speed we want to be going, in units of encoder [ticks/20 ms interval].
+     * 
+     * currentSetPoint is the currently commanded speed. The currentSetPoint varies more slowly
+     * to avoid jerk.
+     * 
+     * The maximum speed is ~25 ticks/interval, so it takes about a half second to fully ramp up,
+     * which is reasonable.
+     */
     float targetSpeed = 0;
     float currentSetPoint = 0;
     volatile int8_t direction = 0;
