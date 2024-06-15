@@ -20,11 +20,11 @@ private:
     volatile int16_t previousCount = 0;
     volatile int8_t readyToPID = 0;
 
-    int16_t sumError = 0;
-    int16_t integralCap = 10000; // need to size...
+    const float Kp = 2;
+    const float Ki = 0.2;
 
-    float Kp = 2;
-    float Ki = 0.2;
+    float sumError = 0;
+    float integralCap = 400 / Ki; 
 
     /**
      * Really just open-loop, but might add info from IMU later.
