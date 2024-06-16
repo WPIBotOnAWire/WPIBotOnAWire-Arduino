@@ -96,6 +96,7 @@ public:
     {
         targetSpeed = 0; 
         currentSetPoint = 0; 
+        sumError = 0;
     }
 
     void handleEncoderISR(void) {encoderCount += direction;}

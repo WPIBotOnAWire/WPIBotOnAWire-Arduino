@@ -15,7 +15,7 @@ const float PATROLLING_SPEED = 1.0; // m/s
 void Robot::Arm(void) 
 {
     DEBUG_SERIAL.println("Arming");
-    robotState = ROBOT_DETERRING; //start slow... 
+    robotState = ROBOT_PATROLLING; 
     robotDirection = DIR_HOLD; 
     esMotor.Arm();
 }
@@ -39,6 +39,16 @@ void Robot::Override(void)
 void Robot::FullStop(void)
 {
     esMotor.FullStop();
+}
+
+void Robot::SwitchDirections(void)
+{
+    if(robotState != RADIO_OVERRIDE)
+    {
+        DEBUG_SERIAL.println("Switching directions");
+        if(robotDirection == DIR_FWD) SetDirection(DIR_REV);
+        else if(robotDirection == DIR_REV) SetDirection(DIR_FWD);
+    }
 }
 
 void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // needs to know what sensor
@@ -86,6 +96,7 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
                 setLED();
                 robotState = ROBOT_DETERRING;
                 DEBUG_SERIAL.println("App -> Det");
+                deterrenceTimer.Start(5000);
             }
 
             else if(distanceCM > APPROACHING_THRESHOLD)
@@ -100,7 +111,8 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
             if(distanceCM <= STOPPING_THRESHOLD) 
             {
                 FullStop();
-                robotState = ROBOT_DETERRING;
+                robotState = ROBOT_STOPPED;
+                DEBUG_SERIAL.println("Det -> Stp");
             }
 
             else if(distanceCM > DETERRING_THRESHOLD)
@@ -108,6 +120,15 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
                 clearLED();
                 robotState = ROBOT_APPROACHING;
                 DEBUG_SERIAL.println("Det -> App");
+            }
+        }
+
+        if(robotState == ROBOT_STOPPED)
+        {
+        if(distanceCM > STOPPING_THRESHOLD) 
+            {
+                robotState = ROBOT_DETERRING;
+                DEBUG_SERIAL.println("Stp -> Det");
             }
         }
     }
@@ -121,9 +142,10 @@ void Robot::SetDirection(DIRECTION dir)
 {
     if(robotDirection != dir) 
     {
-        setTargetSpeed(0);
+        FullStop();
         robotDirection = dir;
-        // DEBUG_SERIAL.println(dir);
+        DEBUG_SERIAL.print("Dir -> ");
+        DEBUG_SERIAL.println(dir);
     }
 }
 
