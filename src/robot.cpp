@@ -119,6 +119,8 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
             {
                 clearLED();
                 robotState = ROBOT_APPROACHING;
+                deterrenceCount = 0;
+
                 DEBUG_SERIAL.println("Det -> App");
             }
         }
@@ -160,4 +162,28 @@ void Robot::handleEncoderUpdate(const float movementCM)
 {
     nearestObjectCM[DIR_REV] += movementCM;
     nearestObjectCM[DIR_FWD] -= movementCM;
+}
+
+bool Robot::CheckDeterrenceTimer(void)
+{
+    return deterrenceTimer.CheckExpired();
+}
+
+void Robot::HandleDeterrenceTimer(void)
+{
+    if(robotState == ROBOT_STOPPED || robotState == ROBOT_DETERRING)
+    {
+        if(deterrenceCount <= 3)
+        {
+            setLED();
+            deterrenceTimer.Start(5000);
+        }
+
+        else
+        {
+            clearLED();
+            deterrenceCount = 0;
+            SwitchDirections();
+        }
+    }
 }

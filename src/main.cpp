@@ -165,5 +165,7 @@ void loop(void)
 
   //processGPS();
 
+  robot.loop();
+
   nh.spinOnce();
 }

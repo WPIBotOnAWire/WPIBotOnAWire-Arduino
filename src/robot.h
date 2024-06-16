@@ -30,6 +30,14 @@ public:
     void Disarm(void);
     void Override(void);
     void FullStop(void);
+
+    bool CheckDeterrenceTimer(void);
+    void HandleDeterrenceTimer(void);
+
+    void loop(void)
+    {
+        if(CheckDeterrenceTimer()) HandleDeterrenceTimer();
+    }
 };
 
 extern Robot robot;
