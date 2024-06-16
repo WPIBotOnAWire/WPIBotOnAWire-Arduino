@@ -120,6 +120,7 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
                 clearLED();
                 robotState = ROBOT_APPROACHING;
                 deterrenceCount = 0;
+                deterrenceTimer.Cancel();
 
                 DEBUG_SERIAL.println("Det -> App");
             }
@@ -171,9 +172,11 @@ bool Robot::CheckDeterrenceTimer(void)
 
 void Robot::HandleDeterrenceTimer(void)
 {
+    DEBUG_SERIAL.print("count = ");
+    DEBUG_SERIAL.println(deterrenceCount);
     if(robotState == ROBOT_STOPPED || robotState == ROBOT_DETERRING)
     {
-        if(deterrenceCount <= 3)
+        if(++deterrenceCount <= 2)
         {
             setLED();
             deterrenceTimer.Start(5000);
