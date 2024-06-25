@@ -16,26 +16,13 @@
 #define Kp 1
 #define Ki 0.01
 
-// ENCODER AND PID CONSTANTS 
-// #define ENCODER_PIN1           8
-// #define ENCODER_PIN2           9
-
-//#define WHEEL_RADIUS            0.0210  // meters // 0.825/39.37; //inches to m
-//#define WHEEL_CIRCUMFRANCE      0.132   // meters // 2.0*PI*WHEEL_RADIUS;
-//#define PPR                     1024.0  // pulses per revolution of the encoder
 #define METERS_PER_TICK         0.0001286 // meters/tick
-//#define CM_PER_TICK             0.01286 // cm/tick // maybe use this?
-#define LOOP_RATE_MS            50
-
-//QuadEncoder<ENCODER_PIN1,ENCODER_PIN2> encoder; 
 
 std_msgs::Int32 enc_val;
 ros::Publisher pub_enc("/encoder/count", &enc_val);
 
 std_msgs::Float32 speed_enc;
 ros::Publisher pub_speed("/encoder/meters_per_second", &speed_enc);
-
-//ESCDirect escPair;
 
 ESMotor esMotor(8, 9);
 
