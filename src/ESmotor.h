@@ -26,10 +26,10 @@ private:
     const float Ki = 0.2;
 
     float sumError = 0;
-    float integralCap = 400 / Ki; // doesn't need to be this big with the feedforward term?
+    //float integralCap = 400 / Ki; // we'll prevent build up in the PI routine
 
     /**
-     * Really just open-loop, but might add info from IMU later.
+     * Technically just open-loop, but might add info from IMU later.
      * Target is in ticks/interval.
      */
     float FeedForward(float target)
@@ -55,7 +55,7 @@ private:
      * currentSetPoint is the currently commanded speed. The currentSetPoint varies more slowly
      * to avoid jerk.
      * 
-     * The maximum speed is ~25 ticks/interval, so it takes about a half second to fully ramp up,
+     * The maximum speed is ~20 ticks/interval, so it takes about a half second to fully ramp up,
      * which is reasonable.
      */
     float targetSpeed = 0;
