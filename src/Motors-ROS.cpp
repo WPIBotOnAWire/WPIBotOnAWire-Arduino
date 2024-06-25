@@ -44,57 +44,24 @@ void cbTargetSpeed(const std_msgs::Float32& msg)
 
 ros::Subscriber<std_msgs::Float32> motor_sub("/target_speed_meters_per_sec", cbTargetSpeed);
 
+/**
+ * Initialize the motors.
+ */
 void init_motors(ros::NodeHandle& nh)
 {
-    //sets up the ESCs and battery info to allow them to spin
     esMotor.Init();
-
-    //escPair.Calibrate(); 
     esMotor.Arm();
-
-    //escPair.Stop();
 
     nh.subscribe(motor_sub);
 }
 
-//  encoder stuff
+/**
+ * Advertise encoder, speed.
+ */
 void setup_encoder(ros::NodeHandle& nh)
 {
-//  encoder.Init();
   nh.advertise(pub_enc);
   nh.advertise(pub_speed);
 }
-
-/**
- * Reads the current encoder count (count is updated in an ISR) and publishes the result.
- * Nominally tested and working with a quadrature encoder.
- * 
- * Not sure why I'm doing polling here -- better with a timer.
-*/
-// void processEncoders(void)
-// {
-//   static uint32_t lastEncoderReport = 0;
-//   uint32_t currTime = millis();
-
-//   if(currTime - lastEncoderReport > LOOP_RATE_MS) 
-//   {
-//     lastEncoderReport = currTime;
-
-//     int32_t currTicks = encoder.TakeSnapshot();
-//     int32_t delta = encoder.CalcDelta();
-
-//     // DEBUG_SERIAL.println(currTicks);
-
-//     enc_val.data = currTicks;
-//     pub_enc.publish(&enc_val);
-
-//     float movementMeters = delta * METERS_PER_TICK;
-//     robot.handleEncoderUpdate(movementMeters * 100.0);
-
-//     float speedMetersPerSecond = movementMeters / (float) LOOP_RATE_MS;
-//     speed_enc.data = speedMetersPerSecond;
-//     pub_speed.publish(&speed_enc);
-//   }  
-// }
 
 void updateMotors(void) {esMotor.UpdateMotors();}
