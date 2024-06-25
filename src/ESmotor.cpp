@@ -131,7 +131,7 @@ ESMotor::MOTOR_STATE ESMotor::Disarm(void)
 {
     DEBUG_SERIAL.println("Disarming motors.");
 
-    // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
+    // Disable the port multiplexer for digital pin 2 (D2; PA14)
     PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 0;
 
     motorState = IDLE;
@@ -173,26 +173,19 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
 
     if(readyToPID)
     {
-        lastMotorUpdate = currTime; // holdover from prev version; in case I want to check/test
-        // DEBUG_SERIAL.print(lastMotorUpdate);
-        // DEBUG_SERIAL.print('\t');
-        // DEBUG_SERIAL.println(motorState);
+        lastMotorUpdate = currTime; 
         int16_t speed = CalcEncoderSpeed();
-
 
         if(motorState == ARMED) 
         {
             // this does the ramping of the motor to avoid jerk
+            // deltaTarget is used to keep it from overshooting
             float deltaTarget = targetSpeed - currentSetPoint;
             if(deltaTarget > 1) deltaTarget = 1;
             if(deltaTarget < -1) deltaTarget = -1;
             currentSetPoint += deltaTarget;
 
-            // if(currentSetPoint < targetSpeed) currentSetPoint += 1.0;
-            // if(currentSetPoint > targetSpeed) currentSetPoint -= 1.0;
-
             float error = currentSetPoint - speed;
-            //if(fabs(sumError) < integralCap) 
             sumError += error;
 
             float effort = FeedForward(currentSetPoint) + Kp * error + Ki * sumError;
