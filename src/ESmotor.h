@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 /**
- * New BLDC motor with built-in power, encoder, etc
+ * New BLDC motor with built-in driver, encoder, etc
  * 
  * https://www.robotshop.com/products/36d-long-life160brushless-dc-geared-motor-24v-1300rpm
  * 
