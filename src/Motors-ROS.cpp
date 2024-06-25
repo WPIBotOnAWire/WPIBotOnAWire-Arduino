@@ -17,8 +17,8 @@
 #define Ki 0.01
 
 // ENCODER AND PID CONSTANTS 
-#define ENCODER_PIN1           8
-#define ENCODER_PIN2           9
+// #define ENCODER_PIN1           8
+// #define ENCODER_PIN2           9
 
 //#define WHEEL_RADIUS            0.0210  // meters // 0.825/39.37; //inches to m
 //#define WHEEL_CIRCUMFRANCE      0.132   // meters // 2.0*PI*WHEEL_RADIUS;
