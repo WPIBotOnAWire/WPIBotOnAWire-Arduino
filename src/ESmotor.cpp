@@ -10,6 +10,8 @@ void encoderISR(void)
 }
 
 /**
+ * Sets up PWM timer and loop timer for encoders/speed control.
+ * 
  * Set up TCC0 on pin 2 for PWM at 20 kHz.
  * 
  * Note that we only set up one channel, as both motors are sent the same command. 
@@ -17,6 +19,8 @@ void encoderISR(void)
  * 
  * PLL (48MHz) /3 -> GLCK4 (16MHz) / 1 -> TCC0(16MHz)
  * Dual slope w/TOP = 400 -> 20kHz [16MHz / (400*2) = 20kHz]
+ * 
+ * Set up TCC1 for loop control (currently 20ms)
 */
 void ESMotor::Init(void)
 {
