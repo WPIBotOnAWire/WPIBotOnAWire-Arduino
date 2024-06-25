@@ -46,8 +46,6 @@ void ESMotor::Init(void)
     // F & E specify the timers: e.g., TCC0, TCC1 and TCC2
     PORT->Group[g_APinDescription[2].ulPort].PMUX[g_APinDescription[2].ulPin >> 1].reg |= PORT_PMUX_PMUXE_F;
 
-
-
   // Dual slope PWM operation: timers continuously count up to PER register value then down 0
   REG_TCC0_WAVE |= TCC_WAVE_POL(0xF) |           // Reverse the output polarity on all TCC0 outputs (?)
                    TCC_WAVE_WAVEGEN_DSBOTTOM;    // Setup dual slope PWM on TCC0

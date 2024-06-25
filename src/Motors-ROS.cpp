@@ -7,16 +7,9 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/Float32.h>
 
-//#include "esc-samd21.h"
-
 #include "robot.h"
 
 #define Serial SerialUSB
-
-#define Kp 1
-#define Ki 0.01
-
-#define METERS_PER_TICK         0.0001286 // meters/tick
 
 std_msgs::Int32 enc_val;
 ros::Publisher pub_enc("/encoder/count", &enc_val);
