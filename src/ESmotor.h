@@ -20,6 +20,8 @@ private:
     volatile int16_t previousCount = 0;
     volatile int8_t readyToPID = 0;
 
+    uint32_t lastMotorUpdate = 0;
+
     const float Kp = 2;
     const float Ki = 0.2;
 

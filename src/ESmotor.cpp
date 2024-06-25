@@ -168,7 +168,6 @@ ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
  */
 ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
 {
-    static uint32_t lastMotorUpdate = 0;
     uint32_t currTime = millis();
 
     if(readyToPID)
