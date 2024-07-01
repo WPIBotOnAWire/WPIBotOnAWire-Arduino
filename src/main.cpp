@@ -7,7 +7,8 @@
  * 3,4:   GPS on SERCOM2*
  * 5:     LED control
  * 6,7:   ToF sensor on SERCOM5
- * 8,9:   Encoders
+ * 8:     Direction control
+ * 9:     Encoder
  * 10-13: FREE (SPI bus)
  * A0:    MaxBotix
  * A1,A2: ToF sensor on SERCOM4
