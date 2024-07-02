@@ -58,6 +58,9 @@ void setup()
   /**
    * Be careful when uncommenting the following, as you _must_ connect to the Serial Monitor if
    * you leave them uncommented!
+   * 
+   * Doing so can be useful for debugging, however, as the program will wait for the Serial
+   * Monitor so you can see start up.
   */
   // while(!DEBUG_SERIAL)
   // {
