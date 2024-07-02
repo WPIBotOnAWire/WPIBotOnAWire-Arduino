@@ -28,10 +28,10 @@ More info about rosserial can be found at http://wiki.ros.org/rosserial_arduino/
 
 * SERCOM0: Jetson via UART on D0 and D1.
 * SERCOM1: Standard SPI on D10-13. Nothing connected, yet. 
-* SERCOM2: GPS on D3 and D4. `See gps-ROS.cpp`.
+* SERCOM2: GPS on D3 and D4 via UART. `See gps-ROS.cpp`.
 * SERCOM3: Standard I2C on D20 and D21. So far just battery monitor.
-* SERCOM4: TFmini on pins A1 and A2 (D15 and D16, I think). See `tfmini-ROS.cpp`.
-* SERCOM5: TFmini on pins D6 and D7. Note that you have to remove the default SERCOM5 in Arduino to make this work. See `tfmini-ROS.cpp` for deets.
+* SERCOM4: TFmini UART on pins A1 and A2 (D15 and D16, I think). See `tfmini-ROS.cpp`.
+* SERCOM5: TFmini UART on pins D6 and D7. Note that you have to remove the default SERCOM5 in Arduino to make this work. See `tfmini-ROS.cpp` for deets.
 
 ## List of Custom Timers
 
