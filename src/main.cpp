@@ -165,7 +165,6 @@ void loop(void)
   processRangefinders(); // ultrasonics
   processTFminis();
 
-  //processEncoders();
   updateMotors();
 
   //processBatteryMonitor();
