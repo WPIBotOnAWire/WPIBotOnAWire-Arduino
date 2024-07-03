@@ -14,8 +14,8 @@ private:
     uint8_t directionPin = -1;
     uint8_t encoderPin = -1;
 
-    enum MOTOR_MODE {MOTOR_TELEOP, MOTOR_AUTO};
-    MOTOR_MODE motorMode = MOTOR_TELEOP;
+    enum MOTOR_MODE {MOTOR_DIRECT, MOTOR_AUTO};
+    MOTOR_MODE motorMode = MOTOR_DIRECT;
 
     bool isArmed = false;
 
@@ -86,14 +86,14 @@ public:
 
     bool SetTargetSpeedMetersPerSecond(float speedMPS);
 
-    MOTOR_MODE SetOverridePulse(uint32_t pulseWidth)
+    MOTOR_MODE SetPulseDirect(uint32_t pulseWidth)
     {
         // For the E-S Motor, we must convert RC pulses to speed commands
         // 1000 -> -400; 2000 -> 400
         // map(long x, long in_min, long in_max, long out_min, long out_max)
         int16_t speedCommand = map(pulseWidth, 1100, 1900, -400, 400);
         SetEffort(speedCommand);
-        return motorMode = MOTOR_TELEOP;
+        return motorMode = MOTOR_DIRECT;
     }
 
     void handleEncoderISR(void) {encoderCount += direction;}

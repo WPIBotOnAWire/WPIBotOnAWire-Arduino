@@ -90,7 +90,7 @@ void processRadio(void)
         {
 //            DEBUG_SERIAL.println(radioSpeedPulse);
             if(radioSpeedPulse > 2100 || radioSpeedPulse < 900) {} //ignore the spikes
-            esMotor.SetOverridePulse(radioSpeedPulse);
+            esMotor.SetPulseDirect(radioSpeedPulse);
         }
 
         /**

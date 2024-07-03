@@ -128,7 +128,7 @@ bool ESMotor::Disarm(void)
     PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 0;
 
     isArmed = false;
-    motorMode = MOTOR_TELEOP;
+    motorMode = MOTOR_DIRECT;
 
     return isArmed;
 }
