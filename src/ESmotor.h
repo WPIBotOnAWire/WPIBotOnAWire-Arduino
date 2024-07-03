@@ -11,15 +11,14 @@
 class ESMotor
 {
 public:
-    enum MOTOR_STATE {IDLE, ARMED, OVERRIDE};
-    
-    bool isArmed = false;
-    
-    enum MOTOR_MODE {MOTOR_TELEOP, MOTOR_AUTO};
 
     volatile int16_t encoderCount = 0;
 
 private:
+    bool isArmed = false;
+    
+    enum MOTOR_MODE {MOTOR_TELEOP, MOTOR_AUTO};
+
     volatile int16_t snapshotCount = 0;
     volatile int16_t previousCount = 0;
     volatile int8_t readyToPID = 0;
@@ -51,7 +50,7 @@ private:
 private:
     uint8_t directionPin = -1;
     uint8_t encoderPin = -1;
-    MOTOR_STATE motorState = IDLE;
+    MOTOR_MODE motorMode = MOTOR_TELEOP;
 
     /**
      * targetSpeed is the speed we want to be going, in units of encoder [ticks/20 ms interval].
@@ -76,25 +75,23 @@ public:
     bool Arm(void);
     bool Disarm(void);
 
-    // bool isArmed(void) {return motorState == ARMED;}
+    // bool isArmed(void) {return motorMode == ARMED;}
     void UpdateMotors(void);
 
     bool SetTargetSpeedMetersPerSecond(float speedMPS);
-    MOTOR_STATE SetOverridePulse(uint32_t pulseWidth)
+    MOTOR_MODE SetOverridePulse(uint32_t pulseWidth)
     {
         // For the E-S Motor, we must convert RC pulses to speed commands
         // 1000 -> -400; 2000 -> 400
         // map(long x, long in_min, long in_max, long out_min, long out_max)
         int16_t speedCommand = map(pulseWidth, 1100, 1900, -400, 400);
         SetEffort(speedCommand);
-        return motorState = OVERRIDE;
+        return motorMode = MOTOR_TELEOP;
     }
 
     void EStop(void) 
     {
-        targetSpeed = 0; 
-        currentSetPoint = 0; 
-        motorState = IDLE;
+        Disarm();
     }
 
     void FullStop(void) 

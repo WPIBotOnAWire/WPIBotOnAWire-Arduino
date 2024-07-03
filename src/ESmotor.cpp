@@ -166,7 +166,7 @@ void ESMotor::UpdateMotors(void)
         lastMotorUpdate = currTime; 
         int16_t speed = CalcEncoderSpeed();
 
-        if(isArmed) 
+        if(motorMode == MOTOR_AUTO)
         {
             // this does the ramping of the motor to avoid jerk
             // deltaTarget is used to keep it from overshooting
