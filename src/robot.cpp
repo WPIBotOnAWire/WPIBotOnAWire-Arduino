@@ -15,23 +15,20 @@ const float PATROLLING_SPEED = 1.0; // m/s
 void Robot::Arm(void) 
 {
     DEBUG_SERIAL.println("Arming");
-    robotState = ROBOT_PATROLLING; 
-    robotDirection = DIR_HOLD; 
+    robotState = ROBOT_STOPPED; 
     esMotor.Arm();
 }
 
 void Robot::Disarm(void) 
 {
     robotState = ROBOT_IDLE; 
-    robotDirection = DIR_HOLD; 
-    esMotor.EStop();
+    esMotor.Disarm();
     DEBUG_SERIAL.println("Disarming");
 }
 
 void Robot::Override(void) 
 {
     robotState = RADIO_TELEOP; 
-    robotDirection = DIR_HOLD; // ignored in override mode 
     esMotor.Arm();
     DEBUG_SERIAL.println("Overriding");
 }
@@ -159,11 +156,11 @@ void Robot::setTargetSpeed(float speed)
     else esMotor.SetTargetSpeedMetersPerSecond(0);
 }
 
-void Robot::handleEncoderUpdate(const float movementCM)
-{
-    nearestObjectCM[DIR_REV] += movementCM;
-    nearestObjectCM[DIR_FWD] -= movementCM;
-}
+// void Robot::handleEncoderUpdate(const float movementCM)
+// {
+//     nearestObjectCM[DIR_REV] += movementCM;
+//     nearestObjectCM[DIR_FWD] -= movementCM;
+// }
 
 bool Robot::CheckDeterrenceTimer(void)
 {

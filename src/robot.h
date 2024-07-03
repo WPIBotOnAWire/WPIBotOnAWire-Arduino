@@ -7,14 +7,14 @@ class Robot
 {
 public:
     enum ROBOT_STATE {ROBOT_IDLE, ROBOT_PATROLLING, ROBOT_APPROACHING, ROBOT_DETERRING, 
-                        ROBOT_STOPPED, RADIO_TELEOP};
-    enum DIRECTION {DIR_HOLD, DIR_REV, DIR_FWD, DIR_MAX};
+                        ROBOT_STOPPED, RADIO_TELEOP, JETSON_COMMAND};
+    enum DIRECTION {DIR_HOLD, DIR_REV, DIR_FWD};
 
 private:
     ROBOT_STATE robotState = ROBOT_IDLE;
     DIRECTION robotDirection = DIR_HOLD;
 
-    float nearestObjectCM[DIR_MAX];
+    float nearestObjectCM[3]; // ignore hold
     
     EventTimer deterrenceTimer;
     uint8_t deterrenceCount = 0;
