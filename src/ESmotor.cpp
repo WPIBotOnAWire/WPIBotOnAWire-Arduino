@@ -128,6 +128,7 @@ bool ESMotor::Disarm(void)
     PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 0;
 
     isArmed = false;
+    motorMode = MOTOR_TELEOP;
 
     return isArmed;
 }
@@ -166,7 +167,7 @@ void ESMotor::UpdateMotors(void)
         lastMotorUpdate = currTime; 
         int16_t speed = CalcEncoderSpeed();
 
-        if(motorMode == MOTOR_AUTO)
+        if(motorMode == MOTOR_AUTO && isArmed)
         {
             // this does the ramping of the motor to avoid jerk
             // deltaTarget is used to keep it from overshooting
@@ -214,22 +215,25 @@ void ESMotor::UpdateMotors(void)
  */
 void ESMotor::SetEffort(int16_t match)
 {
-    if(match >=0) 
+    if(isArmed)
     {
-        direction = 1;
-        digitalWrite(directionPin, HIGH);
-    }
-    else 
-    { 
-        direction = -1;
-        digitalWrite(directionPin, LOW); 
-        match = -match;
-    }
+        if(match >=0) 
+        {
+            direction = 1;
+            digitalWrite(directionPin, HIGH);
+        }
+        else 
+        { 
+            direction = -1;
+            digitalWrite(directionPin, LOW); 
+            match = -match;
+        }
 
-    if(match > 400) match = 400;
+        if(match > 400) match = 400;
 
-    REG_TCC0_CCB0 = match;       // TCC0_CCB0 - sets the compare match value on D2
-    while(TCC0->SYNCBUSY.bit.CCB0) {}
+        REG_TCC0_CCB0 = match;       // TCC0_CCB0 - sets the compare match value on D2
+        while(TCC0->SYNCBUSY.bit.CCB0) {}
+    }
 }
 
 void TCC1_Handler() 

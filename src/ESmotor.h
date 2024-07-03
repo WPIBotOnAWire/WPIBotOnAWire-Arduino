@@ -70,21 +70,6 @@ public:
     void Init(void);
     bool Arm(void);
     bool Disarm(void);
-
-    // bool isArmed(void) {return motorMode == ARMED;}
-    void UpdateMotors(void);
-
-    bool SetTargetSpeedMetersPerSecond(float speedMPS);
-    MOTOR_MODE SetOverridePulse(uint32_t pulseWidth)
-    {
-        // For the E-S Motor, we must convert RC pulses to speed commands
-        // 1000 -> -400; 2000 -> 400
-        // map(long x, long in_min, long in_max, long out_min, long out_max)
-        int16_t speedCommand = map(pulseWidth, 1100, 1900, -400, 400);
-        SetEffort(speedCommand);
-        return motorMode = MOTOR_TELEOP;
-    }
-
     void EStop(void) 
     {
         Disarm();
@@ -95,6 +80,20 @@ public:
         targetSpeed = 0; 
         currentSetPoint = 0; 
         sumError = 0;
+    }
+
+    void UpdateMotors(void);
+
+    bool SetTargetSpeedMetersPerSecond(float speedMPS);
+
+    MOTOR_MODE SetOverridePulse(uint32_t pulseWidth)
+    {
+        // For the E-S Motor, we must convert RC pulses to speed commands
+        // 1000 -> -400; 2000 -> 400
+        // map(long x, long in_min, long in_max, long out_min, long out_max)
+        int16_t speedCommand = map(pulseWidth, 1100, 1900, -400, 400);
+        SetEffort(speedCommand);
+        return motorMode = MOTOR_TELEOP;
     }
 
     void handleEncoderISR(void) {encoderCount += direction;}
