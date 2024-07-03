@@ -10,19 +10,20 @@
  */
 class ESMotor
 {
-public:
+private:
+    uint8_t directionPin = -1;
+    uint8_t encoderPin = -1;
+
+    enum MOTOR_MODE {MOTOR_TELEOP, MOTOR_AUTO};
+    MOTOR_MODE motorMode = MOTOR_TELEOP;
+
+    bool isArmed = false;
 
     volatile int16_t encoderCount = 0;
-
-private:
-    bool isArmed = false;
-    
-    enum MOTOR_MODE {MOTOR_TELEOP, MOTOR_AUTO};
-
     volatile int16_t snapshotCount = 0;
     volatile int16_t previousCount = 0;
-    volatile int8_t readyToPID = 0;
 
+    volatile int8_t readyToPID = 0;
     uint32_t lastMotorUpdate = 0;
 
     const float Kp = 2;
@@ -30,6 +31,21 @@ private:
 
     float sumError = 0;
     //float integralCap = 400 / Ki; // we'll prevent build up in the PI routine
+
+    /**
+     * targetSpeed is the speed we want to be going, in units of encoder [ticks/20 ms interval].
+     * 
+     * currentSetPoint is the currently commanded speed. The currentSetPoint varies more slowly
+     * to avoid jerk.
+     * 
+     * The maximum speed is ~20 ticks/interval, so it takes about a half second to fully ramp up,
+     * which is reasonable.
+     */
+    float targetSpeed = 0;
+    float currentSetPoint = 0;
+    volatile int8_t direction = 0;
+
+    void SetEffort(int16_t match);
 
     /**
      * Technically just open-loop, but might add info from IMU later.
@@ -46,26 +62,6 @@ private:
 
         return ff;
     }
-
-private:
-    uint8_t directionPin = -1;
-    uint8_t encoderPin = -1;
-    MOTOR_MODE motorMode = MOTOR_TELEOP;
-
-    /**
-     * targetSpeed is the speed we want to be going, in units of encoder [ticks/20 ms interval].
-     * 
-     * currentSetPoint is the currently commanded speed. The currentSetPoint varies more slowly
-     * to avoid jerk.
-     * 
-     * The maximum speed is ~20 ticks/interval, so it takes about a half second to fully ramp up,
-     * which is reasonable.
-     */
-    float targetSpeed = 0;
-    float currentSetPoint = 0;
-    volatile int8_t direction = 0;
-
-    void SetEffort(int16_t match);
 
 public:
     ESMotor(int8_t dirPin = -1, int8_t encPin = -1) 
