@@ -27,9 +27,10 @@ public:
     void SetDirection(DIRECTION dir);
     void SwitchDirections(void);
 
-    void Arm(void);
+    void SetAuto(void);
+    void SetTeleop(void);
     void Disarm(void);
-    void Override(void);
+    //void Override(void);
     void FullStop(void);
 
     bool CheckDeterrenceTimer(void);

@@ -76,8 +76,8 @@ void processRadio(void)
         //     DEBUG_SERIAL.print('\n');
         // }
 
-        if(prev_override && !override) robot.Arm();
-        if(override && !prev_override) esMotor.Arm();
+        if(prev_override && !override) robot.SetAuto();
+        if(override && !prev_override) robot.SetTeleop();
     }
 
     uint32_t radioSpeedPulse = 0;

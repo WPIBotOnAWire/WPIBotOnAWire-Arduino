@@ -148,9 +148,13 @@ void loop(void)
   if(DEBUG_SERIAL.available())
   {
     char ch = DEBUG_SERIAL.read();
+    if(ch == 'T') 
+    {
+      robot.SetTeleop();
+    }
     if(ch == 'A') 
     {
-      robot.Arm();
+      robot.SetAuto();
     }
     if(ch == 'D') 
     {

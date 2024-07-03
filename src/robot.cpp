@@ -12,21 +12,23 @@ const float DETERRING_THRESHOLD = 100.0;
 // m/s
 const float PATROLLING_SPEED = 1.0; // m/s
 
-void Robot::Arm(void) 
+void Robot::SetAuto(void) 
 {
-    DEBUG_SERIAL.println("Arming");
+    DEBUG_SERIAL.println("Auto");
     robotState = ROBOT_STOPPED; 
+    robotDirection = DIR_HOLD;
     esMotor.Arm();
 }
 
 void Robot::Disarm(void) 
 {
     robotState = ROBOT_IDLE; 
+    robotDirection = DIR_HOLD;
     esMotor.Disarm();
     DEBUG_SERIAL.println("Disarming");
 }
 
-void Robot::Override(void) 
+void Robot::SetTeleop(void) 
 {
     robotState = RADIO_TELEOP; 
     esMotor.Arm();
