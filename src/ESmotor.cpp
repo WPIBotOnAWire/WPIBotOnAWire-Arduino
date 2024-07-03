@@ -119,7 +119,6 @@ bool ESMotor::Arm(void)
     return isArmed;
 }
 
-
 bool ESMotor::Disarm(void)
 {
     DEBUG_SERIAL.println("Disarming motors.");
@@ -217,7 +216,7 @@ void ESMotor::SetEffort(int16_t match)
 {
     if(isArmed)
     {
-        if(match >=0) 
+        if(match >= 0) 
         {
             direction = 1;
             digitalWrite(directionPin, HIGH);
