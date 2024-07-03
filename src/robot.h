@@ -7,7 +7,7 @@ class Robot
 {
 public:
     enum ROBOT_STATE {ROBOT_IDLE, ROBOT_PATROLLING, ROBOT_APPROACHING, ROBOT_DETERRING, 
-                        ROBOT_STOPPED, RADIO_OVERRIDE};
+                        ROBOT_STOPPED, RADIO_TELEOP};
     enum DIRECTION {DIR_HOLD, DIR_REV, DIR_FWD, DIR_MAX};
 
 private:

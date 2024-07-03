@@ -30,7 +30,7 @@ void Robot::Disarm(void)
 
 void Robot::Override(void) 
 {
-    robotState = RADIO_OVERRIDE; 
+    robotState = RADIO_TELEOP; 
     robotDirection = DIR_HOLD; // ignored in override mode 
     esMotor.Arm();
     DEBUG_SERIAL.println("Overriding");
@@ -43,7 +43,7 @@ void Robot::FullStop(void)
 
 void Robot::SwitchDirections(void)
 {
-    if(robotState != RADIO_OVERRIDE)
+    if(robotState != RADIO_TELEOP)
     {
         DEBUG_SERIAL.println("Switching directions");
         if(robotDirection == DIR_FWD) SetDirection(DIR_REV);
@@ -60,7 +60,7 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
         DEBUG_SERIAL.print("MB: ");
         DEBUG_SERIAL.print(distanceCM);
 #endif
-       if(robotState != ROBOT_IDLE && robotState != RADIO_OVERRIDE)
+       if(robotState != ROBOT_IDLE && robotState != RADIO_TELEOP)
         {
             float targetSpeed = PATROLLING_SPEED * (distanceCM - STOPPING_THRESHOLD) 
                                 / (APPROACHING_THRESHOLD - STOPPING_THRESHOLD);  // CAREFUL IF NEGATIVE!!

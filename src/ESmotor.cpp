@@ -103,50 +103,42 @@ void ESMotor::Init(void)
 /*
  * Arm the motor by engaging the TCC0 waveform on pin 2.
  */
-ESMotor::MOTOR_STATE ESMotor::Arm(void)
+bool ESMotor::Arm(void)
 {
-    switch(motorState)
+    if(!isArmed)
     {
-        case IDLE:
-        case OVERRIDE:
             DEBUG_SERIAL.println("Arming motors.");
-            motorState = ARMED;
+            isArmed = true;
             targetSpeed = currentSetPoint = 0;
             sumError = 0;
 
             // Enable the port multiplexer for digital pin 2 (D2; PA14): timer TCC0 output
             PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 1;
-
-            break;
-
-        default:
-            break;
     }
 
-    return motorState;
+    return isArmed;
 }
 
 
-ESMotor::MOTOR_STATE ESMotor::Disarm(void)
+bool ESMotor::Disarm(void)
 {
     DEBUG_SERIAL.println("Disarming motors.");
 
     // Disable the port multiplexer for digital pin 2 (D2; PA14)
     PORT->Group[g_APinDescription[2].ulPort].PINCFG[g_APinDescription[2].ulPin].bit.PMUXEN = 0;
 
-    motorState = IDLE;
+    isArmed = false;
 
-    return motorState;
+    return isArmed;
 }
 
 /*
  * 
  */
-ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
+bool ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
 {
-    if(motorState != ARMED) 
+    if(!isArmed) 
     {
-        return motorState;
         DEBUG_SERIAL.println("UNARMED!");
     }
 
@@ -155,18 +147,17 @@ ESMotor::MOTOR_STATE ESMotor::SetTargetSpeedMetersPerSecond(float speedMPS)
         /**
          * Convert from meters/second to ticks/interval
          */
-        targetSpeed = speedMPS / 0.041;
+        targetSpeed = speedMPS / 0.041; // long calculation...needs documentation
+        targetSpeed = constrain(targetSpeed, -20, 20);
     }
 
-    targetSpeed = constrain(targetSpeed, -20, 20);
-
-    return motorState;
+    return isArmed;
 }
 
 /**
  * Executes a simple PI controller.
  */
-ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
+void ESMotor::UpdateMotors(void)
 {
     uint32_t currTime = millis();
 
@@ -175,7 +166,7 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
         lastMotorUpdate = currTime; 
         int16_t speed = CalcEncoderSpeed();
 
-        if(motorState == ARMED) 
+        if(isArmed) 
         {
             // this does the ramping of the motor to avoid jerk
             // deltaTarget is used to keep it from overshooting
@@ -216,8 +207,6 @@ ESMotor::MOTOR_STATE ESMotor::UpdateMotors(void)
 
         readyToPID = 0;
     }
-
-    return motorState;
 }
 
 /**

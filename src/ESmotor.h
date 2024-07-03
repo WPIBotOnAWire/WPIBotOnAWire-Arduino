@@ -12,6 +12,10 @@ class ESMotor
 {
 public:
     enum MOTOR_STATE {IDLE, ARMED, OVERRIDE};
+    
+    bool isArmed = false;
+    
+    enum MOTOR_MODE {MOTOR_TELEOP, MOTOR_AUTO};
 
     volatile int16_t encoderCount = 0;
 
@@ -69,13 +73,13 @@ public:
         {directionPin = dirPin; encoderPin = encPin;}
 
     void Init(void);
-    MOTOR_STATE Arm(void);
-    MOTOR_STATE Disarm(void);
+    bool Arm(void);
+    bool Disarm(void);
 
     // bool isArmed(void) {return motorState == ARMED;}
-    MOTOR_STATE UpdateMotors(void);
+    void UpdateMotors(void);
 
-    MOTOR_STATE SetTargetSpeedMetersPerSecond(float speedMPS);
+    bool SetTargetSpeedMetersPerSecond(float speedMPS);
     MOTOR_STATE SetOverridePulse(uint32_t pulseWidth)
     {
         // For the E-S Motor, we must convert RC pulses to speed commands
