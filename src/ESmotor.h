@@ -70,6 +70,7 @@ public:
     void Init(void);
     bool Arm(void);
     bool Disarm(void);
+    void SetAuto(void) { motorMode = MOTOR_AUTO; targetSpeed = currentSetPoint = 0; sumError = 0; }
     void EStop(void) 
     {
         Disarm();

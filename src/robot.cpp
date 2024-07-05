@@ -17,7 +17,7 @@ void Robot::SetAuto(void)
     DEBUG_SERIAL.println("Auto");
     robotState = ROBOT_STOPPED; 
     robotDirection = DIR_HOLD;
-    esMotor.Arm();
+    esMotor.SetAuto();
 }
 
 void Robot::Disarm(void) 
@@ -32,12 +32,13 @@ void Robot::SetTeleop(void)
 {
     robotState = RADIO_TELEOP; 
     esMotor.Arm();
-    DEBUG_SERIAL.println("Overriding");
+    DEBUG_SERIAL.println("Teleop");
 }
 
 void Robot::FullStop(void)
 {
     esMotor.FullStop();
+    robotState = ROBOT_STOPPED;
 }
 
 void Robot::SwitchDirections(void)
