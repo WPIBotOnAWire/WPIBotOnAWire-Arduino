@@ -6,8 +6,8 @@ Robot robot;
 
 // cm
 const float APPROACHING_THRESHOLD = 200.0;
-const float STOPPING_THRESHOLD = 50.0;
-const float DETERRING_THRESHOLD = 100.0;
+const float STOPPING_THRESHOLD = 80.0;
+const float DETERRING_THRESHOLD = 120.0;
 
 // m/s
 const float PATROLLING_SPEED = 1.0; // m/s
