@@ -58,7 +58,7 @@ void ESMotor::Init(void)
   while(TCC0->SYNCBUSY.bit.PER);
 
   // The CCBx sets the duty cycle 
-  REG_TCC0_CCB0 = 0;       
+  REG_TCC0_CCB0 = 0;
   while(TCC0->SYNCBUSY.bit.CCB0);
 
   // No pre-scaler; enable and sync
