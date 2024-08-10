@@ -9,7 +9,10 @@
  * 6,7:   ToF sensor on SERCOM5
  * 8:     Direction control
  * 9:     Encoder
- * 10-13: FREE (SPI bus)
+ * 10:    Radio speed control
+ * 11:    Radio override
+ * 12:    Sound out
+ * 13:    LED out
  * A0:    MaxBotix
  * A1,A2: ToF sensor on SERCOM4
  * A3:    MaxBotix
