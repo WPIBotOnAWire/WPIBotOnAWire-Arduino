@@ -16,7 +16,10 @@ ros::Publisher pub_enc("/encoder/count", &enc_val);
 std_msgs::Float32 speed_enc;
 ros::Publisher pub_speed("/encoder/meters_per_second", &speed_enc);
 
-ESMotor esMotor(8, 9);
+#define ES_DIR  8
+#define ES_ENC  9
+
+ESMotor esMotor(ES_DIR, ES_ENC);
 
 int16_t targetSpeedTicksPerInterval = 0;
 int16_t currentTargetTicksPerInterval = 0;

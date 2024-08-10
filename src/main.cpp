@@ -3,7 +3,7 @@
  * Current list of pins:
  * 
  * 0,1:   Serial1 for Jetson comms (SERCOM0, set up by Arduino library)
- * 2:     ESC control ***CHANGED 11/5 -- used to be D10,13***
+ * 2:     Speed control ***CHANGED 11/5 -- used to be D10,13***
  * 3,4:   GPS on SERCOM2*
  * 5:     LED control
  * 6,7:   ToF sensor on SERCOM5
