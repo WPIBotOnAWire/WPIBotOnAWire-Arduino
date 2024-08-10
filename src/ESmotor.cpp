@@ -219,12 +219,12 @@ void ESMotor::SetEffort(int16_t match)
         if(match >= 0) 
         {
             direction = 1;
-            digitalWrite(directionPin, HIGH);
+            digitalWrite(directionPin, LOW);
         }
         else 
         { 
             direction = -1;
-            digitalWrite(directionPin, LOW); 
+            digitalWrite(directionPin, HIGH); 
             match = -match;
         }
 

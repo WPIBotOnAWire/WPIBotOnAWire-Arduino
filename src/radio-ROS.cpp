@@ -36,6 +36,7 @@ void processRadio(void)
     uint32_t overridePulseLength = 0;
     if(radioOverride.GetPulseWidth(overridePulseLength))
     {
+        //DEBUG_SERIAL.println(overridePulseLength);
         bool prev_override = override; // I don't like this here -- should go at end?
 
         if(overridePulseLength >= 2010) 
@@ -83,12 +84,12 @@ void processRadio(void)
     uint32_t radioSpeedPulse = 0;
     if(radioSpeed.GetPulseWidth(radioSpeedPulse))
     {
+        //DEBUG_SERIAL.println(radioSpeedPulse);
         /**
          * If we're in override mode, use the speed pulse to directly command the motors.
         */
         if(override)
         {
-//            DEBUG_SERIAL.println(radioSpeedPulse);
             if(radioSpeedPulse > 2100 || radioSpeedPulse < 900) {} //ignore the spikes
             esMotor.SetPulseDirect(radioSpeedPulse);
         }
