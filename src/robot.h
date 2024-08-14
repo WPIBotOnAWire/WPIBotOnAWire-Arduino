@@ -30,7 +30,6 @@ public:
     void SetAuto(void);
     void SetTeleop(void);
     void Disarm(void);
-    //void Override(void);
     void FullStop(void);
 
     bool CheckDeterrenceTimer(void);

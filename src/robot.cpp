@@ -64,7 +64,7 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
        if(robotState != ROBOT_IDLE && robotState != RADIO_TELEOP)
         {
             float targetSpeed = PATROLLING_SPEED * (distanceCM - STOPPING_THRESHOLD) 
-                                / (APPROACHING_THRESHOLD - STOPPING_THRESHOLD);  // CAREFUL IF NEGATIVE!!
+                                / (APPROACHING_THRESHOLD - STOPPING_THRESHOLD); 
             
             if(targetSpeed < 0) targetSpeed = 0;
             if(targetSpeed > PATROLLING_SPEED) targetSpeed = PATROLLING_SPEED;

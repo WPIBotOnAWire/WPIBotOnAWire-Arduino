@@ -10,7 +10,6 @@ std_msgs::String status;
 void cbStatus(const std_msgs::String& msg) 
 {
     String message = msg.data;
-    // SerialUSB.println(message);
     if(message == String("Arm"))
     {
         esMotor.Arm();
