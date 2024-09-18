@@ -11,12 +11,12 @@
  * 9:     Encoder
  * 10:    Radio speed control
  * 11:    Radio override
- * 12:    Sound out
+ * 12:    Sound out (moving to Jetson)
  * 13:    LED out
  * A0:    MaxBotix
  * A1,A2: ToF sensor on SERCOM4
  * A3:    MaxBotix
- * 20,21: Battery monitor on I2C bus (SERCOM3)
+ * 20,21: Battery monitor on I2C bus (SERCOM3) (moving to Jetson)
 */
 
 #include <Arduino.h>
