@@ -42,12 +42,16 @@ More info about rosserial can be found at http://wiki.ros.org/rosserial_arduino/
 * ~~TCC2 on D11 (PA16) for sound. Variable freq. Set up in LED, since they share a source clock.~~ Sound is now managed from the Jetson.
 * TCC1 for encoder timer. Set to 20ms. Raises flag to process encoder count.
 
+## Connections.
+
+See [here](docs/Connections-SAMD21.jpg) for connections. The various files also define the pins.
+
 ## Radio Control
 
 Radio control is managed by the SAMD21. There are two modes, determined by the flap switch (upper left):
 * _Manual override_ ("override" in the code) allows the user to drive the robot with the right joystick
-* _Auto control_ will allow the robot to patrol the wire. When it gets close to an objet, the robot will slow down, start flashing lights, and make a sound. Currently, the robot make three attempts and then turn around. Alternatively, the user can command the robot to change patrol direction with the right joystick (it won't control speed, just command the direction).
+* _Auto control_ will allow the robot to patrol the wire. When it gets close to an object, the robot will slow down, start flashing lights, and make a sound. [State diagram is found here](docs/Auto-Patrol-State-Diagram.jpg). Currently, the robot will make three attempts and then turn around. Alternatively, the user can command the robot to change patrol direction with the right joystick (it won't control speed, just command the direction).
 
 See [radio-ROS.cpp](src/radio-ROS.cpp) for pin connections. Power is provided _from_ the protoboard to the radio receiver. The servo pulses from the radio are interpreted by the SAMD21 using one of the timers for measuring the pulse width (using interrupts, not the event system built into the SAMD21).
 
-There is a whole pile of counters and such to reduce glitches.
+There is a [whole pile of counters and such](docs/RC-Mode-State-Diagram.jpg) to reduce glitches.
