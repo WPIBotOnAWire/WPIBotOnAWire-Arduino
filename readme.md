@@ -55,3 +55,6 @@ Radio control is managed by the SAMD21. There are two modes, determined by the f
 See [radio-ROS.cpp](src/radio-ROS.cpp) for pin connections. Power is provided _from_ the protoboard to the radio receiver. The servo pulses from the radio are interpreted by the SAMD21 using one of the timers for measuring the pulse width (using interrupts, not the event system built into the SAMD21).
 
 There is a [whole pile of counters and such](docs/RC-Mode-State-Diagram.jpg) to reduce glitches.
+
+The radio controller uses the controls indicated below.
+![Controls on the radio controller](IMG_2768.jpeg)
