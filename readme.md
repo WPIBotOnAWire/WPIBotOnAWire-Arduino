@@ -56,5 +56,5 @@ See [radio-ROS.cpp](src/radio-ROS.cpp) for pin connections. Power is provided _f
 
 There is a [whole pile of counters and such](docs/RC-Mode-State-Diagram.jpg) to reduce glitches.
 
-The radio controller uses the controls indicated below.
+The radio controller uses the controls indicated below. Always start with the toggle in manual. Use the speed control to prove communication. To go to auto, toggle the switch, but note that the robot is in an idle state for safety. Briefly hold the speed stick to one side or the other to indicate a direction to patrol (you can release it after a second or so). Change directions by moving the stick to the other side for a short period of time. Moving the toggle puts it back in manual mode.
 ![Controls on the radio controller](docs/RC-handheld.jpeg)
