@@ -57,4 +57,4 @@ See [radio-ROS.cpp](src/radio-ROS.cpp) for pin connections. Power is provided _f
 There is a [whole pile of counters and such](docs/RC-Mode-State-Diagram.jpg) to reduce glitches.
 
 The radio controller uses the controls indicated below.
-![Controls on the radio controller](IMG_2768.jpeg)
+![Controls on the radio controller](docs/RC-handheld.jpeg)
