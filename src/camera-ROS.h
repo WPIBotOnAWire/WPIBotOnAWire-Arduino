@@ -2,4 +2,4 @@
 
 #include <ros.h>
 
-void init_status(ros::NodeHandle& nh);
+void init_camera_node(ros::NodeHandle& nh);
