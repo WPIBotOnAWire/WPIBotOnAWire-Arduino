@@ -59,84 +59,86 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
 #endif
 
     nearestObjectCM[direction] = distanceCM;
-    if(robotDirection == direction)
+    if(robotDirection == direction) // only need to process if in the direction we're headed
     {
-       if(robotState != ROBOT_IDLE && robotState != RADIO_TELEOP)
-        {
-            float targetSpeed = PATROLLING_SPEED * (distanceCM - STOPPING_THRESHOLD) 
-                                / (APPROACHING_THRESHOLD - STOPPING_THRESHOLD); 
-            
-            if(targetSpeed < 0) targetSpeed = 0;
-            if(targetSpeed > PATROLLING_SPEED) targetSpeed = PATROLLING_SPEED;
-
-            setTargetSpeed(targetSpeed);
-
-#ifdef __DEBUG_MB__
-            DEBUG_SERIAL.print("\tTarget:\t");
-            DEBUG_SERIAL.print(targetSpeed);
-#endif
-        }
-
-        // We use if and not elseif so that the logic cascades
-        if(robotState == ROBOT_PATROLLING)
-        {
-            if(distanceCM <= APPROACHING_THRESHOLD)
-            {
-                robotState = ROBOT_APPROACHING;
-                DEBUG_SERIAL.println("Pat -> App");
-            }
-        }
-
-        if(robotState == ROBOT_APPROACHING)
-        {
-            if(distanceCM <= DETERRING_THRESHOLD)
-            {   
-                setLED();
-                robotState = ROBOT_DETERRING;
-                DEBUG_SERIAL.println("App -> Det");
-                deterrenceTimer.Start(5000);
-            }
-
-            else if(distanceCM > APPROACHING_THRESHOLD)
-            {
-                robotState = ROBOT_PATROLLING;
-                DEBUG_SERIAL.println("App -> Pat");
-            }
-        }
-
-        if(robotState == ROBOT_DETERRING)
-        {
-            if(distanceCM <= STOPPING_THRESHOLD) 
-            {
-                FullStop();
-                robotState = ROBOT_STOPPED;
-                DEBUG_SERIAL.println("Det -> Stp");
-            }
-
-            else if(distanceCM > DETERRING_THRESHOLD)
-            {
-                clearLED();
-                robotState = ROBOT_APPROACHING;
-                deterrenceCount = 0;
-                deterrenceTimer.Cancel();
-
-                DEBUG_SERIAL.println("Det -> App");
-            }
-        }
-
-        if(robotState == ROBOT_STOPPED)
-        {
-        if(distanceCM > STOPPING_THRESHOLD) 
-            {
-                robotState = ROBOT_DETERRING;
-                DEBUG_SERIAL.println("Stp -> Det");
-            }
-        }
+        calcTargetSpeed();
     }
 
 #ifdef __DEBUG_MB__
     DEBUG_SERIAL.print('\n');
 #endif
+}
+
+void Robot::calcTargetSpeed(void)
+{
+    float distanceCM = nearestObjectCM[robotDirection];
+
+    if(robotState != ROBOT_IDLE && robotState != RADIO_TELEOP)
+    {
+        float targetSpeed = PATROLLING_SPEED * (distanceCM - STOPPING_THRESHOLD) 
+                            / (APPROACHING_THRESHOLD - STOPPING_THRESHOLD); 
+        
+        if(targetSpeed < 0) targetSpeed = 0;
+        if(targetSpeed > PATROLLING_SPEED) targetSpeed = PATROLLING_SPEED;
+
+        setTargetSpeed(targetSpeed);
+    }
+
+    // We use if and not elseif so that the logic cascades
+    if(robotState == ROBOT_PATROLLING)
+    {
+        if(distanceCM <= APPROACHING_THRESHOLD)
+        {
+            robotState = ROBOT_APPROACHING;
+            DEBUG_SERIAL.println("Pat -> App");
+        }
+    }
+
+    if(robotState == ROBOT_APPROACHING)
+    {
+        if(distanceCM <= DETERRING_THRESHOLD)
+        {   
+            setLED();
+            robotState = ROBOT_DETERRING;
+            DEBUG_SERIAL.println("App -> Det");
+            deterrenceTimer.Start(5000);
+        }
+
+        else if(distanceCM > APPROACHING_THRESHOLD)
+        {
+            robotState = ROBOT_PATROLLING;
+            DEBUG_SERIAL.println("App -> Pat");
+        }
+    }
+
+    if(robotState == ROBOT_DETERRING)
+    {
+        if(distanceCM <= STOPPING_THRESHOLD) 
+        {
+            FullStop();
+            robotState = ROBOT_STOPPED;
+            DEBUG_SERIAL.println("Det -> Stp");
+        }
+
+        else if(distanceCM > DETERRING_THRESHOLD)
+        {
+            clearLED();
+            robotState = ROBOT_APPROACHING;
+            deterrenceCount = 0;
+            deterrenceTimer.Cancel();
+
+            DEBUG_SERIAL.println("Det -> App");
+        }
+    }
+
+    if(robotState == ROBOT_STOPPED)
+    {
+    if(distanceCM > STOPPING_THRESHOLD) 
+        {
+            robotState = ROBOT_DETERRING;
+            DEBUG_SERIAL.println("Stp -> Det");
+        }
+    }
 }
 
 /**
