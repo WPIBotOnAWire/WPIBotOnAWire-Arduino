@@ -69,6 +69,24 @@ void Robot::handleMaxBotixReading(float distanceCM, DIRECTION direction)  // nee
 #endif
 }
 
+void Robot::handleCameraReading(float distanceCM, DIRECTION direction)  // needs to know what sensor
+{
+#ifdef __DEBUG_CAM__
+    DEBUG_SERIAL.print("Cam: ");
+    DEBUG_SERIAL.print(distanceCM);
+#endif
+
+    nearestObjectCM[direction] = distanceCM;
+    if(robotDirection == direction) // only need to process if in the direction we're headed
+    {
+        calcTargetSpeed();
+    }
+
+#ifdef __DEBUG_CAM__
+    DEBUG_SERIAL.print('\n');
+#endif
+}
+
 void Robot::calcTargetSpeed(void)
 {
     float distanceCM = nearestObjectCM[robotDirection];
