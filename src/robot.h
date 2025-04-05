@@ -21,6 +21,7 @@ private:
 
 public:
     void handleMaxBotixReading(float distance, DIRECTION direction);  // needs to know what sensor
+    void handleCameraReading(float distance, DIRECTION direction);  // needs to know what sensor
     void setTargetSpeed(float speed);
     void handleEncoderUpdate(const float movementCM);
 
