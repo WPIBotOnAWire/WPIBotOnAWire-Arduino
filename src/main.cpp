@@ -37,6 +37,7 @@
 #include "position_filter.h"
 
 #include "radio-ROS.h"
+#include "camera-ROS.h"
 
 #include "wdt_samd21.h"
 
@@ -116,6 +117,8 @@ void setup()
   setupTFminis(nh);
 
   init_motors(nh);
+  init_camera_node(nh);
+
   //setup_encoder(nh);
 
   //initBatteryMonitor(nh);

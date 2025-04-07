@@ -10,6 +10,7 @@ std_msgs::String status;
 void cbStatus(const std_msgs::String& msg) 
 {
     String message = msg.data;
+    DEBUG_SERIAL.println(message);
     if(message == String("Arm"))
     {
         esMotor.Arm();
