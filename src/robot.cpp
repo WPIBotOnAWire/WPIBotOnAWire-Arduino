@@ -116,7 +116,7 @@ void Robot::calcTargetSpeed(void)
     {
         if(distanceCM <= DETERRING_THRESHOLD)
         {   
-            setLED();
+            //setLED();
             robotState = ROBOT_DETERRING;
             DEBUG_SERIAL.println("App -> Det");
             deterrenceTimer.Start(5000);
@@ -140,7 +140,7 @@ void Robot::calcTargetSpeed(void)
 
         else if(distanceCM > DETERRING_THRESHOLD)
         {
-            clearLED();
+            //clearLED();
             robotState = ROBOT_APPROACHING;
             deterrenceCount = 0;
             deterrenceTimer.Cancel();
@@ -200,13 +200,14 @@ void Robot::HandleDeterrenceTimer(void)
     {
         if(++deterrenceCount <= 2)
         {
-            setLED();
+            /* Temporarily removing LED control with ultrasonic -- want to show the camera, instead. */
+            //setLED();
             deterrenceTimer.Start(5000);
         }
 
         else
         {
-            clearLED();
+            //clearLED();
             deterrenceCount = 0;
             SwitchDirections();
         }
